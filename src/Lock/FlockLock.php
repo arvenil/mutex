@@ -25,11 +25,13 @@ class FlockLock extends LockAbstract {
     }
 
     /**
+     * Acquire lock
      *
+     * @param string $name name of lock
      * @param null|int $timeout 1. null if you want blocking lock
      *                          2. 0 if you want just lock and go
      *                          3. $timeout > 0 if you want to wait for lock some time (in miliseconds)
-     * @return boolean
+     * @return bool
      */
     public function aquireLock($name, $timeout = null) {
         if (!$this->setupFileHandle($name)) {
@@ -57,8 +59,13 @@ class FlockLock extends LockAbstract {
         return $locked;
     }
 
+    /**
+     * Release lock
+     *
+     * @param string $name name of lock
+     * @return bool
+     */
     public function releaseLock($name) {
-//        ftruncate($this->file, 0); // @todo vfsStream doesn't work with truncate in php <= 5.3 so I can't test this
         flock($this->files[$name], LOCK_UN); // @todo Can LOCK_UN fail?
         return true;
     }
@@ -87,6 +94,12 @@ class FlockLock extends LockAbstract {
         }
     }
 
+    /**
+     * Check if lock is locked
+     *
+     * @param string $name name of lock
+     * @return bool
+     */
     public function isLocked($name) {
         if ($this->aquireLock($name, 0)) {
             return !$this->releaseLock($name);

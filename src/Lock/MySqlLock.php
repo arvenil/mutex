@@ -39,7 +39,7 @@ class MySqlLock extends LockAbstract {
      * @param null|int $timeout 1. null if you want blocking lock
      *                          2. 0 if you want just lock and go
      *                          3. $timeout > 0 if you want to wait for lock some time (in miliseconds)
-     * @return boolean
+     * @return bool
      */
     public function aquireLock($name, $timeout = null) {
         $start = microtime(true);
