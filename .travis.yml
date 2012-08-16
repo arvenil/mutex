@@ -1,6 +1,11 @@
 language: php
+
 php:
-    - 5.3
-    - 5.4
+ - 5.3
+ - 5.4
+
+before_script:
+ - echo "yes" | pecl install memcache
+ - echo "extension=memcache.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
 
 script: phpunit --bootstrap ./tests/bootstrap.php --coverage-text tests
