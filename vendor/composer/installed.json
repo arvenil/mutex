@@ -1,0 +1,33 @@
+[
+    {
+        "name": "mikey179/vfsStream",
+        "version": "v1.1.0-beta1",
+        "version_normalized": "1.1.0.0-beta1",
+        "time": "2012-08-09 20:37:46",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/mikey179/vfsStream",
+            "reference": "v1.1.0-beta1"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://github.com/mikey179/vfsStream/zipball/v1.1.0-beta1",
+            "reference": "v1.1.0-beta1",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "type": "library",
+        "installation-source": "source",
+        "license": [
+            "BSD"
+        ],
+        "homepage": "http://vfs.bovigo.org/",
+        "autoload": {
+            "psr-0": {
+                "org\\bovigo\\vfs": "src/main/php"
+            }
+        }
+    }
+]
