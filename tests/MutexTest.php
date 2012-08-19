@@ -21,7 +21,7 @@ require_once 'Lock/MySqlLock.php';
 require_once 'MockMemcache.php';
 require_once 'MockPDO.php';
 
-class LinevraMutex_MutexTest extends \PHPUnit_Framework_TestCase {
+class ArvenilNinjaMutex_MutexTest extends \PHPUnit_Framework_TestCase {
     public function setUp() {
         vfs\vfsStreamWrapper::register();
         vfs\vfsStreamWrapper::setRoot(new vfs\vfsStreamDirectory('nfs'));
