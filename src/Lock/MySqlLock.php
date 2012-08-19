@@ -53,14 +53,14 @@ class MySqlLock extends LockAbstract {
     }
 
     protected function getLock($name) {
-        return !$this->isLocked($name) && current($this->pdo->query(
+        return !$this->isLocked($name) && $this->pdo->query(
             sprintf(
                 'SELECT GET_LOCK("%s", %d)',
                 $name,
                 0
             ),
-            \PDO::FETCH_NUM
-        ));
+            \PDO::FETCH_COLUMN, 0
+        )->fetch();
     }
 
     /**
@@ -70,13 +70,13 @@ class MySqlLock extends LockAbstract {
      * @return bool
      */
     public function releaseLock($name) {
-        return (bool)current($this->pdo->query(
+        return (bool)$this->pdo->query(
             sprintf(
                 'SELECT RELEASE_LOCK("%s")',
                 $name
             ),
-            \PDO::FETCH_NUM
-        ));
+            \PDO::FETCH_COLUMN, 0
+        )->fetch();
     }
 
     /**
@@ -86,12 +86,12 @@ class MySqlLock extends LockAbstract {
      * @return bool
      */
     public function isLocked($name) {
-        return !current($this->pdo->query(
+        return !$this->pdo->query(
             sprintf(
                 'SELECT IS_FREE_LOCK("%s")',
                 $name
             ),
-            \PDO::FETCH_NUM
-        ));
+            \PDO::FETCH_COLUMN, 0
+        )->fetch();
     }
 }

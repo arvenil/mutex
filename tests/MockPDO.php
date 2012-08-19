@@ -20,12 +20,16 @@ class MockPDO extends \PDO {
      */
     protected static $data = array();
 
+    protected $_mock_pdostatment;
+
     /**
      * @var string[]
      */
     protected $current = array();
 
-    public function __construct () {}
+    public function __construct () {
+        $this->_mock_pdostatment = new MockPDOStatment();
+    }
 
     public function query($statement) {
         if (preg_match('/RELEASE_LOCK\("(.*)"\)/', $statement, $m)) {
@@ -49,25 +53,39 @@ class MockPDO extends \PDO {
         if (current($this->_mock_is_free_lock($key)) || isset($this->current[$key])) {
             self::$data[$key] = true;
             $this->current[$key] = true;
-            return array("1");
+            return $this->_mock_pdostatment->_mock_set_fetch("1");
         }
 
         // We use sleep because GET_LOCK(str,timeout) accept timeout in seconds
         sleep($timeout);
-        return array("0");
+        return $this->_mock_pdostatment->_mock_set_fetch("0");
     }
 
     protected function _mock_is_free_lock($key) {
         if (isset(self::$data[$key])) {
-            return array("0");
+            return $this->_mock_pdostatment->_mock_set_fetch("0");
         }
 
-        return array("1");
+        return $this->_mock_pdostatment->_mock_set_fetch("1");
     }
 
     protected function _mock_release_lock($key) {
         unset(self::$data[$key]);
         unset($this->current[$key]);
-        return array("1");
+        return $this->_mock_pdostatment->_mock_set_fetch("1");
+    }
+}
+
+class MockPDOStatment extends \PDOStatement {
+    protected $_mock_fetch;
+
+
+    public function _mock_set_fetch($result) {
+        $this->_mock_fetch = $result;
+        return $this;
+    }
+
+    public function fetch() {
+        return $this->_mock_fetch;
     }
 }
