@@ -24,8 +24,6 @@ class MySqlLock extends LockAbstract {
      */
     protected $pdo;
 
-    protected $lock = 'ble';
-
     public function __construct(\PDO $pdo) {
         parent::__construct();
         
