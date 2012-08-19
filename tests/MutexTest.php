@@ -17,7 +17,7 @@ class MutexTest extends AbstractMutexTest {
      * @dataProvider lockImplementorProvider
      * @param LockInterface $lockImplementor
      */
-    public function testacquireAndReleaseLock(LockInterface $lockImplementor) {
+    public function testAcquireAndReleaseLock(LockInterface $lockImplementor) {
         $mutex = new Mutex('forfiter', $lockImplementor);
 
         $this->assertTrue($mutex->acquireLock(0));
@@ -33,7 +33,7 @@ class MutexTest extends AbstractMutexTest {
      * @dataProvider lockImplementorProvider
      * @param LockInterface $lockImplementor
      */
-    public function testUnableToacquireSelfOwnedLock(LockInterface $lockImplementor) {
+    public function testUnableToAcquireSelfOwnedLock(LockInterface $lockImplementor) {
         $mutex = new Mutex('forfiter', $lockImplementor);
         $mutex->acquireLock(0);
 
@@ -50,7 +50,7 @@ class MutexTest extends AbstractMutexTest {
      * @dataProvider lockImplementorProvider
      * @param LockInterface $lockImplementor
      */
-    public function testUnableToacquireLockHeldByOtherLock(LockInterface $lockImplementor) {
+    public function testUnableToAcquireLockHeldByOtherLock(LockInterface $lockImplementor) {
         $mutex1 = new Mutex('forfiter', $lockImplementor);
         $mutex1->acquireLock(0);
 
@@ -90,7 +90,7 @@ class MutexTest extends AbstractMutexTest {
      * @dataProvider lockImplementorProvider
      * @param LockInterface $lockImplementor
      */
-    public function testacquireLockTimeout(LockInterface $lockImplementor) {
+    public function testAcquireLockTimeout(LockInterface $lockImplementor) {
         $mutex1 = new Mutex('forfiter', $lockImplementor);
         $mutex1->acquireLock(0);
 
@@ -106,7 +106,7 @@ class MutexTest extends AbstractMutexTest {
      * @dataProvider lockImplementorProvider
      * @param LockInterface $lockImplementor
      */
-    public function testacquireLockWithTimeoutImmiedietly(LockInterface $lockImplementor) {
+    public function testAcquireLockWithTimeoutImmiedietly(LockInterface $lockImplementor) {
         $mutex = new Mutex('forfiter', $lockImplementor);
         $sleep = LockAbstract::USLEEP_TIME;
 
