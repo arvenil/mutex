@@ -5,8 +5,8 @@ php:
  - 5.4
 
 before_script:
- - wget -nc http://getcomposer.org/composer.phar
- - php composer.phar install
+ - wget -nc http://getcomposer.org/composer.phar && php composer.phar install
+ - mysql -e 'create database myapp_test;'
  - echo "yes" | pecl install memcache
  - echo "extension=memcache.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
 
