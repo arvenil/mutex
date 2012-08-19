@@ -8,51 +8,55 @@ ninja-mutex is a simple to use mutex implementation for php. It supports differe
 
 First you need to choose adapter and setup it properly. For example if you choose flock implementation first you need to setup NFS filesystem and mount it on web servers. In this example we will choose memcache adapter:
 
-    <?php
+```php
+<?php
 
-    require_once 'Lock/MemcacheLock.php';
-    require_once 'Mutex.php';
+require_once 'Lock/MemcacheLock.php';
+require_once 'Mutex.php';
 
-    use Arvenil\Ninja\Mutex\MemcacheLock;
-    use Arvenil\Ninja\Mutex\Mutex;
+use Arvenil\Ninja\Mutex\MemcacheLock;
+use Arvenil\Ninja\Mutex\Mutex;
 
-    $memcache = new Memcache();
-    $memcache->connect('127.0.0.1', 11211);
-    $lock = new MemcacheLock($memcache);
-    $mutex = new Mutex('very-critical-stuff', $lock);
-    if ($mutex->acquireLock(1000)) {
-        // Do some very critical stuff
-    } else {
-        throw new Exception('Unable to gain lock!');
-    }
+$memcache = new Memcache();
+$memcache->connect('127.0.0.1', 11211);
+$lock = new MemcacheLock($memcache);
+$mutex = new Mutex('very-critical-stuff', $lock);
+if ($mutex->acquireLock(1000)) {
+    // Do some very critical stuff
+} else {
+    throw new Exception('Unable to gain lock!');
+}
+```
 
 ### Mutex Fabric
 
 If you want to use multiple mutexes in your project then MutexFabric is the right solution. You setup lock implementor once and you can use as many mutexes as you want!
 
-    <?php
+```php
+<?php
 
-    require_once 'Lock/MemcacheLock.php';
-    require_once 'MutexFabric.php';
+require_once 'Lock/MemcacheLock.php';
+require_once 'MutexFabric.php';
 
-    use Arvenil\Ninja\Mutex\MemcacheLock;
-    use Arvenil\Ninja\Mutex\MutexFabric;
+use Arvenil\Ninja\Mutex\MemcacheLock;
+use Arvenil\Ninja\Mutex\MutexFabric;
 
-    $memcache = new Memcache();
-    $memcache->connect('127.0.0.1', 11211);
-    $lock = new MemcacheLock($memcache);
-    $mutexFabric = new MutexFabric('memcache', $lock);
-    if ($mutexFabric->get('very-critical-stuff')->acquireLock(1000)) {
-        // Do some very critical stuff
-    } else {
-        throw new Exception('Unable to gain lock for very critical stuff!');
-    }
+$memcache = new Memcache();
+$memcache->connect('127.0.0.1', 11211);
+$lock = new MemcacheLock($memcache);
+$mutexFabric = new MutexFabric('memcache', $lock);
+if ($mutexFabric->get('very-critical-stuff')->acquireLock(1000)) {
+    // Do some very critical stuff
+} else {
+    throw new Exception('Unable to gain lock for very critical stuff!');
+}
 
-    if ($mutexFabric->get('also-very-critical-stuff')->acquireLock(0)) {
-        // Do some also very critical stuff
-    } else {
-        throw new Exception('Unable to gain lock for also very critical stuff!');
-    }
+if ($mutexFabric->get('also-very-critical-stuff')->acquireLock(0)) {
+    // Do some also very critical stuff
+} else {
+    throw new Exception('Unable to gain lock for also very critical stuff!');
+}
+```
 
 ## Running tests
 
