@@ -35,7 +35,7 @@ class ArvenilNinjaMutex_MutexTest extends \PHPUnit_Framework_TestCase {
         }
     }
 
-    public function lockImplementatorProvider() {
+    public function lockImplementorProvider() {
         $flock    = new FlockLock(vfs\vfsStream::url('nfs/'));
 
         $memcacheMock = new MockMemcache();
@@ -53,11 +53,11 @@ class ArvenilNinjaMutex_MutexTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @dataProvider lockImplementatorProvider
-     * @param LockInterface $lockImplementator
+     * @dataProvider lockimplementorProvider
+     * @param LockInterface $lockimplementor
      */
-    public function testAquireAndReleaseLock(LockInterface $lockImplementator) {
-        $mutex = new Mutex('forfiter', $lockImplementator);
+    public function testAquireAndReleaseLock(LockInterface $lockimplementor) {
+        $mutex = new Mutex('forfiter', $lockimplementor);
 
         $this->assertTrue($mutex->aquireLock(0));
         $this->assertTrue($mutex->isAcquired());
@@ -69,11 +69,11 @@ class ArvenilNinjaMutex_MutexTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @dataProvider lockImplementatorProvider
-     * @param LockInterface $lockImplementator
+     * @dataProvider lockimplementorProvider
+     * @param LockInterface $lockimplementor
      */
-    public function testUnableToAquireSelfOwnedLock(LockInterface $lockImplementator) {
-        $mutex = new Mutex('forfiter', $lockImplementator);
+    public function testUnableToAquireSelfOwnedLock(LockInterface $lockimplementor) {
+        $mutex = new Mutex('forfiter', $lockimplementor);
         $mutex->aquireLock(0);
 
         // Lock is already aquired by this mutex,
@@ -86,14 +86,14 @@ class ArvenilNinjaMutex_MutexTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @dataProvider lockImplementatorProvider
-     * @param LockInterface $lockImplementator
+     * @dataProvider lockimplementorProvider
+     * @param LockInterface $lockimplementor
      */
-    public function testUnableToAquireLockHeldByOtherLock(LockInterface $lockImplementator) {
-        $mutex1 = new Mutex('forfiter', $lockImplementator);
+    public function testUnableToAquireLockHeldByOtherLock(LockInterface $lockimplementor) {
+        $mutex1 = new Mutex('forfiter', $lockimplementor);
         $mutex1->aquireLock(0);
 
-        $mutex = new Mutex('forfiter', $lockImplementator);
+        $mutex = new Mutex('forfiter', $lockimplementor);
 
         // We don't acquire lock
         $this->assertFalse($mutex->isAcquired());
@@ -106,14 +106,14 @@ class ArvenilNinjaMutex_MutexTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @dataProvider lockImplementatorProvider
-     * @param LockInterface $lockImplementator
+     * @dataProvider lockimplementorProvider
+     * @param LockInterface $lockimplementor
      */
-    public function testUnableToReleaseLockHeldByOtherLock(LockInterface $lockImplementator) {
-        $mutex1 = new Mutex('forfiter', $lockImplementator);
+    public function testUnableToReleaseLockHeldByOtherLock(LockInterface $lockimplementor) {
+        $mutex1 = new Mutex('forfiter', $lockimplementor);
         $mutex1->aquireLock(0);
 
-        $mutex = new Mutex('forfiter', $lockImplementator);
+        $mutex = new Mutex('forfiter', $lockimplementor);
 
         // We don't acquire lock
         $this->assertFalse($mutex->isAcquired());
@@ -126,14 +126,14 @@ class ArvenilNinjaMutex_MutexTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @dataProvider lockImplementatorProvider
-     * @param LockInterface $lockImplementator
+     * @dataProvider lockimplementorProvider
+     * @param LockInterface $lockimplementor
      */
-    public function testAquireLockTimeout(LockInterface $lockImplementator) {
-        $mutex1 = new Mutex('forfiter', $lockImplementator);
+    public function testAquireLockTimeout(LockInterface $lockimplementor) {
+        $mutex1 = new Mutex('forfiter', $lockimplementor);
         $mutex1->aquireLock(0);
 
-        $mutex = new Mutex('forfiter', $lockImplementator);
+        $mutex = new Mutex('forfiter', $lockimplementor);
         $sleep = LockAbstract::USLEEP_TIME;
 
         $time = microtime(true)*1000;
@@ -142,11 +142,11 @@ class ArvenilNinjaMutex_MutexTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @dataProvider lockImplementatorProvider
-     * @param LockInterface $lockImplementator
+     * @dataProvider lockimplementorProvider
+     * @param LockInterface $lockimplementor
      */
-    public function testAquireLockWithTimeoutImmiedietly(LockInterface $lockImplementator) {
-        $mutex = new Mutex('forfiter', $lockImplementator);
+    public function testAquireLockWithTimeoutImmiedietly(LockInterface $lockimplementor) {
+        $mutex = new Mutex('forfiter', $lockimplementor);
         $sleep = LockAbstract::USLEEP_TIME;
 
         $time = microtime(true)*1000;
