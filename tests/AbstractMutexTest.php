@@ -24,6 +24,7 @@ abstract class AbstractMutexTest extends \PHPUnit_Framework_TestCase {
     public function setUp() {
         vfs\vfsStreamWrapper::register();
         vfs\vfsStreamWrapper::setRoot(new vfs\vfsStreamDirectory('nfs'));
+        mkdir('/tmp/mutex/');
     }
 
     public function tearDown() {
@@ -32,10 +33,19 @@ abstract class AbstractMutexTest extends \PHPUnit_Framework_TestCase {
                 unlink($file->getPathname());
             }
         }
+        rmdir(vfs\vfsStream::url('nfs'));
+
+        foreach (new \DirectoryIterator('/tmp/mutex/') as $file) {
+            if (!$file->isDot()) {
+                unlink($file->getPathname());
+            }
+        }
+        rmdir('/tmp/mutex/');
     }
 
     public function lockImplementorProvider() {
-        $flock    = new FlockLock(vfs\vfsStream::url('nfs/'));
+        $flock       = new FlockLock(vfs\vfsStream::url('nfs/'));
+        $realFlock   = new FlockLock('/tmp/mutex/');
 
         $memcacheMock = new MockMemcache();
         $memcache = new MemcacheLock($memcacheMock);
@@ -45,6 +55,7 @@ abstract class AbstractMutexTest extends \PHPUnit_Framework_TestCase {
 
         $data = array();
         $data[] = array($flock);
+        $data[] = array($realFlock);
         $data[] = array($memcache);
         $data[] = array($mysql);
 

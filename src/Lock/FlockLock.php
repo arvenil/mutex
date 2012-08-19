@@ -17,6 +17,7 @@ require_once 'LockAbstract.php';
 class FlockLock extends LockAbstract {
     protected $dirname;
     protected $files = array();
+    protected $filesHasLock = array();
 
     public function __construct($dirname) {
         parent::__construct();
@@ -48,15 +49,15 @@ class FlockLock extends LockAbstract {
         $start = microtime(true);
         $end = $start + $timeout/1000;
         $locked = false;
-        while (!($locked = flock($this->files[$name], $options)) && $timeout > 0 && microtime(true) < $end) {
+        while (!($locked = $this->getLock($name, $options)) && $timeout > 0 && microtime(true) < $end) {
             usleep(static::USLEEP_TIME);
         }
         
-        if ($locked) {
-            fwrite($this->files[$name], join("\t", $this->getLockInformation()));
-        }
-        
         return $locked;
+    }
+
+    protected function getLock($name, $options) {
+        return empty($this->filesHasLock[$name]) && flock($this->files[$name], $options) && $this->filesHasLock[$name] = true;
     }
 
     /**
@@ -67,6 +68,7 @@ class FlockLock extends LockAbstract {
      */
     public function releaseLock($name) {
         flock($this->files[$name], LOCK_UN); // @todo Can LOCK_UN fail?
+        $this->filesHasLock[$name] = false;
         return true;
     }
 
