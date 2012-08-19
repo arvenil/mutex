@@ -17,10 +17,10 @@ class MutexTest extends AbstractMutexTest {
      * @dataProvider lockImplementorProvider
      * @param LockInterface $lockImplementor
      */
-    public function testAquireAndReleaseLock(LockInterface $lockImplementor) {
+    public function testacquireAndReleaseLock(LockInterface $lockImplementor) {
         $mutex = new Mutex('forfiter', $lockImplementor);
 
-        $this->assertTrue($mutex->aquireLock(0));
+        $this->assertTrue($mutex->acquireLock(0));
         $this->assertTrue($mutex->isAcquired());
         $this->assertTrue($mutex->isLocked());
 
@@ -33,13 +33,13 @@ class MutexTest extends AbstractMutexTest {
      * @dataProvider lockImplementorProvider
      * @param LockInterface $lockImplementor
      */
-    public function testUnableToAquireSelfOwnedLock(LockInterface $lockImplementor) {
+    public function testUnableToacquireSelfOwnedLock(LockInterface $lockImplementor) {
         $mutex = new Mutex('forfiter', $lockImplementor);
-        $mutex->aquireLock(0);
+        $mutex->acquireLock(0);
 
-        // Lock is already aquired by this mutex,
+        // Lock is already acquired by this mutex,
         // so we are unable to gain it again
-        $this->assertFalse($mutex->aquireLock(0));
+        $this->assertFalse($mutex->acquireLock(0));
 
         // Lock should be still acquired
         $this->assertTrue($mutex->isAcquired());
@@ -50,9 +50,9 @@ class MutexTest extends AbstractMutexTest {
      * @dataProvider lockImplementorProvider
      * @param LockInterface $lockImplementor
      */
-    public function testUnableToAquireLockHeldByOtherLock(LockInterface $lockImplementor) {
+    public function testUnableToacquireLockHeldByOtherLock(LockInterface $lockImplementor) {
         $mutex1 = new Mutex('forfiter', $lockImplementor);
-        $mutex1->aquireLock(0);
+        $mutex1->acquireLock(0);
 
         $mutex = new Mutex('forfiter', $lockImplementor);
 
@@ -62,8 +62,8 @@ class MutexTest extends AbstractMutexTest {
         // But it's held by other process
         $this->assertTrue($mutex->isLocked());
 
-        // So we should be unable to aquire lock
-        $this->assertFalse($mutex->aquireLock(0));
+        // So we should be unable to acquire lock
+        $this->assertFalse($mutex->acquireLock(0));
     }
 
     /**
@@ -72,7 +72,7 @@ class MutexTest extends AbstractMutexTest {
      */
     public function testUnableToReleaseLockHeldByOtherLock(LockInterface $lockImplementor) {
         $mutex1 = new Mutex('forfiter', $lockImplementor);
-        $mutex1->aquireLock(0);
+        $mutex1->acquireLock(0);
 
         $mutex = new Mutex('forfiter', $lockImplementor);
 
@@ -90,15 +90,15 @@ class MutexTest extends AbstractMutexTest {
      * @dataProvider lockImplementorProvider
      * @param LockInterface $lockImplementor
      */
-    public function testAquireLockTimeout(LockInterface $lockImplementor) {
+    public function testacquireLockTimeout(LockInterface $lockImplementor) {
         $mutex1 = new Mutex('forfiter', $lockImplementor);
-        $mutex1->aquireLock(0);
+        $mutex1->acquireLock(0);
 
         $mutex = new Mutex('forfiter', $lockImplementor);
         $sleep = LockAbstract::USLEEP_TIME;
 
         $time = microtime(true)*1000;
-        $mutex->aquireLock($sleep);
+        $mutex->acquireLock($sleep);
         $this->assertLessThanOrEqual(microtime(true)*1000, $time+$sleep);
     }
 
@@ -106,12 +106,12 @@ class MutexTest extends AbstractMutexTest {
      * @dataProvider lockImplementorProvider
      * @param LockInterface $lockImplementor
      */
-    public function testAquireLockWithTimeoutImmiedietly(LockInterface $lockImplementor) {
+    public function testacquireLockWithTimeoutImmiedietly(LockInterface $lockImplementor) {
         $mutex = new Mutex('forfiter', $lockImplementor);
         $sleep = LockAbstract::USLEEP_TIME;
 
         $time = microtime(true)*1000;
-        $mutex->aquireLock($sleep);
+        $mutex->acquireLock($sleep);
         $this->assertGreaterThan(microtime(true)*1000, $time+$sleep);
     }
 }

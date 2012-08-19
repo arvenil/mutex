@@ -19,7 +19,7 @@ interface LockInterface {
     /**
      * @return bool
      */
-    public function aquireLock($name, $timeout = null);
+    public function acquireLock($name, $timeout = null);
 
     /**
      * @return bool

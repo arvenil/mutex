@@ -33,14 +33,14 @@ class FlockLock extends LockAbstract {
      *                          3. $timeout > 0 if you want to wait for lock some time (in miliseconds)
      * @return bool
      */
-    public function aquireLock($name, $timeout = null) {
+    public function acquireLock($name, $timeout = null) {
         if (!$this->setupFileHandle($name)) {
             return false;
         }
         
         $options = LOCK_EX;
 
-        // Check if we don't want to wait until lock is aquired
+        // Check if we don't want to wait until lock is acquired
         if (null !== $timeout) {
             $options |= LOCK_NB;
         }
@@ -101,7 +101,7 @@ class FlockLock extends LockAbstract {
      * @return bool
      */
     public function isLocked($name) {
-        if ($this->aquireLock($name, 0)) {
+        if ($this->acquireLock($name, 0)) {
             return !$this->releaseLock($name);
         }
 

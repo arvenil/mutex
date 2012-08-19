@@ -20,7 +20,7 @@ abstract class LockAbstract implements LockInterface {
     const USLEEP_TIME = 100;
 
     /**
-     * Information which allows to track down process which aquired lock
+     * Information which allows to track down process which acquired lock
      * 
      * @var array
      */
@@ -31,7 +31,7 @@ abstract class LockAbstract implements LockInterface {
     }
 
     /**
-     * Information generate by this method allow to track down process which aquired lock
+     * Information generate by this method allow to track down process which acquired lock
      * .
      * By default it returns array with:
      * 1. pid
@@ -55,7 +55,7 @@ abstract class LockAbstract implements LockInterface {
     }
 
     /**
-     * Information returned by this method allow to track down process which aquired lock
+     * Information returned by this method allow to track down process which acquired lock
      * .
      * @return array;
      */

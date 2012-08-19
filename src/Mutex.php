@@ -42,8 +42,8 @@ class Mutex {
         $this->lockImplementor = $lockImplementor;
     }
 
-    public function aquireLock($timeout = null) {
-        if ($this->lockImplementor->aquireLock($this->name, $timeout)) {
+    public function acquireLock($timeout = null) {
+        if ($this->lockImplementor->acquireLock($this->name, $timeout)) {
             return $this->acquired = true;
         }
 
@@ -59,7 +59,7 @@ class Mutex {
     }
 
     public function __destruct() {
-        // If we aquired lock then we should release it
+        // If we acquired lock then we should release it
         if ($this->acquired) {
             $this->releaseLock();
         }
