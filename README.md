@@ -24,6 +24,16 @@ First you need to choose adapter and setup it properly. For example if you choos
         throw new Exception('Unable to gain lock!');
     }
 
+## Running tests
+
+Tests require vfsStream to work. To install this simply run in project dir:
+
+    wget -nc http://getcomposer.org/composer.phar && php composer.phar install
+
+This should setup dependencies. To run tests type in console:
+
+    phpunit --bootstrap ./tests/bootstrap.php --coverage-text tests
+
 ## Something doesn't work
 
 [![Build Status](https://secure.travis-ci.org/arvenil/ninja-mutex.png?branch=master)](http://travis-ci.org/arvenil/ninja-mutex)
