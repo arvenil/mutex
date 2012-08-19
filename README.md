@@ -26,6 +26,6 @@ First you need to choose adapter and setup it properly. For example if you choos
 
 ## Something doesn't work
 
-SOA#1 [![Build Status](https://secure.travis-ci.org/arvenil/ninja-mutex.png?branch=master)](http://travis-ci.org/arvenil/ninja-mutex)
+[![Build Status](https://secure.travis-ci.org/arvenil/ninja-mutex.png?branch=master)](http://travis-ci.org/arvenil/ninja-mutex)
 
 However if it still doesn't work for you then feel free to fork project, fix bugs and finally request for pull
