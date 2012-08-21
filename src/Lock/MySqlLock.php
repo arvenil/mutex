@@ -27,7 +27,6 @@ class MySqlLock extends LockAbstract {
     protected $user;
     protected $password;
     protected $host;
-    protected $database;
     protected $classname;
 
     /**
@@ -36,16 +35,14 @@ class MySqlLock extends LockAbstract {
      * @param string $user
      * @param string $password
      * @param string $host
-     * @param string $database
      * @param string $classname class name to create as \PDO connection
      */
-    public function __construct($user, $password, $host, $database, $classname = '\PDO') {
+    public function __construct($user, $password, $host, $classname = '\PDO') {
         parent::__construct();
 
         $this->user = $user;
         $this->password = $password;
         $this->host = $host;
-        $this->database = $database;
         $this->classname = $classname;
     }
 
@@ -129,7 +126,7 @@ class MySqlLock extends LockAbstract {
             return true;
         }
 
-        $this->pdo[$name] = new $this->classname(sprintf('mysql:dbname=%s;host=%s', $this->database, $this->host), $this->user, $this->password);
+        $this->pdo[$name] = new $this->classname(sprintf('mysql:host=%s', $this->host), $this->user, $this->password);
         return true;
     }
 }

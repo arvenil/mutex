@@ -49,14 +49,14 @@ abstract class AbstractMutexTest extends \PHPUnit_Framework_TestCase {
         $data = array();
         $data[] = array(new FlockLock(vfs\vfsStream::url('nfs/')));
         $data[] = array(new MemcacheLock($memcacheMock));
-        $data[] = array(new MySqlLock('', '', '', '', 'Arvenil\Ninja\Mutex\MockPDO'));
+        $data[] = array(new MySqlLock('', '', '', 'Arvenil\Ninja\Mutex\MockPDO'));
 
         // Real interfaces
         $memcache = new \Memcache();
         $memcache->connect('127.0.0.1', 11211);
         $data[] = array(new FlockLock('/tmp/mutex/'));
         $data[] = array(new MemcacheLock($memcache));
-        $data[] = array(new MySqlLock('root', '', '127.0.0.1', 'myapp_test'));
+        $data[] = array(new MySqlLock('root', '', '127.0.0.1'));
 
         return $data;
     }
