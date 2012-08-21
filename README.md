@@ -23,6 +23,9 @@ $lock = new MemcacheLock($memcache);
 $mutex = new Mutex('very-critical-stuff', $lock);
 if ($mutex->acquireLock(1000)) {
     // Do some very critical stuff
+
+    // and release lock after you finish
+    $mutex->releaseLock();
 } else {
     throw new Exception('Unable to gain lock!');
 }
@@ -47,12 +50,18 @@ $lock = new MemcacheLock($memcache);
 $mutexFabric = new MutexFabric('memcache', $lock);
 if ($mutexFabric->get('very-critical-stuff')->acquireLock(1000)) {
     // Do some very critical stuff
+
+    // and release lock after you finish
+    $mutexFabric->get('very-critical-stuff')->releaseLock();
 } else {
     throw new Exception('Unable to gain lock for very critical stuff!');
 }
 
 if ($mutexFabric->get('also-very-critical-stuff')->acquireLock(0)) {
     // Do some also very critical stuff
+
+    // and release lock after you finish
+    $mutexFabric->get('also-very-critical-stuff')->releaseLock();
 } else {
     throw new Exception('Unable to gain lock for also very critical stuff!');
 }
