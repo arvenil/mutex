@@ -27,7 +27,7 @@ class MockPDO extends \PDO {
      */
     protected $current = array();
 
-    public function __construct () {
+    public function __construct ($dsn, $user, $password) {
         $this->_mock_pdostatment = new MockPDOStatment();
     }
 
@@ -51,6 +51,12 @@ class MockPDO extends \PDO {
         // IS_FREE_LOCK('a') GET_LOCK('a', 0) IS_FREE_LOCK('a') GET_LOCK('a', 0)
         // 1                 1                0                 1
         if (current($this->_mock_is_free_lock($key)) || isset($this->current[$key])) {
+            // This part is made to reflect behaviour that second GET_LOCK() releases all current locks
+            foreach ($this->current as $k => $v) {
+                unset(self::$data[$k]);
+                unset($this->current[$k]);
+            }
+
             self::$data[$key] = true;
             $this->current[$key] = true;
             return $this->_mock_pdostatment->_mock_set_fetch("1");

@@ -114,4 +114,23 @@ class MutexTest extends AbstractMutexTest {
         $mutex->acquireLock($sleep);
         $this->assertGreaterThan(microtime(true)*1000, $time+$sleep);
     }
+
+    /**
+     * @dataProvider lockImplementorProvider
+     * @param LockInterface $lockImplementor
+     */
+    public function testAcquireAndReleaseSecondMutexWithoutReleaseTheFirstMutex(LockInterface $lockImplementor) {
+        $firstMutex = new Mutex('forfiter', $lockImplementor);
+        $firstMutex->acquireLock(0);
+
+        $secondMutex = new Mutex('gieraryhir', $lockImplementor);
+        $this->assertTrue($secondMutex->acquireLock(0));
+        $this->assertTrue($secondMutex->isAcquired());
+        $this->assertTrue($secondMutex->isLocked());
+        $this->assertTrue($firstMutex->isAcquired());
+        $this->assertTrue($firstMutex->isLocked());
+        $this->assertTrue($secondMutex->releaseLock());
+        $this->assertTrue($firstMutex->isAcquired());
+        $this->assertTrue($firstMutex->isLocked());
+    }
 }
