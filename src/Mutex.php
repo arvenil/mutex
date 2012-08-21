@@ -36,6 +36,12 @@ class Mutex {
      */
     protected $name;
 
+    /**
+     * Lock counter to protect against recursive deadlock
+     * 
+     * @var integer 
+     */
+    protected $counter = 0;
 
     public function __construct($name, LockInterface $lockImplementor) {
         $this->name = $name;
@@ -43,7 +49,8 @@ class Mutex {
     }
 
     public function acquireLock($timeout = null) {
-        if ($this->lockImplementor->acquireLock($this->name, $timeout)) {
+        if ($this->counter > 0 || $this->lockImplementor->acquireLock($this->name, $timeout)) {
+            $this->counter++;
             return $this->acquired = true;
         }
 
@@ -52,6 +59,11 @@ class Mutex {
 
     public function releaseLock() {
         if ($this->acquired) {
+            if ($this->counter > 1) {
+                $this->counter--;
+                return true;
+            }
+
             return !($this->acquired = !$this->lockImplementor->releaseLock($this->name));
         }
 
@@ -60,7 +72,7 @@ class Mutex {
 
     public function __destruct() {
         // If we acquired lock then we should release it
-        if ($this->acquired) {
+        while ($this->acquired) {
             $this->releaseLock();
         }
     }

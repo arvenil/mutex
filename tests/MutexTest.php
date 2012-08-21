@@ -33,17 +33,35 @@ class MutexTest extends AbstractMutexTest {
      * @dataProvider lockImplementorProvider
      * @param LockInterface $lockImplementor
      */
-    public function testUnableToAcquireSelfOwnedLock(LockInterface $lockImplementor) {
+    public function testAllowToAcquireSelfOwnedLock(LockInterface $lockImplementor) {
         $mutex = new Mutex('forfiter', $lockImplementor);
         $mutex->acquireLock(0);
 
-        // Lock is already acquired by this mutex,
-        // so we are unable to gain it again
-        $this->assertFalse($mutex->acquireLock(0));
-
-        // Lock should be still acquired
+        // Another try to acquire lock is successful
+        // because lock is already acquired by this mutex
+        $this->assertTrue($mutex->acquireLock(0));
         $this->assertTrue($mutex->isAcquired());
         $this->assertTrue($mutex->isLocked());
+    }
+
+    /**
+     * @dataProvider lockImplementorProvider
+     * @param LockInterface $lockImplementor
+     */
+    public function testMultipleSelfAcquiredLocksRequiresMultipleReleasesToCompletelyReleaseMutex(LockInterface $lockImplementor) {
+        $mutex = new Mutex('forfiter', $lockImplementor);
+        $mutex->acquireLock(0);                     // #1
+        $mutex->acquireLock(0);                     // #2
+        $mutex->acquireLock(0);                     // #3
+        $this->assertTrue($mutex->releaseLock());   // #2
+        $this->assertTrue($mutex->isAcquired());
+        $this->assertTrue($mutex->isLocked());
+        $this->assertTrue($mutex->releaseLock());   // #1
+        $this->assertTrue($mutex->isAcquired());
+        $this->assertTrue($mutex->isLocked());
+        $this->assertTrue($mutex->releaseLock());   // #0
+        $this->assertFalse($mutex->isAcquired());
+        $this->assertFalse($mutex->isLocked());
     }
 
     /**
