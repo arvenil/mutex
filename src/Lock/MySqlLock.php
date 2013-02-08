@@ -16,7 +16,8 @@ require_once 'LockAbstract.php';
  *
  * @author Kamil Dziedzic <arvenil@klecza.pl>
  */
-class MySqlLock extends LockAbstract {
+class MySqlLock extends LockAbstract
+{
     /**
      * MySql connections
      *
@@ -37,7 +38,8 @@ class MySqlLock extends LockAbstract {
      * @param string $host
      * @param string $classname class name to create as \PDO connection
      */
-    public function __construct($user, $password, $host, $classname = '\PDO') {
+    public function __construct($user, $password, $host, $classname = '\PDO')
+    {
         parent::__construct();
 
         $this->user = $user;
@@ -55,13 +57,14 @@ class MySqlLock extends LockAbstract {
      *                          3. $timeout > 0 if you want to wait for lock some time (in miliseconds)
      * @return bool
      */
-    public function acquireLock($name, $timeout = null) {
+    public function acquireLock($name, $timeout = null)
+    {
         if (!$this->setupPDO($name)) {
             return false;
         }
 
         $start = microtime(true);
-        $end = $start + $timeout/1000;
+        $end = $start + $timeout / 1000;
         $locked = false;
         while (!($locked = $this->getLock($name)) && $timeout > 0 && microtime(true) < $end) {
             usleep(static::USLEEP_TIME);
@@ -70,14 +73,16 @@ class MySqlLock extends LockAbstract {
         return $locked;
     }
 
-    protected function getLock($name) {
+    protected function getLock($name)
+    {
         return !$this->isLocked($name) && $this->pdo[$name]->query(
             sprintf(
                 'SELECT GET_LOCK("%s", %d)',
                 $name,
                 0
             ),
-            \PDO::FETCH_COLUMN, 0
+            \PDO::FETCH_COLUMN,
+            0
         )->fetch();
     }
 
@@ -87,7 +92,8 @@ class MySqlLock extends LockAbstract {
      * @param string $name name of lock
      * @return bool
      */
-    public function releaseLock($name) {
+    public function releaseLock($name)
+    {
         if (!$this->setupPDO($name)) {
             return false;
         }
@@ -97,7 +103,8 @@ class MySqlLock extends LockAbstract {
                 'SELECT RELEASE_LOCK("%s")',
                 $name
             ),
-            \PDO::FETCH_COLUMN, 0
+            \PDO::FETCH_COLUMN,
+            0
         )->fetch();
     }
 
@@ -107,7 +114,8 @@ class MySqlLock extends LockAbstract {
      * @param string $name name of lock
      * @return bool
      */
-    public function isLocked($name) {
+    public function isLocked($name)
+    {
         if (empty($this->pdo) && !$this->setupPDO($name)) {
             return false;
         }
@@ -117,11 +125,13 @@ class MySqlLock extends LockAbstract {
                 'SELECT IS_FREE_LOCK("%s")',
                 $name
             ),
-            \PDO::FETCH_COLUMN, 0
+            \PDO::FETCH_COLUMN,
+            0
         )->fetch();
     }
 
-    protected function setupPDO($name) {
+    protected function setupPDO($name)
+    {
         if (isset($this->pdo[$name])) {
             return true;
         }

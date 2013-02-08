@@ -12,12 +12,14 @@ namespace Arvenil\Ninja\Mutex;
 require_once 'AbstractMutexTest.php';
 require_once 'MutexFabric.php';
 
-class MutexFabricTest extends AbstractMutexTest {
+class MutexFabricTest extends AbstractMutexTest
+{
     /**
      * @dataProvider lockImplementorProvider
      * @param LockInterface $lockImplementor
      */
-    public function testIfInjectedImplementorIsSetAsDefault(LockInterface $lockImplementor) {
+    public function testIfInjectedImplementorIsSetAsDefault(LockInterface $lockImplementor)
+    {
         $mutexFabric = new MutexFabric(get_class($lockImplementor), $lockImplementor);
         $this->assertSame($mutexFabric->getDefaultLockImplementorName(), get_class($lockImplementor));
     }
@@ -26,9 +28,10 @@ class MutexFabricTest extends AbstractMutexTest {
      * @dataProvider lockImplementorProvider
      * @param LockInterface $lockImplementor
      */
-    public function testIfInjectedImplementorDefaultImplementorIsNotOverwriten(LockInterface $lockImplementor) {
+    public function testIfInjectedImplementorDefaultImplementorIsNotOverwriten(LockInterface $lockImplementor)
+    {
         $mutexFabric = new MutexFabric(get_class($lockImplementor), $lockImplementor);
-        $mutexFabric->registerLockImplementor(get_class($lockImplementor).'_forfiter', $lockImplementor);
+        $mutexFabric->registerLockImplementor(get_class($lockImplementor) . '_forfiter', $lockImplementor);
         $this->assertSame($mutexFabric->getDefaultLockImplementorName(), get_class($lockImplementor));
     }
 
@@ -36,11 +39,12 @@ class MutexFabricTest extends AbstractMutexTest {
      * @dataProvider lockImplementorProvider
      * @param LockInterface $lockImplementor
      */
-    public function testRegisterNewImplementorAndSetIsAsDefault(LockInterface $lockImplementor) {
+    public function testRegisterNewImplementorAndSetIsAsDefault(LockInterface $lockImplementor)
+    {
         $mutexFabric = new MutexFabric(get_class($lockImplementor), $lockImplementor);
-        $mutexFabric->registerLockImplementor(get_class($lockImplementor).'_forfiter', $lockImplementor);
-        $mutexFabric->setDefaultLockImplementorName(get_class($lockImplementor).'_forfiter');
-        $this->assertSame($mutexFabric->getDefaultLockImplementorName(), get_class($lockImplementor).'_forfiter');
+        $mutexFabric->registerLockImplementor(get_class($lockImplementor) . '_forfiter', $lockImplementor);
+        $mutexFabric->setDefaultLockImplementorName(get_class($lockImplementor) . '_forfiter');
+        $this->assertSame($mutexFabric->getDefaultLockImplementorName(), get_class($lockImplementor) . '_forfiter');
     }
 
     /**
@@ -48,7 +52,8 @@ class MutexFabricTest extends AbstractMutexTest {
      * @expectedException Arvenil\Ninja\Mutex\MutexException
      * @param LockInterface $lockImplementor
      */
-    public function testThrowExceptionOnDuplicateImplementorName(LockInterface $lockImplementor) {
+    public function testThrowExceptionOnDuplicateImplementorName(LockInterface $lockImplementor)
+    {
         $mutexFabric = new MutexFabric(get_class($lockImplementor), $lockImplementor);
         $mutexFabric->registerLockImplementor(get_class($lockImplementor), $lockImplementor);
     }
@@ -57,7 +62,8 @@ class MutexFabricTest extends AbstractMutexTest {
      * @dataProvider lockImplementorProvider
      * @param LockInterface $lockImplementor
      */
-    public function testMutexCreationWithDefaultImplementor(LockInterface $lockImplementor) {
+    public function testMutexCreationWithDefaultImplementor(LockInterface $lockImplementor)
+    {
         $mutexFabric = new MutexFabric(get_class($lockImplementor), $lockImplementor);
         $this->assertInstanceOf('Arvenil\Ninja\Mutex\Mutex', $mutexFabric->get('lock'));
     }
@@ -66,9 +72,13 @@ class MutexFabricTest extends AbstractMutexTest {
      * @dataProvider lockImplementorProvider
      * @param LockInterface $lockImplementor
      */
-    public function testMutexCreationWithSecondaryImplementor(LockInterface $lockImplementor) {
+    public function testMutexCreationWithSecondaryImplementor(LockInterface $lockImplementor)
+    {
         $mutexFabric = new MutexFabric(get_class($lockImplementor), $lockImplementor);
-        $mutexFabric->registerLockImplementor(get_class($lockImplementor).'_forfiter', $lockImplementor);
-        $this->assertInstanceOf('Arvenil\Ninja\Mutex\Mutex', $mutexFabric->get('lock', get_class($lockImplementor).'_forfiter'));
+        $mutexFabric->registerLockImplementor(get_class($lockImplementor) . '_forfiter', $lockImplementor);
+        $this->assertInstanceOf(
+            'Arvenil\Ninja\Mutex\Mutex',
+            $mutexFabric->get('lock', get_class($lockImplementor) . '_forfiter')
+        );
     }
 }

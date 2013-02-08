@@ -14,10 +14,11 @@ namespace Arvenil\Ninja\Mutex;
  *
  * @author Kamil Dziedzic <arvenil@klecza.pl>
  */
-class Mutex {
+class Mutex
+{
     /**
      * Is mutex acquired?
-     * 
+     *
      * @var bool
      */
     protected $acquired = false;
@@ -31,24 +32,26 @@ class Mutex {
 
     /**
      * Name of lock
-     * 
+     *
      * @var string
      */
     protected $name;
 
     /**
      * Lock counter to protect against recursive deadlock
-     * 
-     * @var integer 
+     *
+     * @var integer
      */
     protected $counter = 0;
 
-    public function __construct($name, LockInterface $lockImplementor) {
+    public function __construct($name, LockInterface $lockImplementor)
+    {
         $this->name = $name;
         $this->lockImplementor = $lockImplementor;
     }
 
-    public function acquireLock($timeout = null) {
+    public function acquireLock($timeout = null)
+    {
         if ($this->counter > 0 || $this->lockImplementor->acquireLock($this->name, $timeout)) {
             $this->counter++;
             return $this->acquired = true;
@@ -57,7 +60,8 @@ class Mutex {
         return false;
     }
 
-    public function releaseLock() {
+    public function releaseLock()
+    {
         if ($this->acquired) {
             if ($this->counter > 1) {
                 $this->counter--;
@@ -70,7 +74,8 @@ class Mutex {
         return false;
     }
 
-    public function __destruct() {
+    public function __destruct()
+    {
         // If we acquired lock then we should release it
         while ($this->acquired) {
             $this->releaseLock();
@@ -82,11 +87,13 @@ class Mutex {
      *
      * @return bool
      */
-    public function isAcquired() {
+    public function isAcquired()
+    {
         return $this->acquired;
     }
 
-    public function isLocked() {
+    public function isLocked()
+    {
         return $this->lockImplementor->isLocked($this->name);
     }
 }

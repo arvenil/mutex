@@ -11,10 +11,11 @@ namespace Arvenil\Ninja\Mutex;
 
 /**
  * Mock PDO to mimic *_lock functionality
- * 
+ *
  * @author Kamil Dziedzic <arvenil@klecza.pl>
  */
-class MockPDO extends \PDO {
+class MockPDO extends \PDO
+{
     /**
      * @var string[]
      */
@@ -27,11 +28,13 @@ class MockPDO extends \PDO {
      */
     protected $current = array();
 
-    public function __construct ($dsn, $user, $password) {
+    public function __construct($dsn, $user, $password)
+    {
         $this->_mock_pdostatment = new MockPDOStatment();
     }
 
-    public function query($statement) {
+    public function query($statement)
+    {
         if (preg_match('/RELEASE_LOCK\("(.*)"\)/', $statement, $m)) {
             return $this->_mock_release_lock($m[1]);
         } elseif (preg_match('/GET_LOCK\("(.*)", *(.*)\)/', $statement, $m)) {
@@ -41,7 +44,8 @@ class MockPDO extends \PDO {
         }
     }
 
-    protected function _mock_get_lock($key, $timeout) {
+    protected function _mock_get_lock($key, $timeout)
+    {
         // http://dev.mysql.com/doc/refman/5.0/en/miscellaneous-functions.html#function_get-lock
         //
         // "If you have a lock obtained with GET_LOCK(),
@@ -67,7 +71,8 @@ class MockPDO extends \PDO {
         return $this->_mock_pdostatment->_mock_set_fetch("0");
     }
 
-    protected function _mock_is_free_lock($key) {
+    protected function _mock_is_free_lock($key)
+    {
         if (isset(self::$data[$key])) {
             return $this->_mock_pdostatment->_mock_set_fetch("0");
         }
@@ -75,23 +80,27 @@ class MockPDO extends \PDO {
         return $this->_mock_pdostatment->_mock_set_fetch("1");
     }
 
-    protected function _mock_release_lock($key) {
+    protected function _mock_release_lock($key)
+    {
         unset(self::$data[$key]);
         unset($this->current[$key]);
         return $this->_mock_pdostatment->_mock_set_fetch("1");
     }
 }
 
-class MockPDOStatment extends \PDOStatement {
+class MockPDOStatment extends \PDOStatement
+{
     protected $_mock_fetch;
 
 
-    public function _mock_set_fetch($result) {
+    public function _mock_set_fetch($result)
+    {
         $this->_mock_fetch = $result;
         return $this;
     }
 
-    public function fetch() {
+    public function fetch()
+    {
         return $this->_mock_fetch;
     }
 }

@@ -17,12 +17,14 @@ require_once 'MutexException.php';
  *
  * @author Kamil Dziedzic <arvenil@klecza.pl>
  */
-class MutexFabric {
+class MutexFabric
+{
     protected $defaultLockImplementorName;
     protected $implementors = array();
     protected $mutexes = array();
 
-    public function __construct($lockImplementorName, LockInterface $lockImplementor) {
+    public function __construct($lockImplementorName, LockInterface $lockImplementor)
+    {
         $this->registerLockImplementor($lockImplementorName, $lockImplementor);
     }
 
@@ -32,7 +34,8 @@ class MutexFabric {
      * @param LockInterface $implementor
      * @throws MutexException
      */
-    public function registerLockImplementor($name, LockInterface $implementor) {
+    public function registerLockImplementor($name, LockInterface $implementor)
+    {
         if (isset($this->implementors[$name])) {
             throw new MutexException(sprintf('Name %s is already used', $name));
         }
@@ -44,11 +47,13 @@ class MutexFabric {
         $this->implementors[$name] = $implementor;
     }
 
-    public function setDefaultLockImplementorName($registeredLockImplementorName) {
+    public function setDefaultLockImplementorName($registeredLockImplementorName)
+    {
         $this->defaultLockImplementorName = $registeredLockImplementorName;
     }
 
-    public function getDefaultLockImplementorName() {
+    public function getDefaultLockImplementorName()
+    {
         return $this->defaultLockImplementorName;
     }
 
@@ -59,7 +64,8 @@ class MutexFabric {
      * @param string $registeredLockImplementorName
      * @return Mutex
      */
-    public function get($name, $registeredLockImplementorName = null) {
+    public function get($name, $registeredLockImplementorName = null)
+    {
         if (null === $registeredLockImplementorName) {
             $registeredLockImplementorName = $this->getDefaultLockImplementorName();
         }
@@ -71,7 +77,8 @@ class MutexFabric {
         return $this->mutexes[$registeredLockImplementorName][$name];
     }
 
-    protected function createMutex($name, $registeredLockImplementorName) {
+    protected function createMutex($name, $registeredLockImplementorName)
+    {
         $this->mutexes[$registeredLockImplementorName][$name] = new Mutex($name, $this->implementors[$registeredLockImplementorName]);
     }
 }

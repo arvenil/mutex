@@ -14,7 +14,8 @@ namespace Arvenil\Ninja\Mutex;
  *
  * @author Kamil Dziedzic <arvenil@klecza.pl>
  */
-interface LockInterface {
+interface LockInterface
+{
 
     /**
      * @param $name

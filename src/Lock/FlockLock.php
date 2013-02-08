@@ -14,12 +14,14 @@ require_once 'LockAbstract.php';
 /**
  * Lock implementor using flock
  */
-class FlockLock extends LockAbstract {
+class FlockLock extends LockAbstract
+{
     protected $dirname;
     protected $files = array();
     protected $filesHasLock = array();
 
-    public function __construct($dirname) {
+    public function __construct($dirname)
+    {
         parent::__construct();
 
         $this->dirname = $dirname;
@@ -34,11 +36,12 @@ class FlockLock extends LockAbstract {
      *                          3. $timeout > 0 if you want to wait for lock some time (in miliseconds)
      * @return bool
      */
-    public function acquireLock($name, $timeout = null) {
+    public function acquireLock($name, $timeout = null)
+    {
         if (!$this->setupFileHandle($name)) {
             return false;
         }
-        
+
         $options = LOCK_EX;
 
         // Check if we don't want to wait until lock is acquired
@@ -47,17 +50,21 @@ class FlockLock extends LockAbstract {
         }
 
         $start = microtime(true);
-        $end = $start + $timeout/1000;
+        $end = $start + $timeout / 1000;
         $locked = false;
         while (!($locked = $this->getLock($name, $options)) && $timeout > 0 && microtime(true) < $end) {
             usleep(static::USLEEP_TIME);
         }
-        
+
         return $locked;
     }
 
-    protected function getLock($name, $options) {
-        return empty($this->filesHasLock[$name]) && flock($this->files[$name], $options) && $this->filesHasLock[$name] = true;
+    protected function getLock($name, $options)
+    {
+        return empty($this->filesHasLock[$name]) && flock(
+            $this->files[$name],
+            $options
+        ) && $this->filesHasLock[$name] = true;
     }
 
     /**
@@ -66,17 +73,20 @@ class FlockLock extends LockAbstract {
      * @param string $name name of lock
      * @return bool
      */
-    public function releaseLock($name) {
+    public function releaseLock($name)
+    {
         flock($this->files[$name], LOCK_UN); // @todo Can LOCK_UN fail?
         $this->filesHasLock[$name] = false;
         return true;
     }
 
-    protected function getFilePath($name) {
-        return $this->dirname.DIRECTORY_SEPARATOR.$name.'.lock';
+    protected function getFilePath($name)
+    {
+        return $this->dirname . DIRECTORY_SEPARATOR . $name . '.lock';
     }
 
-    private function setupFileHandle($name) {
+    private function setupFileHandle($name)
+    {
         if (isset($this->files[$name])) {
             return true;
         }
@@ -90,7 +100,8 @@ class FlockLock extends LockAbstract {
         return true;
     }
 
-    public function __destruct() {
+    public function __destruct()
+    {
         while (null !== $file = array_pop($this->files)) {
             fclose($file);
         }
@@ -102,7 +113,8 @@ class FlockLock extends LockAbstract {
      * @param string $name name of lock
      * @return bool
      */
-    public function isLocked($name) {
+    public function isLocked($name)
+    {
         if ($this->acquireLock($name, 0)) {
             return !$this->releaseLock($name);
         }

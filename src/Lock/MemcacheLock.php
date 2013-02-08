@@ -16,10 +16,11 @@ require_once 'LockAbstract.php';
  *
  * @author Kamil Dziedzic <arvenil@klecza.pl>
  */
-class MemcacheLock extends LockAbstract {
+class MemcacheLock extends LockAbstract
+{
     /**
      * Memcache connection
-     * 
+     *
      * @var \Memcache
      */
     protected $memcache;
@@ -27,7 +28,8 @@ class MemcacheLock extends LockAbstract {
     /**
      * @param \Memcache $memcache
      */
-    public function __construct(\Memcache $memcache) {
+    public function __construct(\Memcache $memcache)
+    {
         parent::__construct();
 
         $this->memcache = $memcache;
@@ -42,9 +44,10 @@ class MemcacheLock extends LockAbstract {
      *                          3. $timeout > 0 if you want to wait for lock some time (in miliseconds)
      * @return bool
      */
-    public function acquireLock($name, $timeout = null) {
+    public function acquireLock($name, $timeout = null)
+    {
         $start = microtime(true);
-        $end = $start + $timeout/1000;
+        $end = $start + $timeout / 1000;
         $locked = false;
         while (!($locked = $this->memcache->add($name, 1)) && $timeout > 0 && microtime(true) < $end) {
             usleep(static::USLEEP_TIME);
@@ -59,7 +62,8 @@ class MemcacheLock extends LockAbstract {
      * @param string $name name of lock
      * @return bool
      */
-    public function releaseLock($name) {
+    public function releaseLock($name)
+    {
         return $this->memcache->delete($name);
     }
 
@@ -69,7 +73,8 @@ class MemcacheLock extends LockAbstract {
      * @param string $name name of lock
      * @return bool
      */
-    public function isLocked($name) {
+    public function isLocked($name)
+    {
         return false !== $this->memcache->get($name);
     }
 }

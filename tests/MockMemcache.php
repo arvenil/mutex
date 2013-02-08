@@ -14,15 +14,19 @@ namespace Arvenil\Ninja\Mutex;
  *
  * @author Kamil Dziedzic <arvenil@klecza.pl>
  */
-class MockMemcache extends \Memcache {
+class MockMemcache extends \Memcache
+{
     /**
      * @var string[]
      */
     protected static $data = array();
 
-    public function __construct () {}
+    public function __construct()
+    {
+    }
 
-    public function add($key, $value) {
+    public function add($key, $value)
+    {
         if (false === $this->get($key)) {
             self::$data[$key] = (string)$value;
             return true;
@@ -31,7 +35,8 @@ class MockMemcache extends \Memcache {
         return false;
     }
 
-    public function get($key) {
+    public function get($key)
+    {
         if (!isset(self::$data[$key])) {
             return false;
         }
@@ -39,7 +44,8 @@ class MockMemcache extends \Memcache {
         return (string)self::$data[$key];
     }
 
-    public function delete($key) {
+    public function delete($key)
+    {
         unset(self::$data[$key]);
         return true;
     }

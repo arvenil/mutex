@@ -16,17 +16,19 @@ require_once 'LockInterface.php';
  *
  * @author Kamil Dziedzic <arvenil@klecza.pl>
  */
-abstract class LockAbstract implements LockInterface {
+abstract class LockAbstract implements LockInterface
+{
     const USLEEP_TIME = 100;
 
     /**
      * Information which allows to track down process which acquired lock
-     * 
+     *
      * @var array
      */
     protected $lockInformation = array();
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->lockInformation = $this->generateLockInformation();
     }
 
@@ -40,7 +42,8 @@ abstract class LockAbstract implements LockInterface {
      *
      * @return array
      */
-    protected function generateLockInformation() {
+    protected function generateLockInformation()
+    {
         $pid = getmypid();
         $hostname = gethostname();
         $host = gethostbyname($hostname);
@@ -59,7 +62,8 @@ abstract class LockAbstract implements LockInterface {
      * .
      * @return array;
      */
-    protected function getLockInformation() {
+    protected function getLockInformation()
+    {
         return $this->lockInformation;
     }
 

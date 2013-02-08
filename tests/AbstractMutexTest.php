@@ -20,14 +20,17 @@ require_once 'Lock/MySqlLock.php';
 require_once 'MockMemcache.php';
 require_once 'MockPDO.php';
 
-abstract class AbstractMutexTest extends \PHPUnit_Framework_TestCase {
-    public function setUp() {
+abstract class AbstractMutexTest extends \PHPUnit_Framework_TestCase
+{
+    public function setUp()
+    {
         vfs\vfsStreamWrapper::register();
         vfs\vfsStreamWrapper::setRoot(new vfs\vfsStreamDirectory('nfs'));
         mkdir('/tmp/mutex/');
     }
 
-    public function tearDown() {
+    public function tearDown()
+    {
         foreach (new \DirectoryIterator(vfs\vfsStream::url('nfs')) as $file) {
             if (!$file->isDot()) {
                 unlink($file->getPathname());
@@ -43,7 +46,8 @@ abstract class AbstractMutexTest extends \PHPUnit_Framework_TestCase {
         rmdir('/tmp/mutex/');
     }
 
-    public function lockImplementorProvider() {
+    public function lockImplementorProvider()
+    {
         // Just mocks
         $memcacheMock = new MockMemcache();
         $data = array();

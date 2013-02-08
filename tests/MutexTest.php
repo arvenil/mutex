@@ -12,12 +12,14 @@ namespace Arvenil\Ninja\Mutex;
 require_once 'AbstractMutexTest.php';
 require_once 'Mutex.php';
 
-class MutexTest extends AbstractMutexTest {
+class MutexTest extends AbstractMutexTest
+{
     /**
      * @dataProvider lockImplementorProvider
      * @param LockInterface $lockImplementor
      */
-    public function testAcquireAndReleaseLock(LockInterface $lockImplementor) {
+    public function testAcquireAndReleaseLock(LockInterface $lockImplementor)
+    {
         $mutex = new Mutex('forfiter', $lockImplementor);
 
         $this->assertTrue($mutex->acquireLock(0));
@@ -33,7 +35,8 @@ class MutexTest extends AbstractMutexTest {
      * @dataProvider lockImplementorProvider
      * @param LockInterface $lockImplementor
      */
-    public function testAllowToAcquireSelfOwnedLock(LockInterface $lockImplementor) {
+    public function testAllowToAcquireSelfOwnedLock(LockInterface $lockImplementor)
+    {
         $mutex = new Mutex('forfiter', $lockImplementor);
         $mutex->acquireLock(0);
 
@@ -48,18 +51,20 @@ class MutexTest extends AbstractMutexTest {
      * @dataProvider lockImplementorProvider
      * @param LockInterface $lockImplementor
      */
-    public function testMultipleSelfAcquiredLocksRequiresMultipleReleasesToCompletelyReleaseMutex(LockInterface $lockImplementor) {
+    public function testMultipleSelfAcquiredLocksRequiresMultipleReleasesToCompletelyReleaseMutex(
+        LockInterface $lockImplementor
+    ) {
         $mutex = new Mutex('forfiter', $lockImplementor);
-        $mutex->acquireLock(0);                     // #1
-        $mutex->acquireLock(0);                     // #2
-        $mutex->acquireLock(0);                     // #3
-        $this->assertTrue($mutex->releaseLock());   // #2
+        $mutex->acquireLock(0); // #1
+        $mutex->acquireLock(0); // #2
+        $mutex->acquireLock(0); // #3
+        $this->assertTrue($mutex->releaseLock()); // #2
         $this->assertTrue($mutex->isAcquired());
         $this->assertTrue($mutex->isLocked());
-        $this->assertTrue($mutex->releaseLock());   // #1
+        $this->assertTrue($mutex->releaseLock()); // #1
         $this->assertTrue($mutex->isAcquired());
         $this->assertTrue($mutex->isLocked());
-        $this->assertTrue($mutex->releaseLock());   // #0
+        $this->assertTrue($mutex->releaseLock()); // #0
         $this->assertFalse($mutex->isAcquired());
         $this->assertFalse($mutex->isLocked());
     }
@@ -68,7 +73,8 @@ class MutexTest extends AbstractMutexTest {
      * @dataProvider lockImplementorProvider
      * @param LockInterface $lockImplementor
      */
-    public function testUnableToAcquireLockHeldByOtherLock(LockInterface $lockImplementor) {
+    public function testUnableToAcquireLockHeldByOtherLock(LockInterface $lockImplementor)
+    {
         $mutex1 = new Mutex('forfiter', $lockImplementor);
         $mutex1->acquireLock(0);
 
@@ -88,7 +94,8 @@ class MutexTest extends AbstractMutexTest {
      * @dataProvider lockImplementorProvider
      * @param LockInterface $lockImplementor
      */
-    public function testUnableToReleaseLockHeldByOtherLock(LockInterface $lockImplementor) {
+    public function testUnableToReleaseLockHeldByOtherLock(LockInterface $lockImplementor)
+    {
         $mutex1 = new Mutex('forfiter', $lockImplementor);
         $mutex1->acquireLock(0);
 
@@ -108,36 +115,39 @@ class MutexTest extends AbstractMutexTest {
      * @dataProvider lockImplementorProvider
      * @param LockInterface $lockImplementor
      */
-    public function testAcquireLockTimeout(LockInterface $lockImplementor) {
+    public function testAcquireLockTimeout(LockInterface $lockImplementor)
+    {
         $mutex1 = new Mutex('forfiter', $lockImplementor);
         $mutex1->acquireLock(0);
 
         $mutex = new Mutex('forfiter', $lockImplementor);
         $sleep = LockAbstract::USLEEP_TIME;
 
-        $time = microtime(true)*1000;
+        $time = microtime(true) * 1000;
         $mutex->acquireLock($sleep);
-        $this->assertLessThanOrEqual(microtime(true)*1000, $time+$sleep);
+        $this->assertLessThanOrEqual(microtime(true) * 1000, $time + $sleep);
     }
 
     /**
      * @dataProvider lockImplementorProvider
      * @param LockInterface $lockImplementor
      */
-    public function testAcquireLockWithTimeoutImmiedietly(LockInterface $lockImplementor) {
+    public function testAcquireLockWithTimeoutImmiedietly(LockInterface $lockImplementor)
+    {
         $mutex = new Mutex('forfiter', $lockImplementor);
         $sleep = LockAbstract::USLEEP_TIME;
 
-        $time = microtime(true)*1000;
+        $time = microtime(true) * 1000;
         $mutex->acquireLock($sleep);
-        $this->assertGreaterThan(microtime(true)*1000, $time+$sleep);
+        $this->assertGreaterThan(microtime(true) * 1000, $time + $sleep);
     }
 
     /**
      * @dataProvider lockImplementorProvider
      * @param LockInterface $lockImplementor
      */
-    public function testAcquireAndReleaseSecondMutexWithoutReleaseTheFirstMutex(LockInterface $lockImplementor) {
+    public function testAcquireAndReleaseSecondMutexWithoutReleaseTheFirstMutex(LockInterface $lockImplementor)
+    {
         $firstMutex = new Mutex('forfiter', $lockImplementor);
         $firstMutex->acquireLock(0);
 

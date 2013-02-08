@@ -14,6 +14,7 @@ namespace Arvenil\Ninja\Mutex;
  *
  * @author Kamil Dziedzic <arvenil@klecza.pl>
  */
-class MutexException extends \Exception {
-    
+class MutexException extends \Exception
+{
+
 }
