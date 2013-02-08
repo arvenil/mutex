@@ -1,5 +1,5 @@
 {
     "require": {
-        "mikey179/vfsStream": "v1.1.0-beta1"
+        "mikey179/vfsStream": "v1.1.0"
     }
 }
