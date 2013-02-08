@@ -80,7 +80,7 @@ class Mutex {
     /**
      * Check if Mutex is acquired
      *
-     * @return type
+     * @return bool
      */
     public function isAcquired() {
         return $this->acquired;

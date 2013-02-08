@@ -17,16 +17,20 @@ namespace Arvenil\Ninja\Mutex;
 interface LockInterface {
 
     /**
+     * @param $name
+     * @param null|int $timeout
      * @return bool
      */
     public function acquireLock($name, $timeout = null);
 
     /**
+     * @param $name
      * @return bool
      */
     public function releaseLock($name);
 
     /**
+     * @param $name
      * @return bool
      */
     public function isLocked($name);

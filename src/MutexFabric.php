@@ -56,7 +56,7 @@ class MutexFabric {
      * Create and/or get mutex
      *
      * @param string $name
-     * @param string $registeredMutexImplementatorName
+     * @param string $registeredLockImplementorName
      * @return Mutex
      */
     public function get($name, $registeredLockImplementorName = null) {
