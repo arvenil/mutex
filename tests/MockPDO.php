@@ -14,7 +14,10 @@ namespace Arvenil\Ninja\Mutex;
  *
  * @author Kamil Dziedzic <arvenil@klecza.pl>
  */
-class MockPDO extends \PDO
+use PDO;
+use PDOStatement;
+
+class MockPDO extends PDO
 {
     /**
      * @var string[]
@@ -108,7 +111,7 @@ class MockPDO extends \PDO
     }
 }
 
-class MockPDOStatement extends \PDOStatement
+class MockPDOStatement extends PDOStatement
 {
     /**
      * @var string
@@ -126,9 +129,12 @@ class MockPDOStatement extends \PDOStatement
     }
 
     /**
+     * @param int|null $fetch_style
+     * @param int|null $cursor_orientation
+     * @param int|null $cursor_offset
      * @return string
      */
-    public function fetch()
+    public function fetch($fetch_style = null, $cursor_orientation = PDO::FETCH_ORI_NEXT, $cursor_offset = 0)
     {
         return $this->_mock_fetch;
     }
