@@ -20,7 +20,7 @@ require_once 'Lock/MySqlLock.php';
 require_once 'MockMemcache.php';
 require_once 'MockPDO.php';
 
-abstract class AbstractMutexTest extends \PHPUnit_Framework_TestCase
+abstract class AbstractTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {

@@ -9,10 +9,10 @@
  */
 namespace Arvenil\Ninja\Mutex;
 
-require_once 'AbstractMutexTest.php';
+require_once 'AbstractTest.php';
 require_once 'MutexFabric.php';
 
-class MutexFabricTest extends AbstractMutexTest
+class MutexFabricTest extends AbstractTest
 {
     /**
      * @dataProvider lockImplementorProvider
