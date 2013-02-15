@@ -24,6 +24,7 @@ class MemcacheLock extends LockAbstract
      * @var \Memcache
      */
     protected $memcache;
+    protected $keys = array();
 
     /**
      * @param \Memcache $memcache
@@ -33,6 +34,13 @@ class MemcacheLock extends LockAbstract
         parent::__construct();
 
         $this->memcache = $memcache;
+    }
+
+    public function __destruct()
+    {
+        while (null !== $key = array_pop($this->keys)) {
+            $this->releaseLock($key);
+        }
     }
 
     /**
@@ -49,11 +57,16 @@ class MemcacheLock extends LockAbstract
         $start = microtime(true);
         $end = $start + $timeout / 1000;
         $locked = false;
-        while (!($locked = $this->memcache->add($name, 1)) && $timeout > 0 && microtime(true) < $end) {
+        while (!($locked = $this->getLock($name)) && $timeout > 0 && microtime(true) < $end) {
             usleep(static::USLEEP_TIME);
         }
 
         return $locked;
+    }
+
+    protected function getLock($name)
+    {
+        return empty($this->keys[$name]) && $this->memcache->add($name, serialize($this->getLockInformation())) && $this->keys[$name] = $name;
     }
 
     /**

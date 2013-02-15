@@ -109,6 +109,14 @@ class MockPDO extends PDO
         unset($this->current[$key]);
         return $this->_mock_pdo_statement->_mock_set_fetch("1");
     }
+
+    public function __destruct()
+    {
+        foreach ($this->current as $k => $v) {
+            unset(self::$data[$k]);
+            unset($this->current[$k]);
+        }
+    }
 }
 
 class MockPDOStatement extends PDOStatement

@@ -25,4 +25,20 @@ class LockTest extends AbstractTest
         $this->assertTrue($lockImplementor->releaseLock($name));
         $this->assertFalse($lockImplementor->isLocked($name));
     }
+
+    /**
+     * @dataProvider lockImplementorProvider
+     * @param LockInterface $lockImplementor
+     */
+    public function testIfLockIsReleasedAfterLockImplementorIsDestroyed(LockInterface $lockImplementor)
+    {
+        $name = 'forfiter';
+        $duplicateLockImplementor = clone $lockImplementor;
+        $duplicateLockImplementor->acquireLock($name, 0);
+        unset($duplicateLockImplementor);
+
+        $this->assertTrue($lockImplementor->acquireLock($name, 0));
+
+        $lockImplementor->releaseLock($name);
+    }
 }
