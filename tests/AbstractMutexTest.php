@@ -53,12 +53,7 @@ abstract class AbstractMutexTest extends \PHPUnit_Framework_TestCase
         $data = array();
         $data[] = array(new FlockLock(vfs\vfsStream::url('nfs/')));
         $data[] = array(new MemcacheLock($memcacheMock));
-        $mockMySqlLock = $this->getMock('Arvenil\Ninja\Mutex\MySqlLock', array('createPDO'), array('', '', ''));
-        $mockMySqlLock->expects($this->any())->method('createPDO')->will(
-            $this->returnCallback(function() {
-                return new MockPDO('', '', '');
-        }));
-        $data[] = array($mockMySqlLock);
+        $data[] = array(new MySqlLock('', '', '', 'Arvenil\Ninja\Mutex\MockPDO'));
 
         // Real interfaces
         $memcache = new \Memcache();
