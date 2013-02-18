@@ -9,7 +9,8 @@ services:
  - memcached
 
 before_script:
- - wget -nc http://getcomposer.org/composer.phar && php composer.phar install --prefer-source
- - mysql -e 'create database myapp_test;'
+ - ./tests/travis/composer-setup.sh
+ - ./tests/travis/mysql-setup.sh
+ - ./tests/travis/memcache-setup.sh
 
 script: phpunit --bootstrap ./tests/bootstrap.php --coverage-text tests
