@@ -5,10 +5,11 @@ php:
  - 5.4
  - 5.5
 
+services:
+ - memcache
+
 before_script:
  - wget -nc http://getcomposer.org/composer.phar && php composer.phar install --prefer-source
  - mysql -e 'create database myapp_test;'
- - echo "yes" | pecl install memcache
- - echo "extension=memcache.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
 
 script: phpunit --bootstrap ./tests/bootstrap.php --coverage-text tests
