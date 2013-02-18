@@ -8,5 +8,5 @@ else
     wget "http://pecl.php.net/get/memcache-$VERSION.tgz"
     tar -zxf "memcache-$VERSION.tgz"
     sh -c "cd memcache-$VERSION && phpize && ./configure --enable-memcache && make && sudo make install"
-    echo "memcache.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s/.*:\s*//"`
+    echo "extension=memcache.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s/.*:\s*//"`
 fi
