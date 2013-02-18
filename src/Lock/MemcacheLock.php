@@ -38,9 +38,13 @@ class MemcacheLock extends LockAbstract
 
     public function __destruct()
     {
-        while (null !== $key = array_pop($this->keys)) {
-            $this->releaseLock($key);
+        foreach($this->keys as $name) {
+            $this->releaseLock($name);
         }
+    }
+
+    public function __clone() {
+        $this->keys = array();
     }
 
     /**
@@ -77,7 +81,12 @@ class MemcacheLock extends LockAbstract
      */
     public function releaseLock($name)
     {
-        return $this->memcache->delete($name);
+        if (isset($this->keys[$name]) && $this->memcache->delete($name)) {
+            unset($this->keys[$name]);
+            return true;
+        }
+
+        return false;
     }
 
     /**

@@ -14,6 +14,7 @@ namespace Arvenil\Ninja\Mutex;
  *
  * @author Kamil Dziedzic <arvenil@klecza.pl>
  */
+
 use PDO;
 use PDOStatement;
 
@@ -105,9 +106,12 @@ class MockPDO extends PDO
      */
     protected function _mock_release_lock($key)
     {
-        unset(self::$data[$key]);
-        unset($this->current[$key]);
-        return $this->_mock_pdo_statement->_mock_set_fetch("1");
+        if (isset($this->current[$key])) {
+            unset(self::$data[$key]);
+            unset($this->current[$key]);
+            return $this->_mock_pdo_statement->_mock_set_fetch("1");
+        }
+        return $this->_mock_pdo_statement->_mock_set_fetch("0");
     }
 
     public function __destruct()

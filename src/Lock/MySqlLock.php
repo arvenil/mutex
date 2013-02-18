@@ -48,6 +48,11 @@ class MySqlLock extends LockAbstract
         $this->classname = $classname;
     }
 
+    public function __clone()
+    {
+        $this->pdo = array();
+    }
+
     /**
      * Acquire lock
      *

@@ -17,6 +17,82 @@ class LockTest extends AbstractTest
      * @dataProvider lockImplementorProvider
      * @param LockInterface $lockImplementor
      */
+    public function testDisallowToAcquireSelfOwnedLock(LockInterface $lockImplementor)
+    {
+        $name = 'forfiter';
+        $lockImplementor->acquireLock($name, 0);
+
+        $this->assertFalse($lockImplementor->acquireLock($name, 0));
+
+        $lockImplementor->releaseLock($name);
+    }
+
+    /**
+     * @dataProvider lockImplementorProvider
+     * @param LockInterface $lockImplementor
+     */
+    public function testDisallowToAcquireLockOwnedByOtherLockImplementor(LockInterface $lockImplementor)
+    {
+        $name = 'forfiter';
+        $duplicateLockImplementor = clone $lockImplementor;
+        $lockImplementor->acquireLock($name, 0);
+
+        $this->assertFalse($duplicateLockImplementor->acquireLock($name, 0));
+
+        $lockImplementor->releaseLock($name);
+    }
+
+    /**
+     * @dataProvider lockImplementorProvider
+     * @param LockInterface $lockImplementor
+     */
+    public function testDisallowLockImplementorToReleaseLockAcquiredByOtherImplementor(LockInterface $lockImplementor)
+    {
+        $name = 'forfiter';
+        $lockImplementor->acquireLock($name, 0);
+
+        $duplicateLockImplementor = clone $lockImplementor;
+        $this->assertFalse($duplicateLockImplementor->releaseLock($name));
+
+        $lockImplementor->releaseLock($name);
+    }
+
+    /**
+     * @dataProvider lockImplementorProvider
+     * @param LockInterface $lockImplementor
+     */
+    public function testIfLocksAreNotSharedBetweenImplementors(LockInterface $lockImplementor)
+    {
+        $name = 'forfiter';
+        $lockImplementor->acquireLock($name, 0);
+
+        $duplicateLockImplementor = clone $lockImplementor;
+        $duplicateLockImplementor->releaseLock($name);
+        $this->assertFalse($duplicateLockImplementor->acquireLock($name, 0));
+
+        $lockImplementor->releaseLock($name);
+    }
+
+    /**
+     * @dataProvider lockImplementorProvider
+     * @param LockInterface $lockImplementor
+     */
+    public function testIfLockReleasedByOneImplementorCanBeAcquiredByOther(LockInterface $lockImplementor)
+    {
+        $name = 'forfiter';
+        $lockImplementor->acquireLock($name, 0);
+        $lockImplementor->releaseLock($name);
+
+        $duplicateLockImplementor = clone $lockImplementor;
+        $this->assertTrue($duplicateLockImplementor->acquireLock($name, 0));
+
+        $duplicateLockImplementor->releaseLock($name);
+    }
+
+    /**
+     * @dataProvider lockImplementorProvider
+     * @param LockInterface $lockImplementor
+     */
     public function testAcquireAndReleaseLock(LockInterface $lockImplementor)
     {
         $name = 'forfiter';

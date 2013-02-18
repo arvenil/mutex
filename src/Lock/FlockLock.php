@@ -75,9 +75,13 @@ class FlockLock extends LockAbstract
      */
     public function releaseLock($name)
     {
-        flock($this->files[$name], LOCK_UN); // @todo Can LOCK_UN fail?
-        $this->filesHasLock[$name] = false;
-        return true;
+        if (isset($this->files[$name])){
+            flock($this->files[$name], LOCK_UN); // @todo Can LOCK_UN fail?
+            $this->filesHasLock[$name] = false;
+            return true;
+        }
+
+        return false;
     }
 
     protected function getFilePath($name)
@@ -98,6 +102,12 @@ class FlockLock extends LockAbstract
 
         $this->files[$name] = $file;
         return true;
+    }
+
+    public function __clone()
+    {
+        $this->files = array();
+        $this->filesHasLock = array();
     }
 
     public function __destruct()
