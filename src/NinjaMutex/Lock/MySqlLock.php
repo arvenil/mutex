@@ -9,6 +9,7 @@
  */
 namespace NinjaMutex\Lock;
 
+use PDO;
 use NinjaMutex\Lock\LockAbstract;
 
 /**
@@ -21,7 +22,7 @@ class MySqlLock extends LockAbstract
     /**
      * MySql connections
      *
-     * @var \PDO[]
+     * @var PDO[]
      */
     protected $pdo = array();
 
@@ -36,9 +37,9 @@ class MySqlLock extends LockAbstract
      * @param string $user
      * @param string $password
      * @param string $host
-     * @param string $classname class name to create as \PDO connection
+     * @param string $classname class name to create as PDO connection
      */
-    public function __construct($user, $password, $host, $classname = '\PDO')
+    public function __construct($user, $password, $host, $classname = 'PDO')
     {
         parent::__construct();
 
@@ -86,7 +87,7 @@ class MySqlLock extends LockAbstract
                 $name,
                 0
             ),
-            \PDO::FETCH_COLUMN,
+            PDO::FETCH_COLUMN,
             0
         )->fetch();
     }
@@ -108,7 +109,7 @@ class MySqlLock extends LockAbstract
                 'SELECT RELEASE_LOCK("%s")',
                 $name
             ),
-            \PDO::FETCH_COLUMN,
+            PDO::FETCH_COLUMN,
             0
         )->fetch();
     }
@@ -130,7 +131,7 @@ class MySqlLock extends LockAbstract
                 'SELECT IS_FREE_LOCK("%s")',
                 $name
             ),
-            \PDO::FETCH_COLUMN,
+            PDO::FETCH_COLUMN,
             0
         )->fetch();
     }
