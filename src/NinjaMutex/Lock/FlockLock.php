@@ -2,6 +2,8 @@
 /**
  * This file is part of ninja-mutex.
  *
+ * (C) Kamil Dziedzic <arvenil@klecza.pl>
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -11,6 +13,8 @@ use NinjaMutex\Lock\LockAbstract;
 
 /**
  * Lock implementor using flock
+ *
+ * @author Kamil Dziedzic <arvenil@klecza.pl>
  */
 class FlockLock extends LockAbstract
 {
