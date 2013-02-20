@@ -4,20 +4,17 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  Arvenil\Ninja\Mutex
  */
-namespace Arvenil\Ninja\Mutex;
+namespace NinjaMutex;
+
+use PDO;
+use PDOStatement;
 
 /**
  * Mock PDO to mimic *_lock functionality
  *
  * @author Kamil Dziedzic <arvenil@klecza.pl>
  */
-
-use PDO;
-use PDOStatement;
-
 class MockPDO extends PDO
 {
     /**

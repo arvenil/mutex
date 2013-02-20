@@ -11,11 +11,8 @@ First you need to choose adapter and setup it properly. For example if you choos
 ```php
 <?php
 
-require_once 'Lock/MemcacheLock.php';
-require_once 'Mutex.php';
-
-use Arvenil\Ninja\Mutex\MemcacheLock;
-use Arvenil\Ninja\Mutex\Mutex;
+use NinjaMutex\MemcacheLock;
+use NinjaMutex\Mutex;
 
 $memcache = new Memcache();
 $memcache->connect('127.0.0.1', 11211);
@@ -38,11 +35,8 @@ If you want to use multiple mutexes in your project then MutexFabric is the righ
 ```php
 <?php
 
-require_once 'Lock/MemcacheLock.php';
-require_once 'MutexFabric.php';
-
-use Arvenil\Ninja\Mutex\MemcacheLock;
-use Arvenil\Ninja\Mutex\MutexFabric;
+use NinjaMutex\MemcacheLock;
+use NinjaMutex\MutexFabric;
 
 $memcache = new Memcache();
 $memcache->connect('127.0.0.1', 11211);

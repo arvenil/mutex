@@ -4,12 +4,10 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  Arvenil\Ninja\Mutex
  */
-namespace Arvenil\Ninja\Mutex;
+namespace NinjaMutex\Lock;
 
-require_once 'AbstractTest.php';
+use NinjaMutex\AbstractTest;
 
 class LockTest extends AbstractTest
 {

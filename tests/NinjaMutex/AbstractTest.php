@@ -4,21 +4,16 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  Arvenil\Ninja\Mutex
  */
-namespace Arvenil\Ninja\Mutex;
+namespace NinjaMutex;
+
+use NinjaMutex\Lock\FlockLock;
+use NinjaMutex\Lock\MemcacheLock;
+use NinjaMutex\Lock\MySqlLock;
+use NinjaMutex\MockMemcache;
+use NinjaMutex\MockPDO;
 
 use org\bovigo\vfs;
-
-require_once 'autoload.php';
-
-require_once 'Lock/LockAbstract.php';
-require_once 'Lock/FlockLock.php';
-require_once 'Lock/MemcacheLock.php';
-require_once 'Lock/MySqlLock.php';
-require_once 'MockMemcache.php';
-require_once 'MockPDO.php';
 
 abstract class AbstractTest extends \PHPUnit_Framework_TestCase
 {
@@ -53,7 +48,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
         $data = array();
         $data[] = array(new FlockLock(vfs\vfsStream::url('nfs/')));
         $data[] = array(new MemcacheLock($memcacheMock));
-        $data[] = array(new MySqlLock('', '', '', 'Arvenil\Ninja\Mutex\MockPDO'));
+        $data[] = array(new MySqlLock('', '', '', 'NinjaMutex\MockPDO'));
 
         // Real interfaces
         $memcache = new \Memcache();

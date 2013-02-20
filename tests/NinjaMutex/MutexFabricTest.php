@@ -4,13 +4,12 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  Arvenil\Ninja\Mutex
  */
-namespace Arvenil\Ninja\Mutex;
+namespace NinjaMutex;
 
-require_once 'AbstractTest.php';
-require_once 'MutexFabric.php';
+use NinjaMutex\Lock\LockInterface;
+use NinjaMutex\AbstractTest;
+use NinjaMutex\MutexFabric;
 
 class MutexFabricTest extends AbstractTest
 {
@@ -49,7 +48,7 @@ class MutexFabricTest extends AbstractTest
 
     /**
      * @dataProvider lockImplementorProvider
-     * @expectedException Arvenil\Ninja\Mutex\MutexException
+     * @expectedException NinjaMutex\MutexException
      * @param LockInterface $lockImplementor
      */
     public function testThrowExceptionOnDuplicateImplementorName(LockInterface $lockImplementor)
@@ -65,7 +64,7 @@ class MutexFabricTest extends AbstractTest
     public function testMutexCreationWithDefaultImplementor(LockInterface $lockImplementor)
     {
         $mutexFabric = new MutexFabric(get_class($lockImplementor), $lockImplementor);
-        $this->assertInstanceOf('Arvenil\Ninja\Mutex\Mutex', $mutexFabric->get('lock'));
+        $this->assertInstanceOf('NinjaMutex\Mutex', $mutexFabric->get('lock'));
     }
 
     /**
@@ -77,7 +76,7 @@ class MutexFabricTest extends AbstractTest
         $mutexFabric = new MutexFabric(get_class($lockImplementor), $lockImplementor);
         $mutexFabric->registerLockImplementor(get_class($lockImplementor) . '_forfiter', $lockImplementor);
         $this->assertInstanceOf(
-            'Arvenil\Ninja\Mutex\Mutex',
+            'NinjaMutex\Mutex',
             $mutexFabric->get('lock', get_class($lockImplementor) . '_forfiter')
         );
     }

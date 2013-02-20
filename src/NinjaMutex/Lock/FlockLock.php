@@ -4,12 +4,10 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  Arvenil\Ninja\Mutex
  */
-namespace Arvenil\Ninja\Mutex;
+namespace NinjaMutex\Lock;
 
-require_once 'LockAbstract.php';
+use NinjaMutex\Lock\LockAbstract;
 
 /**
  * Lock implementor using flock

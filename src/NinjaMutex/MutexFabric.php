@@ -4,13 +4,12 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  Arvenil\Ninja\Mutex
  */
-namespace Arvenil\Ninja\Mutex;
+namespace NinjaMutex;
 
-require_once 'Mutex.php';
-require_once 'MutexException.php';
+use NinjaMutex\Lock\LockInterface;
+use NinjaMutex\Mutex;
+use NinjaMutex\MutexException;
 
 /**
  * Mutex fabric
