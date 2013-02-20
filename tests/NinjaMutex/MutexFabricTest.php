@@ -29,7 +29,7 @@ class MutexFabricTest extends AbstractTest
      * @dataProvider lockImplementorProvider
      * @param LockInterface $lockImplementor
      */
-    public function testIfInjectedImplementorDefaultImplementorIsNotOverwriten(LockInterface $lockImplementor)
+    public function testIfInjectedImplementorDefaultImplementorIsNotOverwritten(LockInterface $lockImplementor)
     {
         $mutexFabric = new MutexFabric(get_class($lockImplementor), $lockImplementor);
         $mutexFabric->registerLockImplementor(get_class($lockImplementor) . '_forfiter', $lockImplementor);

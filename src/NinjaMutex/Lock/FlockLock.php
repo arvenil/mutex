@@ -35,7 +35,7 @@ class FlockLock extends LockAbstract
      * @param string $name name of lock
      * @param null|int $timeout 1. null if you want blocking lock
      *                          2. 0 if you want just lock and go
-     *                          3. $timeout > 0 if you want to wait for lock some time (in miliseconds)
+     *                          3. $timeout > 0 if you want to wait for lock some time (in milliseconds)
      * @return bool
      */
     public function acquireLock($name, $timeout = null)
