@@ -65,7 +65,7 @@ if ($mutexFabric->get('also-very-critical-stuff')->acquireLock(0)) {
 
 Tests require vfsStream to work. To install this simply run in project dir:
 
-    wget -nc http://getcomposer.org/composer.phar && php composer.phar install
+    wget -nc http://getcomposer.org/composer.phar && php composer.phar install --dev
 
 This should setup dependencies. To run tests type in console:
 
