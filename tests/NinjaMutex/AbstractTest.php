@@ -7,6 +7,7 @@
  */
 namespace NinjaMutex;
 
+use Memcache;
 use NinjaMutex\Lock\FlockLock;
 use NinjaMutex\Lock\MemcacheLock;
 use NinjaMutex\Lock\MySqlLock;
@@ -50,7 +51,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
         $data[] = array(new MySqlLock('', '', '', 'NinjaMutex\Mock\MockPDO'));
 
         // Real interfaces
-        $memcache = new \Memcache();
+        $memcache = new Memcache();
         $memcache->connect('127.0.0.1', 11211);
         $data[] = array(new FlockLock('/tmp/mutex/'));
         $data[] = array(new MemcacheLock($memcache));

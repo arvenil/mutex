@@ -7,6 +7,7 @@
  */
 namespace NinjaMutex\Lock;
 
+use Memcache;
 use NinjaMutex\Lock\LockAbstract;
 
 /**
@@ -19,15 +20,15 @@ class MemcacheLock extends LockAbstract
     /**
      * Memcache connection
      *
-     * @var \Memcache
+     * @var Memcache
      */
     protected $memcache;
     protected $keys = array();
 
     /**
-     * @param \Memcache $memcache
+     * @param Memcache $memcache
      */
-    public function __construct(\Memcache $memcache)
+    public function __construct(Memcache $memcache)
     {
         parent::__construct();
 

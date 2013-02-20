@@ -7,12 +7,14 @@
  */
 namespace NinjaMutex\Mock;
 
+use Memcache;
+
 /**
  * Mock memcache to mimic mutex functionality
  *
  * @author Kamil Dziedzic <arvenil@klecza.pl>
  */
-class MockMemcache extends \Memcache
+class MockMemcache extends Memcache
 {
     /**
      * @var string[]
