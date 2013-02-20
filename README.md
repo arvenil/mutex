@@ -10,8 +10,9 @@ First you need to choose adapter and setup it properly. For example if you choos
 
 ```php
 <?php
+require 'vendor/autoload.php';
 
-use NinjaMutex\MemcacheLock;
+use NinjaMutex\Lock\MemcacheLock;
 use NinjaMutex\Mutex;
 
 $memcache = new Memcache();
@@ -34,8 +35,9 @@ If you want to use multiple mutexes in your project then MutexFabric is the righ
 
 ```php
 <?php
+require 'vendor/autoload.php';
 
-use NinjaMutex\MemcacheLock;
+use NinjaMutex\Lock\MemcacheLock;
 use NinjaMutex\MutexFabric;
 
 $memcache = new Memcache();
