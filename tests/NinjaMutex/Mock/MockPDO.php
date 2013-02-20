@@ -7,8 +7,8 @@
  */
 namespace NinjaMutex\Mock;
 
+use NinjaMutex\Mock\MockPDOStatement;
 use PDO;
-use PDOStatement;
 
 /**
  * Mock PDO to mimic *_lock functionality
@@ -117,34 +117,5 @@ class MockPDO extends PDO
             unset(self::$data[$k]);
             unset($this->current[$k]);
         }
-    }
-}
-
-class MockPDOStatement extends PDOStatement
-{
-    /**
-     * @var string
-     */
-    protected $_mock_fetch = '';
-
-    /**
-     * @param string $result
-     * @return MockPDOStatement
-     */
-    public function _mock_set_fetch($result)
-    {
-        $this->_mock_fetch = $result;
-        return $this;
-    }
-
-    /**
-     * @param int|null $fetch_style
-     * @param int|null $cursor_orientation
-     * @param int|null $cursor_offset
-     * @return string
-     */
-    public function fetch($fetch_style = null, $cursor_orientation = PDO::FETCH_ORI_NEXT, $cursor_offset = 0)
-    {
-        return $this->_mock_fetch;
     }
 }
