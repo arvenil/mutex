@@ -10,9 +10,8 @@ namespace NinjaMutex;
 use NinjaMutex\Lock\FlockLock;
 use NinjaMutex\Lock\MemcacheLock;
 use NinjaMutex\Lock\MySqlLock;
-use NinjaMutex\MockMemcache;
-use NinjaMutex\MockPDO;
-
+use NinjaMutex\Mock\MockMemcache;
+use NinjaMutex\Mock\MockPDO;
 use org\bovigo\vfs;
 
 abstract class AbstractTest extends \PHPUnit_Framework_TestCase
@@ -48,7 +47,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
         $data = array();
         $data[] = array(new FlockLock(vfs\vfsStream::url('nfs/')));
         $data[] = array(new MemcacheLock($memcacheMock));
-        $data[] = array(new MySqlLock('', '', '', 'NinjaMutex\MockPDO'));
+        $data[] = array(new MySqlLock('', '', '', 'NinjaMutex\Mock\MockPDO'));
 
         // Real interfaces
         $memcache = new \Memcache();

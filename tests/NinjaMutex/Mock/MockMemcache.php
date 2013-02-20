@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace NinjaMutex;
+namespace NinjaMutex\Mock;
 
 /**
  * Mock memcache to mimic mutex functionality
