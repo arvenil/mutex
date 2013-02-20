@@ -63,13 +63,25 @@ if ($mutexFabric->get('also-very-critical-stuff')->acquireLock(0)) {
 }
 ```
 
+## Installation
+
+### Composer
+
+Download composer:
+
+    wget -nc http://getcomposer.org/composer.phar
+
+and add dependency to your project:
+
+    php composer.phar require arvenil/ninja-mutex:*
+
 ## Running tests
 
-Tests require vfsStream to work. To install this simply run in project dir:
+Tests require vfsStream to work. To install it, simply run in project dir:
 
     wget -nc http://getcomposer.org/composer.phar && php composer.phar install --dev
 
-This should setup dependencies. To run tests type in console:
+To run tests type in console:
 
     phpunit
 
