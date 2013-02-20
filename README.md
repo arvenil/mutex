@@ -69,7 +69,7 @@ Tests require vfsStream to work. To install this simply run in project dir:
 
 This should setup dependencies. To run tests type in console:
 
-    phpunit --bootstrap ./tests/bootstrap.php --coverage-text tests
+    phpunit
 
 ## Something doesn't work
 
