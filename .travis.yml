@@ -13,4 +13,4 @@ before_script:
  - ./tests/travis/mysql-setup.sh
  - ./tests/travis/memcache-setup.sh
 
-script: phpunit --bootstrap ./tests/bootstrap.php --coverage-text --colors tests
+script: phpunit
