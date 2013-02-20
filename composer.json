@@ -1,5 +1,20 @@
 {
-    "require": {
+    "name": "arvenil/ninja-mutex",
+    "description": "Simple to use mutex implementation that can use flock, memcache or mysql for locking",
+    "homepage" : "https://github.com/arvenil/ninja-mutex",
+    "keywords" : ["mutex", "flock", "memcache", "mysql"],
+    "authors": [
+        {
+            "name": "Kamil Dziedzic",
+            "email": "arvenil@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "NinjaMutex": "src/"
+        }
+    },
+    "require-dev": {
         "mikey179/vfsStream": "v1.1.0"
     }
 }
