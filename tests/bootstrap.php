@@ -1,17 +1,12 @@
 <?php
 /**
- * @author kamil.dziedzic
+ * This file is part of ninja-mutex.
+ *
+ * (C) Kamil Dziedzic <arvenil@klecza.pl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
-// TODO: check include path
-ini_set(
-    'include_path',
-    join(
-        PATH_SEPARATOR,
-        array(
-            ini_get('include_path'),
-            __DIR__ ,
-            __DIR__ . DIRECTORY_SEPARATOR . '../src',
-            __DIR__ . DIRECTORY_SEPARATOR . '../vendor',
-        )
-    )
-);
+
+$loader = require_once __DIR__ . "/../vendor/autoload.php";
+$loader->add('NinjaMutex\\', __DIR__);
