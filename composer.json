@@ -15,6 +15,9 @@
             "NinjaMutex": "src/"
         }
     },
+    "require": {
+        "php": ">=5.3.0"
+    },
     "require-dev": {
         "mikey179/vfsStream": "v1.1.0"
     }
