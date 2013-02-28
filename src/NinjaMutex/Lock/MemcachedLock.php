@@ -9,21 +9,21 @@
  */
 namespace NinjaMutex\Lock;
 
-use Memcache;
+use Memcached;
 use NinjaMutex\Lock\MemcacheLockAbstract;
 
 /**
- * Lock implementor using Memcache
+ * Lock implementor using Memcached
  *
  * @author Kamil Dziedzic <arvenil@klecza.pl>
  */
-class MemcacheLock extends MemcacheLockAbstract
+class MemcachedLock extends MemcacheLockAbstract
 {
     /**
-     * @param Memcache $memcache
+     * @param Memcached $memcached
      */
-    public function __construct(Memcache $memcache)
+    public function __construct(Memcached $memcached)
     {
-        parent::__construct($memcache);
+        parent::__construct($memcached);
     }
 }
