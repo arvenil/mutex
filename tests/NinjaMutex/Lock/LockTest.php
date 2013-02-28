@@ -11,6 +11,11 @@ namespace NinjaMutex\Lock;
 
 use NinjaMutex\AbstractTest;
 
+/**
+ * Tests for Locks
+ *
+ * @author Kamil Dziedzic <arvenil@klecza.pl>
+ */
 class LockTest extends AbstractTest
 {
     /**

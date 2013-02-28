@@ -27,7 +27,13 @@ class MockMemcached extends Memcached
     {
     }
 
-    public function add($key, $value)
+    /**
+     * @param string $key
+     * @param mixed $value
+     * @param null $expiration
+     * @return bool
+     */
+    public function add($key, $value, $expiration = null)
     {
         if (false === $this->get($key)) {
             self::$data[$key] = (string)$value;
@@ -37,7 +43,13 @@ class MockMemcached extends Memcached
         return false;
     }
 
-    public function get($key)
+    /**
+     * @param string $key
+     * @param null $cache_cb
+     * @param null $cas_token
+     * @return bool|mixed|string
+     */
+    public function get($key, $cache_cb = null, &$cas_token = null)
     {
         if (!isset(self::$data[$key])) {
             return false;
@@ -46,7 +58,12 @@ class MockMemcached extends Memcached
         return (string)self::$data[$key];
     }
 
-    public function delete($key)
+    /**
+     * @param string $key
+     * @param null $time
+     * @return bool
+     */
+    public function delete($key, $time = null)
     {
         unset(self::$data[$key]);
         return true;

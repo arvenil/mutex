@@ -27,6 +27,11 @@ class MockMemcache extends Memcache
     {
     }
 
+    /**
+     * @param string $key
+     * @param mixed $value
+     * @return bool
+     */
     public function add($key, $value)
     {
         if (false === $this->get($key)) {
@@ -37,6 +42,10 @@ class MockMemcache extends Memcache
         return false;
     }
 
+    /**
+     * @param string $key
+     * @return array|bool|string
+     */
     public function get($key)
     {
         if (!isset(self::$data[$key])) {
@@ -46,6 +55,10 @@ class MockMemcache extends Memcache
         return (string)self::$data[$key];
     }
 
+    /**
+     * @param string $key
+     * @return bool|void
+     */
     public function delete($key)
     {
         unset(self::$data[$key]);

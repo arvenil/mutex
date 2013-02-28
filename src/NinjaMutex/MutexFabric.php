@@ -24,6 +24,10 @@ class MutexFabric
     protected $implementors = array();
     protected $mutexes = array();
 
+    /**
+     * @param string $lockImplementorName
+     * @param $lockImplementor
+     */
     public function __construct($lockImplementorName, LockInterface $lockImplementor)
     {
         $this->registerLockImplementor($lockImplementorName, $lockImplementor);
@@ -48,6 +52,9 @@ class MutexFabric
         $this->implementors[$name] = $implementor;
     }
 
+    /**
+     * @param string $registeredLockImplementorName
+     */
     public function setDefaultLockImplementorName($registeredLockImplementorName)
     {
         $this->defaultLockImplementorName = $registeredLockImplementorName;
@@ -78,6 +85,10 @@ class MutexFabric
         return $this->mutexes[$registeredLockImplementorName][$name];
     }
 
+    /**
+     * @param string $name
+     * @param string $registeredLockImplementorName
+     */
     protected function createMutex($name, $registeredLockImplementorName)
     {
         $this->mutexes[$registeredLockImplementorName][$name] = new Mutex($name, $this->implementors[$registeredLockImplementorName]);

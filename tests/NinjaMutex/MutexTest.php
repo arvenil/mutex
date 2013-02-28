@@ -14,6 +14,11 @@ use NinjaMutex\Lock\LockAbstract;
 use NinjaMutex\Lock\LockInterface;
 use NinjaMutex\Mutex;
 
+/**
+ * Tests for Mutex
+ *
+ * @author Kamil Dziedzic <arvenil@klecza.pl>
+ */
 class MutexTest extends AbstractTest
 {
     /**

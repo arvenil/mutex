@@ -79,6 +79,10 @@ class MySqlLock extends LockAbstract
         return $locked;
     }
 
+    /**
+     * @param string $name
+     * @return bool
+     */
     protected function getLock($name)
     {
         return !$this->isLocked($name) && $this->pdo[$name]->query(
@@ -136,6 +140,10 @@ class MySqlLock extends LockAbstract
         )->fetch();
     }
 
+    /**
+     * @param string $name
+     * @return bool
+     */
     protected function setupPDO($name)
     {
         if (isset($this->pdo[$name])) {

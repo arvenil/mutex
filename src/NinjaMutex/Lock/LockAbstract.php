@@ -66,5 +66,4 @@ abstract class LockAbstract implements LockInterface
     {
         return $this->lockInformation;
     }
-
 }

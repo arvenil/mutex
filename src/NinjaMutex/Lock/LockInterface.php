@@ -18,7 +18,7 @@ interface LockInterface
 {
 
     /**
-     * @param $name
+     * @param string $name
      * @param null|int $timeout
      * @return bool
      */

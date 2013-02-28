@@ -22,6 +22,9 @@ class FlockLock extends LockAbstract
     protected $files = array();
     protected $filesHasLock = array();
 
+    /**
+     * @param string $dirname
+     */
     public function __construct($dirname)
     {
         parent::__construct();
@@ -61,12 +64,17 @@ class FlockLock extends LockAbstract
         return $locked;
     }
 
+    /**
+     * @param string $name
+     * @param int $options
+     * @return bool
+     */
     protected function getLock($name, $options)
     {
         return empty($this->filesHasLock[$name]) && flock(
             $this->files[$name],
             $options
-        ) && $this->filesHasLock[$name] = true;
+        ) && ($this->filesHasLock[$name] = true);
     }
 
     /**
@@ -77,7 +85,7 @@ class FlockLock extends LockAbstract
      */
     public function releaseLock($name)
     {
-        if (isset($this->files[$name])){
+        if (isset($this->files[$name])) {
             flock($this->files[$name], LOCK_UN); // @todo Can LOCK_UN fail?
             $this->filesHasLock[$name] = false;
             return true;
@@ -86,11 +94,19 @@ class FlockLock extends LockAbstract
         return false;
     }
 
+    /**
+     * @param string $name
+     * @return string
+     */
     protected function getFilePath($name)
     {
         return $this->dirname . DIRECTORY_SEPARATOR . $name . '.lock';
     }
 
+    /**
+     * @param string $name
+     * @return bool
+     */
     private function setupFileHandle($name)
     {
         if (isset($this->files[$name])) {

@@ -16,5 +16,4 @@ namespace NinjaMutex;
  */
 class MutexException extends \Exception
 {
-
 }

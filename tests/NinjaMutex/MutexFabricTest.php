@@ -13,6 +13,11 @@ use NinjaMutex\AbstractTest;
 use NinjaMutex\Lock\LockInterface;
 use NinjaMutex\MutexFabric;
 
+/**
+ * Tests for MutexFabric
+ *
+ * @author Kamil Dziedzic <arvenil@klecza.pl>
+ */
 class MutexFabricTest extends AbstractTest
 {
     /**
@@ -50,7 +55,7 @@ class MutexFabricTest extends AbstractTest
 
     /**
      * @dataProvider lockImplementorProvider
-     * @expectedException NinjaMutex\MutexException
+     * @expectedException \NinjaMutex\MutexException
      * @param LockInterface $lockImplementor
      */
     public function testThrowExceptionOnDuplicateImplementorName(LockInterface $lockImplementor)

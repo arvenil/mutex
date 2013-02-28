@@ -38,7 +38,7 @@ abstract class MemcacheLockAbstract extends LockAbstract
 
     public function __destruct()
     {
-        foreach($this->keys as $name) {
+        foreach($this->keys as $name => $v) {
             $this->releaseLock($name);
         }
     }
@@ -68,9 +68,13 @@ abstract class MemcacheLockAbstract extends LockAbstract
         return $locked;
     }
 
+    /**
+     * @param string $name
+     * @return bool
+     */
     protected function getLock($name)
     {
-        return empty($this->keys[$name]) && $this->memcache->add($name, serialize($this->getLockInformation())) && $this->keys[$name] = $name;
+        return empty($this->keys[$name]) && $this->memcache->add($name, serialize($this->getLockInformation())) && ($this->keys[$name] = true);
     }
 
     /**
