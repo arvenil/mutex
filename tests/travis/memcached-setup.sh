@@ -1,6 +1,6 @@
 #!/bin/sh
 
-install_memcache() {
+install_memcached() {
     if [ $(expr "${TRAVIS_PHP_VERSION}" ">=" "5.5") -eq 1 ]; then
         MEMCACHED_VERSION="2.1.0"
         wget "http://pecl.php.net/get/memcached-${MEMCACHED_VERSION}.tgz" &&
@@ -13,4 +13,4 @@ install_memcache() {
     return $?
 }
 
-install_memcache > ~/memcache.log || ( echo "=== MEMCACHE BUILD FAILED ==="; cat ~/memcache.log )
+install_memcached > ~/memcached.log || ( echo "=== MEMCACHED BUILD FAILED ==="; cat ~/memcached.log )
