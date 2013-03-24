@@ -19,6 +19,14 @@
         "php": ">=5.3.0"
     },
     "require-dev": {
-        "mikey179/vfsStream": "v1.1.0"
+        "mikey179/vfsStream": "v1.1.0",
+        "ext-memcache": "*",
+        "ext-memcached": "*",
+        "ext-pdo_mysql": "*"
+    },
+    "suggest" : {
+        "ext-memcache": "Create mutex using memcache extension",
+        "ext-memcached": "Create mutex using memcached extension",
+        "ext-pdo_mysql": "Create mutex using MySql"
     }
 }
