@@ -6,6 +6,7 @@ install_memcached() {
     if [ $(expr "${TRAVIS_PHP_VERSION}" ">=" "5.5") -eq 1 ]; then
         MEMCACHED_VERSION="2.1.0"
         LIBMEMCACHED_VERSION="1.0.16"
+        sudo apt-get remove libmemcached6 libmemcached10 libmemcached-dev &&
         sudo apt-get install libevent-dev libcloog-ppl0 &&
         wget "https://launchpad.net/libmemcached/1.0/${LIBMEMCACHED_VERSION}/+download/libmemcached-${LIBMEMCACHED_VERSION}.tar.gz" &&
         tar xzf "libmemcached-${LIBMEMCACHED_VERSION}.tar.gz" &&
