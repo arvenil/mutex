@@ -11,6 +11,5 @@ services:
 before_script:
  - ./tests/travis/composer-setup.sh
  - ./tests/travis/mysql-setup.sh
- - ./tests/travis/memcache-setup.sh
 
 script: phpunit
