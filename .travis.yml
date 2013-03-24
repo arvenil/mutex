@@ -9,8 +9,8 @@ services:
  - memcached
 
 before_script:
+ - ./tests/travis/memcache-setup.sh
  - ./tests/travis/composer-setup.sh
  - ./tests/travis/mysql-setup.sh
- - ./tests/travis/memcache-setup.sh
 
 script: phpunit
