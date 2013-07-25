@@ -1,6 +1,6 @@
 ## About
 
-ninja-mutex is a simple to use mutex implementation for php. It supports different adapters (flock, memcache, mysql, ...) so you can setup it as you wish. All adapters (if set up properly) can be used in multi server environment - in other words lock is shared between web servers.
+ninja-mutex is a simple to use mutex implementation for php. It supports different adapters (flock, memcache, mysql, redis, ...) so you can setup it as you wish. All adapters (if set up properly) can be used in multi server environment - in other words lock is shared between web servers.
 
 ## Usage
 

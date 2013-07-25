@@ -1,6 +1,6 @@
 {
     "name": "arvenil/ninja-mutex",
-    "description": "Simple to use mutex implementation that can use flock, memcache, memcached or mysql for locking",
+    "description": "Simple to use mutex implementation that can use flock, memcache, memcached, mysql or redis for locking",
     "homepage" : "https://github.com/arvenil/ninja-mutex",
     "keywords" : ["mutex", "lock", "locking", "flock", "memcache", "memcached", "mysql"],
     "license": "MIT",
