@@ -18,6 +18,9 @@ use NinjaMutex\Lock\MySqlLock;
 use NinjaMutex\Mock\MockMemcache;
 use NinjaMutex\Mock\MockMemcached;
 use NinjaMutex\Mock\MockPDO;
+use NinjaMutex\Mock\MockPredisClient;
+use NinjaMutex\Lock\PredisRedisLock;
+use Predis;
 use org\bovigo\vfs;
 
 abstract class AbstractTest extends \PHPUnit_Framework_TestCase
@@ -56,6 +59,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
         $data[] = array(new MemcacheLock($memcacheMock));
         $data[] = array(new MemcachedLock($memcachedMock));
         $data[] = array(new MySqlLock('', '', '', 'NinjaMutex\Mock\MockPDO'));
+        $data[] = array(new PredisRedisLock(new MockPredisClient()));
 
         // Real interfaces
         $memcache = new Memcache();
@@ -66,6 +70,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
         $data[] = array(new MemcachedLock($memcached));
         $data[] = array(new MemcacheLock($memcache));
         $data[] = array(new MySqlLock('root', '', '127.0.0.1'));
+        $data[] = array(new PredisRedisLock(new Predis\Client()));
 
         return $data;
     }

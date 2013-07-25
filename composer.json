@@ -20,11 +20,13 @@
     },
     "require-dev": {
         "mikey179/vfsStream": "v1.1.0",
+        "predis/predis": "v0.8.3",
         "ext-memcache": "*",
         "ext-memcached": "*",
         "ext-pdo_mysql": "*"
     },
     "suggest" : {
+        "predis/predis" : "Create mutex using Predis (client library for Redis)",
         "ext-memcache": "Create mutex using memcache extension",
         "ext-memcached": "Create mutex using memcached extension",
         "ext-pdo_mysql": "Create mutex using MySql"
