@@ -76,8 +76,8 @@ class Mutex
     public function releaseLock()
     {
         if ($this->acquired) {
-            if ($this->counter > 1) {
-                $this->counter--;
+            $this->counter--;
+            if ($this->counter > 0) {
                 return true;
             }
 
