@@ -168,4 +168,24 @@ class MutexTest extends AbstractTest
         $this->assertTrue($firstMutex->isAcquired());
         $this->assertTrue($firstMutex->isLocked());
     }
+
+    /**
+     * https://github.com/arvenil/ninja-mutex/pull/1
+     *
+     * @dataProvider lockImplementorProvider
+     * @param LockInterface $lockImplementor
+     */
+    public function testIfMutexIsReusableAfterSeveralAcquireReleaseCycles(LockInterface $lockImplementor) {
+        $firstMutex = new Mutex('forfiter', $lockImplementor);
+        $firstMutex->acquireLock();
+        $firstMutex->releaseLock();
+        $firstMutex->acquireLock();
+        $firstMutex->releaseLock();
+
+        $secondMutex = new Mutex('forfiter', $lockImplementor);
+        $this->assertTrue($secondMutex->acquireLock());
+
+        // cleanup
+        $secondMutex->releaseLock();
+    }
 }
