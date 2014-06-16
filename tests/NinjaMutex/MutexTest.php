@@ -196,7 +196,8 @@ class MutexTest extends AbstractTest
      * @expectedException NinjaMutex\MutexException
      */
     public function testIfMutexDestructorThrowsWhenBackendIsUnavailable() {
-        $lockImplementor = new PredisRedisLock(new MockPredisClient());
+        $predisMock = new MockPredisClient();
+        $lockImplementor = new PredisRedisLock($predisMock);
         $mutex = new Mutex('forfiter', $lockImplementor);
 
         $this->assertFalse($mutex->isAcquired());
@@ -206,7 +207,7 @@ class MutexTest extends AbstractTest
         $this->assertTrue($mutex->isAcquired());
 
         // make backend unavailable
-        MockPredisClient::setAvailable(false);
+        $predisMock->setAvailable(false);
         // explicit dtor call, should throw MutexException
         $mutex->__destruct();
     }
