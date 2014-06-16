@@ -10,6 +10,7 @@
 namespace NinjaMutex;
 
 use NinjaMutex\Lock\LockInterface;
+use NinjaMutex\MutexException;
 
 /**
  * Mutex
@@ -18,13 +19,6 @@ use NinjaMutex\Lock\LockInterface;
  */
 class Mutex
 {
-    /**
-     * Is mutex acquired?
-     *
-     * @var bool
-     */
-    protected $acquired = false;
-
     /**
      * Lock implementor
      *
@@ -62,9 +56,10 @@ class Mutex
      */
     public function acquireLock($timeout = null)
     {
-        if ($this->counter > 0 || $this->lockImplementor->acquireLock($this->name, $timeout)) {
+        if ($this->counter > 0 ||
+            $this->lockImplementor->acquireLock($this->name, $timeout)) {
             $this->counter++;
-            return $this->acquired = true;
+            return true;
         }
 
         return false;
@@ -75,23 +70,27 @@ class Mutex
      */
     public function releaseLock()
     {
-        if ($this->acquired) {
+        if ($this->counter > 0) {
             $this->counter--;
-            if ($this->counter > 0) {
+            if ($this->counter > 0 ||
+                $this->lockImplementor->releaseLock($this->name)) {
                 return true;
             }
-
-            return !($this->acquired = !$this->lockImplementor->releaseLock($this->name));
+            $this->counter++;
         }
-
         return false;
     }
 
     public function __destruct()
     {
         // If we acquired lock then we should release it
-        while ($this->acquired) {
-            $this->releaseLock();
+        while ($this->counter > 0) {
+            if (!$this->releaseLock()) {
+                throw new MutexException(sprintf(
+                    'Cannot release lock: %s',
+                    $this->name
+                ));
+            }
         }
     }
 
@@ -102,7 +101,7 @@ class Mutex
      */
     public function isAcquired()
     {
-        return $this->acquired;
+        return $this->counter > 0;
     }
 
     /**
