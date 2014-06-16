@@ -23,6 +23,12 @@ class MockPredisClient extends Predis\Client
      */
     protected static $data = array();
 
+    /**
+     * Whether the service is available
+     * @var boolean
+     */
+    protected static $available = true;
+
     public function __construct()
     {
     }
@@ -34,6 +40,9 @@ class MockPredisClient extends Predis\Client
      */
     public function setnx($key, $value)
     {
+        if (!self::$available) {
+            return false;
+        }
         if (null === $this->get($key)) {
             self::$data[$key] = (string)$value;
             return true;
@@ -48,6 +57,9 @@ class MockPredisClient extends Predis\Client
      */
     public function get($key)
     {
+        if (!self::$available) {
+            return false;
+        }
         if (!isset(self::$data[$key])) {
             return null;
         }
@@ -61,7 +73,18 @@ class MockPredisClient extends Predis\Client
      */
     public function del($key)
     {
+        if (!self::$available) {
+            return false;
+        }
         unset(self::$data[$key]);
         return true;
+    }
+
+    /**
+     * @param boolean $b
+     */
+    public function setAvailable($b = true)
+    {
+        self::$available = (bool) $b;
     }
 }
