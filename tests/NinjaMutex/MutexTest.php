@@ -12,6 +12,9 @@ namespace NinjaMutex;
 use NinjaMutex\AbstractTest;
 use NinjaMutex\Lock\LockAbstract;
 use NinjaMutex\Lock\LockInterface;
+use NinjaMutex\Mock\MockPredisClient;
+use NinjaMutex\Lock\PredisRedisLock;
+use NinjaMutex\MutexException;
 use NinjaMutex\Mutex;
 
 /**
@@ -187,5 +190,24 @@ class MutexTest extends AbstractTest
 
         // cleanup
         $secondMutex->releaseLock();
+    }
+
+    /**
+     * @expectedException NinjaMutex\MutexException
+     */
+    public function testIfMutexDestructorThrowsWhenBackendIsUnavailable() {
+        $lockImplementor = new PredisRedisLock(new MockPredisClient());
+        $mutex = new Mutex('forfiter', $lockImplementor);
+
+        $this->assertFalse($mutex->isAcquired());
+        $mutex->acquireLock();
+        $this->assertTrue($mutex->isAcquired());
+        $mutex->acquireLock();
+        $this->assertTrue($mutex->isAcquired());
+
+        // make backend unavailable
+        MockPredisClient::setAvailable(false);
+        // explicit dtor call, should throw MutexException
+        $mutex->__destruct();
     }
 }
