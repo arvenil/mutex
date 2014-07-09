@@ -7,6 +7,7 @@ php:
 
 services:
  - memcached
+ - redis-server
 
 before_script:
  - ./tests/travis/memcache-setup.sh
