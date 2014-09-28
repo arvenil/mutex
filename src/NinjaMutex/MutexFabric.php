@@ -10,8 +10,6 @@
 namespace NinjaMutex;
 
 use NinjaMutex\Lock\LockInterface;
-use NinjaMutex\Mutex;
-use NinjaMutex\MutexException;
 
 /**
  * Mutex fabric

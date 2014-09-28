@@ -10,7 +10,6 @@
 namespace NinjaMutex\Lock;
 
 use PDO;
-use NinjaMutex\Lock\LockAbstract;
 
 /**
  * Lock implementor using MySql

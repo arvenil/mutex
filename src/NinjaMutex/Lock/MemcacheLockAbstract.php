@@ -9,7 +9,7 @@
  */
 namespace NinjaMutex\Lock;
 
-use NinjaMutex\Lock\LockAbstract;
+use NinjaMutex\UnrecoverableMutexException;
 
 /**
  * Abstract for lock implementor using Memcache or Memcached
@@ -36,10 +36,26 @@ abstract class MemcacheLockAbstract extends LockAbstract
         $this->memcache = $memcache;
     }
 
+    /**
+     * Try to release any obtained locks when object is destroyed
+     *
+     * This is a safe guard for cases when your php script dies unexpectedly.
+     * It's not guaranteed it will work either.
+     *
+     * You should not depend on __destruct() to release your locks,
+     * instead release them with `$released = $this->releaseLock()`A
+     * and check `$released` if lock was properly released
+     */
     public function __destruct()
     {
         foreach($this->keys as $name => $v) {
-            $this->releaseLock($name);
+            $released = $this->releaseLock($name);
+            if (!$released) {
+                throw new UnrecoverableMutexException(sprintf(
+                    'Cannot release lock in Memchache __destruct(): %s',
+                    $name
+                ));
+            }
         }
     }
 

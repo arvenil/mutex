@@ -7,22 +7,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace NinjaMutex\Lock;
-
-use Memcached;
+namespace NinjaMutex;
 
 /**
- * Lock implementor using Memcached
+ * Unrecoverable Mutex exception
+ *
+ * You shouldn't try to catch it unless you really know what are you doing
+ * This kind of exception suggest you messed up your code and you should fix it
  *
  * @author Kamil Dziedzic <arvenil@klecza.pl>
  */
-class MemcachedLock extends MemcacheLockAbstract
+class UnrecoverableMutexException extends MutexException
 {
-    /**
-     * @param Memcached $memcached
-     */
-    public function __construct(Memcached $memcached)
-    {
-        parent::__construct($memcached);
-    }
 }

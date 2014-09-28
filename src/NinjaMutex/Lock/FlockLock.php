@@ -9,8 +9,6 @@
  */
 namespace NinjaMutex\Lock;
 
-use NinjaMutex\Lock\LockAbstract;
-
 /**
  * Lock implementor using flock
  *
@@ -128,6 +126,16 @@ class FlockLock extends LockAbstract
         $this->filesHasLock = array();
     }
 
+    /**
+     * Try to release any obtained locks when object is destroyed
+     *
+     * This is a safe guard for cases when your php script dies unexpectedly.
+     * It's not guaranteed it will work either.
+     *
+     * You should not depend on __destruct() to release your locks,
+     * instead release them with `$released = $this->releaseLock()`A
+     * and check `$released` if lock was properly released
+     */
     public function __destruct()
     {
         while (null !== $file = array_pop($this->files)) {

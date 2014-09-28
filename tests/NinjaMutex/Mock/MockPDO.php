@@ -9,7 +9,6 @@
  */
 namespace NinjaMutex\Mock;
 
-use NinjaMutex\Mock\MockPDOStatement;
 use PDO;
 
 /**

@@ -81,10 +81,10 @@ class MockPredisClient extends Predis\Client
     }
 
     /**
-     * @param boolean $b
+     * @param bool $available
      */
-    public function setAvailable($b = true)
+    public function setAvailable($available)
     {
-        $this->available = (bool) $b;
+        $this->available = (bool) $available;
     }
 }

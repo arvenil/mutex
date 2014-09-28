@@ -10,7 +10,6 @@
 namespace NinjaMutex;
 
 use NinjaMutex\Lock\LockInterface;
-use NinjaMutex\MutexException;
 
 /**
  * Mutex
@@ -81,13 +80,23 @@ class Mutex
         return false;
     }
 
+    /**
+     * Try to release any obtained locks when object is destroyed
+     *
+     * This is a safe guard for cases when your php script dies unexpectedly.
+     * It's not guaranteed it will work either.
+     *
+     * You should not depend on __destruct() to release your locks,
+     * instead release them with `$released = $this->releaseLock()`A
+     * and check `$released` if lock was properly released
+     */
     public function __destruct()
     {
-        // If we acquired lock then we should release it
-        while ($this->counter > 0) {
-            if (!$this->releaseLock()) {
-                throw new MutexException(sprintf(
-                    'Cannot release lock: %s',
+        while ($this->isAcquired()) {
+            $released = $this->releaseLock();
+            if (!$released) {
+                throw new UnrecoverableMutexException(sprintf(
+                    'Cannot release lock in Mutex __destruct(): %s',
                     $this->name
                 ));
             }

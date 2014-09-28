@@ -17,7 +17,6 @@ use NinjaMutex\Lock\MemcachedLock;
 use NinjaMutex\Lock\MySqlLock;
 use NinjaMutex\Mock\MockMemcache;
 use NinjaMutex\Mock\MockMemcached;
-use NinjaMutex\Mock\MockPDO;
 use NinjaMutex\Mock\MockPredisClient;
 use NinjaMutex\Lock\PredisRedisLock;
 use Predis;

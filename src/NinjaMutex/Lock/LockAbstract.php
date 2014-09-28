@@ -9,8 +9,6 @@
  */
 namespace NinjaMutex\Lock;
 
-use NinjaMutex\Lock\LockInterface;
-
 /**
  * Abstract lock implementor
  *
