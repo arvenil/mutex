@@ -27,7 +27,7 @@ class MockPredisClient extends Predis\Client
      * Whether the service is available
      * @var boolean
      */
-    private $available = true;
+    protected $available = true;
 
     public function __construct()
     {

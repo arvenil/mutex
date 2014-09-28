@@ -105,7 +105,7 @@ class FlockLock extends LockAbstract
      * @param string $name
      * @return bool
      */
-    private function setupFileHandle($name)
+    protected function setupFileHandle($name)
     {
         if (isset($this->files[$name])) {
             return true;

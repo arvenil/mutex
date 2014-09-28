@@ -29,7 +29,7 @@ class MockLock implements LockInterface
      * Whether the service is available
      * @var boolean
      */
-    private $available = true;
+    protected $available = true;
 
     /**
      * @param string $name
