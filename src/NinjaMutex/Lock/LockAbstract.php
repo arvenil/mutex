@@ -128,7 +128,7 @@ abstract class LockAbstract implements LockInterface
     /**
      * Information returned by this method allow to track down process which acquired lock
      * .
-     * @return array;
+     * @return array
      */
     protected function getLockInformation()
     {

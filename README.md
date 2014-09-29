@@ -4,6 +4,7 @@
 [![Code Climate](https://codeclimate.com/github/arvenil/ninja-mutex/badges/gpa.svg)](https://codeclimate.com/github/arvenil/ninja-mutex)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/arvenil/ninja-mutex/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/arvenil/ninja-mutex/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/arvenil/ninja-mutex/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/arvenil/ninja-mutex/?branch=master)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/15c5c748-f8d8-4b56-b536-a29a151aac6c/mini.png)](https://insight.sensiolabs.com/projects/15c5c748-f8d8-4b56-b536-a29a151aac6c)
 
 ## About
 
