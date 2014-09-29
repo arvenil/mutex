@@ -9,9 +9,7 @@
  */
 namespace NinjaMutex;
 
-use NinjaMutex\AbstractTest;
 use NinjaMutex\Lock\LockInterface;
-use NinjaMutex\MutexFabric;
 
 /**
  * Tests for MutexFabric

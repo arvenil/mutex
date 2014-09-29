@@ -7,22 +7,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace NinjaMutex\Lock;
-
-use Memcached;
+namespace NinjaMutex\Mock;
 
 /**
- * Lock implementor using Memcached
+ * Backend interface
  *
  * @author Kamil Dziedzic <arvenil@klecza.pl>
  */
-class MemcachedLock extends MemcacheLockAbstract
+interface PermanentServiceInterface
 {
+
     /**
-     * @param Memcached $memcached
+     * @param bool $available
      */
-    public function __construct(Memcached $memcached)
-    {
-        parent::__construct($memcached);
-    }
+    public function setAvailable($available);
 }

@@ -10,7 +10,6 @@
 namespace NinjaMutex\Lock;
 
 use Memcache;
-use NinjaMutex\Lock\MemcacheLockAbstract;
 
 /**
  * Lock implementor using Memcache

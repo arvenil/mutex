@@ -9,7 +9,6 @@
  */
 namespace NinjaMutex\Lock;
 
-use NinjaMutex\Lock\LockAbstract;
 use Predis;
 
 /**
@@ -25,7 +24,6 @@ class PredisRedisLock extends LockAbstract
      * @var
      */
     protected $client;
-    protected $keys = array();
 
     /**
      * @param $client Predis\Client
@@ -37,57 +35,31 @@ class PredisRedisLock extends LockAbstract
         $this->client = $client;
     }
 
-    public function __destruct()
-    {
-        foreach($this->keys as $name => $v) {
-            $this->releaseLock($name);
-        }
-    }
-
-    public function __clone() {
-        $this->keys = array();
-    }
-
     /**
-     * Acquire lock
-     *
-     * @param string $name name of lock
-     * @param null|int $timeout 1. null if you want blocking lock
-     *                          2. 0 if you want just lock and go
-     *                          3. $timeout > 0 if you want to wait for lock some time (in milliseconds)
+     * @param  string $name
+     * @param  bool   $blocking
      * @return bool
      */
-    public function acquireLock($name, $timeout = null)
+    protected function getLock($name, $blocking)
     {
-        $start = microtime(true);
-        $end = $start + $timeout / 1000;
-        $locked = false;
-        while (!($locked = $this->getLock($name)) && $timeout > 0 && microtime(true) < $end) {
-            usleep(static::USLEEP_TIME);
+        if (!$this->client->setnx($name, serialize($this->getLockInformation()))) {
+            return false;
         }
 
-        return $locked;
-    }
-
-    /**
-     * @param string $name
-     * @return bool
-     */
-    protected function getLock($name)
-    {
-        return empty($this->keys[$name]) && $this->client->setnx($name, serialize($this->getLockInformation())) && ($this->keys[$name] = true);
+        return true;
     }
 
     /**
      * Release lock
      *
-     * @param string $name name of lock
+     * @param  string $name name of lock
      * @return bool
      */
     public function releaseLock($name)
     {
-        if (isset($this->keys[$name]) && $this->client->del($name)) {
-            unset($this->keys[$name]);
+        if (isset($this->locks[$name]) && $this->client->del($name)) {
+            unset($this->locks[$name]);
+
             return true;
         }
 
@@ -97,7 +69,7 @@ class PredisRedisLock extends LockAbstract
     /**
      * Check if lock is locked
      *
-     * @param string $name name of lock
+     * @param  string $name name of lock
      * @return bool
      */
     public function isLocked($name)

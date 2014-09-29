@@ -9,19 +9,21 @@
  */
 namespace NinjaMutex\Mock;
 
-use Predis;
+use NinjaMutex\Lock\LockInterface;
 
 /**
- * Mock Predis\Client to mimic Predis functionality
+ * Mock to mimic Lock functionality
  *
  * @author Kamil Dziedzic <arvenil@klecza.pl>
  */
-class MockPredisClient extends Predis\Client implements PermanentServiceInterface
+class MockLock implements LockInterface
 {
     /**
-     * @var string[]
+     * Lock counter to protect against recursive deadlock
+     *
+     * @var integer
      */
-    protected static $data = array();
+    protected $counter = 0;
 
     /**
      * Whether the service is available
@@ -29,60 +31,55 @@ class MockPredisClient extends Predis\Client implements PermanentServiceInterfac
      */
     protected $available = true;
 
-    public function __construct()
-    {
-    }
-
     /**
-     * @param  string $key
-     * @param  mixed  $value
+     * @param  string   $name
+     * @param  null|int $timeout
      * @return bool
      */
-    public function setnx($key, $value)
+    public function acquireLock($name, $timeout = null)
     {
         if (!$this->available) {
             return false;
         }
+        $this->counter++;
 
-        if (null === $this->get($key)) {
-            self::$data[$key] = (string) $value;
+        return true;
+    }
 
-            return true;
+    /**
+     * @param $name
+     * @return bool
+     */
+    public function releaseLock($name)
+    {
+        if (!$this->available) {
+            return false;
+        }
+        if ($this->counter > 0) {
+            $this->counter--;
+            if ($this->counter > 0) {
+                return true;
+            }
+            $this->counter++;
         }
 
         return false;
     }
 
     /**
-     * @param  string $key
-     * @return mixed
-     */
-    public function get($key)
-    {
-        if (!$this->available) {
-            return false;
-        }
-
-        if (!isset(self::$data[$key])) {
-            return null;
-        }
-
-        return (string) self::$data[$key];
-    }
-
-    /**
-     * @param  string $key
+     * @param $name
      * @return bool
      */
-    public function del($key)
+    public function isLocked($name)
     {
         if (!$this->available) {
             return false;
         }
+        if ($this->counter > 0) {
+            return true;
+        }
 
-        unset(self::$data[$key]);
-
-        return true;
+        return false;
     }
 
     /**

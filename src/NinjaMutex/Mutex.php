@@ -19,13 +19,6 @@ use NinjaMutex\Lock\LockInterface;
 class Mutex
 {
     /**
-     * Is mutex acquired?
-     *
-     * @var bool
-     */
-    protected $acquired = false;
-
-    /**
      * Lock implementor
      *
      * @var LockInterface
@@ -47,7 +40,7 @@ class Mutex
     protected $counter = 0;
 
     /**
-     * @param string $name
+     * @param string        $name
      * @param LockInterface $lockImplementor
      */
     public function __construct($name, LockInterface $lockImplementor)
@@ -57,14 +50,16 @@ class Mutex
     }
 
     /**
-     * @param int|null $timeout
+     * @param  int|null $timeout
      * @return bool
      */
     public function acquireLock($timeout = null)
     {
-        if ($this->counter > 0 || $this->lockImplementor->acquireLock($this->name, $timeout)) {
+        if ($this->counter > 0 ||
+            $this->lockImplementor->acquireLock($this->name, $timeout)) {
             $this->counter++;
-            return $this->acquired = true;
+
+            return true;
         }
 
         return false;
@@ -75,23 +70,38 @@ class Mutex
      */
     public function releaseLock()
     {
-        if ($this->acquired) {
+        if ($this->counter > 0) {
             $this->counter--;
-            if ($this->counter > 0) {
+            if ($this->counter > 0 ||
+                $this->lockImplementor->releaseLock($this->name)) {
                 return true;
             }
-
-            return !($this->acquired = !$this->lockImplementor->releaseLock($this->name));
+            $this->counter++;
         }
 
         return false;
     }
 
+    /**
+     * Try to release any obtained locks when object is destroyed
+     *
+     * This is a safe guard for cases when your php script dies unexpectedly.
+     * It's not guaranteed it will work either.
+     *
+     * You should not depend on __destruct() to release your locks,
+     * instead release them with `$released = $this->releaseLock()`A
+     * and check `$released` if lock was properly released
+     */
     public function __destruct()
     {
-        // If we acquired lock then we should release it
-        while ($this->acquired) {
-            $this->releaseLock();
+        while ($this->isAcquired()) {
+            $released = $this->releaseLock();
+            if (!$released) {
+                throw new UnrecoverableMutexException(sprintf(
+                    'Cannot release lock in Mutex __destruct(): %s',
+                    $this->name
+                ));
+            }
         }
     }
 
@@ -102,7 +112,7 @@ class Mutex
      */
     public function isAcquired()
     {
-        return $this->acquired;
+        return $this->counter > 0;
     }
 
     /**
