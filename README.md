@@ -1,4 +1,4 @@
-## About
+## About [![Build Status](https://travis-ci.org/arvenil/ninja-mutex.svg?branch=master)](https://travis-ci.org/arvenil/ninja-mutex) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/arvenil/ninja-mutex/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/arvenil/ninja-mutex/?branch=master) [![Code Coverage](https://scrutinizer-ci.com/g/arvenil/ninja-mutex/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/arvenil/ninja-mutex/?branch=master)
 
 ninja-mutex is a simple to use mutex implementation for php. It supports different adapters (flock, memcache, mysql, redis, ...) so you can setup it as you wish. All adapters (if set up properly) can be used in multi server environment - in other words lock is shared between web servers.
 
@@ -87,6 +87,4 @@ To run tests type in console:
 
 ## Something doesn't work
 
-[![Build Status](https://secure.travis-ci.org/arvenil/ninja-mutex.png?branch=master)](http://travis-ci.org/arvenil/ninja-mutex)
-
-However if it still doesn't work for you then feel free to fork project, fix bugs and finally request for pull
+Feel free to fork project, fix bugs and finally request for pull
