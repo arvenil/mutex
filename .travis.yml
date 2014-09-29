@@ -6,6 +6,11 @@ php:
  - 5.5
  - 5.6
 
+addons:
+    code_climate:
+        repo_token:
+            secure: "Q6doeyDpuEPJT+uXVS16YDBqrCFpBJ6NiOZ8iG0gDXwUbwQ7LFSHMCPiiT9pTCocgeVyODlrH5NCWDBNsHslp6kzUc4WNo8e/pifvvTO+mgAX2IbJOxCoK+mr/V6n6nJykcnroXARc7a/jqd32z7e0mxu3i+AwPBBWHzBsLEmy0="
+
 services:
  - memcached
  - redis-server
@@ -20,3 +25,4 @@ script: phpunit
 
 after_script:
   - vendor/bin/ocular code-coverage:upload --format=php-clover build/logs/clover.xml
+  - vendor/bin/test-reporter
