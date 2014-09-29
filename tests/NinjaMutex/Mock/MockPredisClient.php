@@ -16,7 +16,7 @@ use Predis;
  *
  * @author Kamil Dziedzic <arvenil@klecza.pl>
  */
-class MockPredisClient extends Predis\Client
+class MockPredisClient extends Predis\Client implements PermanentServiceInterface
 {
     /**
      * @var string[]
@@ -34,8 +34,8 @@ class MockPredisClient extends Predis\Client
     }
 
     /**
-     * @param string $key
-     * @param mixed $value
+     * @param  string $key
+     * @param  mixed  $value
      * @return bool
      */
     public function setnx($key, $value)
@@ -43,8 +43,10 @@ class MockPredisClient extends Predis\Client
         if (!$this->available) {
             return false;
         }
+
         if (null === $this->get($key)) {
-            self::$data[$key] = (string)$value;
+            self::$data[$key] = (string) $value;
+
             return true;
         }
 
@@ -52,7 +54,7 @@ class MockPredisClient extends Predis\Client
     }
 
     /**
-     * @param string $key
+     * @param  string $key
      * @return mixed
      */
     public function get($key)
@@ -60,15 +62,16 @@ class MockPredisClient extends Predis\Client
         if (!$this->available) {
             return false;
         }
+
         if (!isset(self::$data[$key])) {
             return null;
         }
 
-        return (string)self::$data[$key];
+        return (string) self::$data[$key];
     }
 
     /**
-     * @param string $key
+     * @param  string $key
      * @return bool
      */
     public function del($key)
@@ -76,7 +79,9 @@ class MockPredisClient extends Predis\Client
         if (!$this->available) {
             return false;
         }
+
         unset(self::$data[$key]);
+
         return true;
     }
 

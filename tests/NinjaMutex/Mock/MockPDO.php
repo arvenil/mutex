@@ -39,7 +39,7 @@ class MockPDO extends PDO
     }
 
     /**
-     * @param string $statement
+     * @param  string           $statement
      * @return MockPDOStatement
      */
     public function query($statement)
@@ -54,8 +54,8 @@ class MockPDO extends PDO
     }
 
     /**
-     * @param string $key
-     * @param int $timeout
+     * @param  string           $key
+     * @param  int              $timeout
      * @return MockPDOStatement
      */
     protected function _mock_get_lock($key, $timeout)
@@ -77,16 +77,18 @@ class MockPDO extends PDO
 
             self::$data[$key] = true;
             $this->current[$key] = true;
+
             return $this->_mock_pdo_statement->_mock_set_fetch("1");
         }
 
         // We use sleep because GET_LOCK(str,timeout) accept timeout in seconds
         sleep($timeout);
+
         return $this->_mock_pdo_statement->_mock_set_fetch("0");
     }
 
     /**
-     * @param string $key
+     * @param  string           $key
      * @return MockPDOStatement
      */
     protected function _mock_is_free_lock($key)
@@ -99,7 +101,7 @@ class MockPDO extends PDO
     }
 
     /**
-     * @param string $key
+     * @param  string           $key
      * @return MockPDOStatement
      */
     protected function _mock_release_lock($key)
@@ -107,8 +109,10 @@ class MockPDO extends PDO
         if (isset($this->current[$key])) {
             unset(self::$data[$key]);
             unset($this->current[$key]);
+
             return $this->_mock_pdo_statement->_mock_set_fetch("1");
         }
+
         return $this->_mock_pdo_statement->_mock_set_fetch("0");
     }
 

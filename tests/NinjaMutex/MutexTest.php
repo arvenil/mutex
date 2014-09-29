@@ -23,7 +23,8 @@ class MutexTest extends \PHPUnit_Framework_TestCase
      *
      * @expectedException NinjaMutex\UnrecoverableMutexException
      */
-    public function testIfMutexDestructorThrowsWhenBackendIsUnavailable() {
+    public function testIfMutexDestructorThrowsWhenBackendIsUnavailable()
+    {
         $lockImplementor = new MockLock();
         $mutex = new Mutex('forfiter', $lockImplementor);
 

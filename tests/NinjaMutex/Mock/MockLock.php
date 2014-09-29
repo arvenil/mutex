@@ -32,15 +32,17 @@ class MockLock implements LockInterface
     protected $available = true;
 
     /**
-     * @param string $name
-     * @param null|int $timeout
+     * @param  string   $name
+     * @param  null|int $timeout
      * @return bool
      */
-    public function acquireLock($name, $timeout = null) {
+    public function acquireLock($name, $timeout = null)
+    {
         if (!$this->available) {
             return false;
         }
         $this->counter++;
+
         return true;
     }
 
@@ -48,7 +50,8 @@ class MockLock implements LockInterface
      * @param $name
      * @return bool
      */
-    public function releaseLock($name) {
+    public function releaseLock($name)
+    {
         if (!$this->available) {
             return false;
         }
@@ -57,11 +60,9 @@ class MockLock implements LockInterface
             if ($this->counter > 0) {
                 return true;
             }
-            if ($this->lockImplementor->releaseLock($this->name)) {
-                return true;
-            }
             $this->counter++;
         }
+
         return false;
     }
 
@@ -69,13 +70,15 @@ class MockLock implements LockInterface
      * @param $name
      * @return bool
      */
-    public function isLocked($name) {
+    public function isLocked($name)
+    {
         if (!$this->available) {
             return false;
         }
         if ($this->counter > 0) {
             return true;
         }
+
         return false;
     }
 

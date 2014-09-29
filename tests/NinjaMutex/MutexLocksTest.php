@@ -175,7 +175,8 @@ class MutexLocksTest extends AbstractTest
      * @dataProvider lockImplementorProvider
      * @param LockInterface $lockImplementor
      */
-    public function testIfMutexIsReusableAfterSeveralAcquireReleaseCycles(LockInterface $lockImplementor) {
+    public function testIfMutexIsReusableAfterSeveralAcquireReleaseCycles(LockInterface $lockImplementor)
+    {
         $firstMutex = new Mutex('forfiter', $lockImplementor);
         $firstMutex->acquireLock();
         $firstMutex->releaseLock();

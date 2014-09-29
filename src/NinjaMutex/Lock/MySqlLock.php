@@ -50,16 +50,17 @@ class MySqlLock extends LockAbstract
 
     public function __clone()
     {
+        parent::__clone();
         $this->pdo = array();
     }
 
     /**
      * Acquire lock
      *
-     * @param string $name name of lock
-     * @param null|int $timeout 1. null if you want blocking lock
-     *                          2. 0 if you want just lock and go
-     *                          3. $timeout > 0 if you want to wait for lock some time (in milliseconds)
+     * @param  string   $name    name of lock
+     * @param  null|int $timeout 1. null if you want blocking lock
+     *                           2. 0 if you want just lock and go
+     *                           3. $timeout > 0 if you want to wait for lock some time (in milliseconds)
      * @return bool
      */
     public function acquireLock($name, $timeout = null)
@@ -68,21 +69,15 @@ class MySqlLock extends LockAbstract
             return false;
         }
 
-        $start = microtime(true);
-        $end = $start + $timeout / 1000;
-        $locked = false;
-        while (!($locked = $this->getLock($name)) && $timeout > 0 && microtime(true) < $end) {
-            usleep(static::USLEEP_TIME);
-        }
-
-        return $locked;
+        return parent::acquireLock($name, $timeout);
     }
 
     /**
-     * @param string $name
+     * @param  string $name
+     * @param  bool   $blocking
      * @return bool
      */
-    protected function getLock($name)
+    protected function getLock($name, $blocking)
     {
         return !$this->isLocked($name) && $this->pdo[$name]->query(
             sprintf(
@@ -98,7 +93,7 @@ class MySqlLock extends LockAbstract
     /**
      * Release lock
      *
-     * @param string $name name of lock
+     * @param  string $name name of lock
      * @return bool
      */
     public function releaseLock($name)
@@ -107,7 +102,7 @@ class MySqlLock extends LockAbstract
             return false;
         }
 
-        return (bool)$this->pdo[$name]->query(
+        $released = (bool) $this->pdo[$name]->query(
             sprintf(
                 'SELECT RELEASE_LOCK("%s")',
                 $name
@@ -115,12 +110,20 @@ class MySqlLock extends LockAbstract
             PDO::FETCH_COLUMN,
             0
         )->fetch();
+
+        if (!$released) {
+            return false;
+        }
+
+        unset($this->locks[$name]);
+
+        return true;
     }
 
     /**
      * Check if lock is locked
      *
-     * @param string $name name of lock
+     * @param  string $name name of lock
      * @return bool
      */
     public function isLocked($name)
@@ -140,7 +143,7 @@ class MySqlLock extends LockAbstract
     }
 
     /**
-     * @param string $name
+     * @param  string $name
      * @return bool
      */
     protected function setupPDO($name)
@@ -150,6 +153,7 @@ class MySqlLock extends LockAbstract
         }
 
         $this->pdo[$name] = new $this->classname(sprintf('mysql:host=%s', $this->host), $this->user, $this->password);
+
         return true;
     }
 }

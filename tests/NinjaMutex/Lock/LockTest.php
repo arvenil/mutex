@@ -10,6 +10,8 @@
 namespace NinjaMutex\Lock;
 
 use NinjaMutex\AbstractTest;
+use NinjaMutex\Mock\PermanentServiceInterface;
+use NinjaMutex\UnrecoverableMutexException;
 
 /**
  * Tests for Locks
@@ -122,4 +124,38 @@ class LockTest extends AbstractTest
 
         $lockImplementor->releaseLock($name);
     }
+
+    /**
+     * @issue https://github.com/arvenil/ninja-mutex/pull/4
+     *
+     * @dataProvider lockImplementorWithBackendProvider
+     * @param LockInterface             $lockImplementor
+     * @param PermanentServiceInterface $backend
+     */
+    public function testIfLockDestructorThrowsWhenBackendIsUnavailable(LockInterface $lockImplementor, PermanentServiceInterface $backend)
+    {
+        $name = "forfiter";
+
+        $this->assertFalse($lockImplementor->isLocked($name));
+        $this->assertTrue($lockImplementor->acquireLock($name, 0));
+        $this->assertTrue($lockImplementor->isLocked($name));
+
+        // make backend unavailable
+        $backend->setAvailable(false);
+
+        try {
+            // explicit __destructor() call, should throw UnrecoverableMutexException
+            $lockImplementor->__destruct();
+        } catch (UnrecoverableMutexException $e) {
+            // make backend available again
+            $backend->setAvailable(true);
+            // release lock
+            $this->assertTrue($lockImplementor->releaseLock($name));
+
+            return;
+        }
+
+        $this->fail('An expected exception has not been raised.');
+    }
+
 }

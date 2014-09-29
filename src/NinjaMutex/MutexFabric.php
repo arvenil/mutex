@@ -33,8 +33,8 @@ class MutexFabric
 
     /**
      *
-     * @param string $name
-     * @param LockInterface $implementor
+     * @param  string         $name
+     * @param  LockInterface  $implementor
      * @throws MutexException
      */
     public function registerLockImplementor($name, LockInterface $implementor)
@@ -66,8 +66,8 @@ class MutexFabric
     /**
      * Create and/or get mutex
      *
-     * @param string $name
-     * @param string $registeredLockImplementorName
+     * @param  string $name
+     * @param  string $registeredLockImplementorName
      * @return Mutex
      */
     public function get($name, $registeredLockImplementorName = null)

@@ -40,7 +40,7 @@ class Mutex
     protected $counter = 0;
 
     /**
-     * @param string $name
+     * @param string        $name
      * @param LockInterface $lockImplementor
      */
     public function __construct($name, LockInterface $lockImplementor)
@@ -50,7 +50,7 @@ class Mutex
     }
 
     /**
-     * @param int|null $timeout
+     * @param  int|null $timeout
      * @return bool
      */
     public function acquireLock($timeout = null)
@@ -58,6 +58,7 @@ class Mutex
         if ($this->counter > 0 ||
             $this->lockImplementor->acquireLock($this->name, $timeout)) {
             $this->counter++;
+
             return true;
         }
 
@@ -77,6 +78,7 @@ class Mutex
             }
             $this->counter++;
         }
+
         return false;
     }
 

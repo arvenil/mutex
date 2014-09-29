@@ -68,79 +68,107 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
         return $data;
     }
 
+    public function lockImplementorWithBackendProvider()
+    {
+        $data = array(
+            // Just mocks
+            $this->provideMemcacheMockLock(),
+            $this->provideMemcachedMockLock(),
+            $this->providePredisRedisMockLock(),
+        );
+
+        return $data;
+    }
+
     /**
      * @return array
      */
-    protected function provideMemcacheMockLock() {
+    protected function provideMemcacheMockLock()
+    {
         $memcacheMock = new MockMemcache();
-        return array(new MemcacheLock($memcacheMock));
+
+        return array(new MemcacheLock($memcacheMock), $memcacheMock);
     }
 
     /**
      * @return array
      */
-    protected function provideMemcachedMockLock() {
+    protected function provideMemcachedMockLock()
+    {
         $memcachedMock = new MockMemcached();
-        return array(new MemcachedLock($memcachedMock));
+
+        return array(new MemcachedLock($memcachedMock), $memcachedMock);
     }
 
     /**
      * @return array
      */
-    protected function provideFlockMockLock() {
+    protected function provideFlockMockLock()
+    {
         return array(new FlockLock(vfs\vfsStream::url('nfs/')));
     }
 
     /**
      * @return array
      */
-    protected function provideMysqlMockLock() {
+    protected function provideMysqlMockLock()
+    {
         return array(new MySqlLock('', '', '', 'NinjaMutex\Mock\MockPDO'));
     }
 
     /**
      * @return array
      */
-    protected function providePredisRedisMockLock() {
-        return array(new PredisRedisLock(new MockPredisClient()));
+    protected function providePredisRedisMockLock()
+    {
+        $predisMock = new MockPredisClient();
+
+        return array(new PredisRedisLock($predisMock), $predisMock);
     }
 
     /**
      * @return array
      */
-    protected function provideMemcacheLock() {
+    protected function provideMemcacheLock()
+    {
         $memcache = new Memcache();
         $memcache->connect('127.0.0.1', 11211);
+
         return array(new MemcacheLock($memcache));
     }
 
     /**
      * @return array
      */
-    protected function provideMemcachedLock() {
+    protected function provideMemcachedLock()
+    {
         $memcached = new Memcached();
         $memcached->addServer('127.0.0.1', 11211);
+
         return array(new MemcachedLock($memcached));
     }
 
     /**
      * @return array
      */
-    protected function provideFlockLock() {
+    protected function provideFlockLock()
+    {
         return array(new FlockLock('/tmp/mutex/'));
     }
 
     /**
      * @return array
      */
-    protected function provideMysqlLock() {
+    protected function provideMysqlLock()
+    {
         return array(new MySqlLock('root', '', '127.0.0.1'));
     }
 
     /**
      * @return array
      */
-    protected function providePredisRedisLock() {
+    protected function providePredisRedisLock()
+    {
         return array(new PredisRedisLock(new Predis\Client()));
     }
 }
