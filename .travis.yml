@@ -9,7 +9,7 @@ php:
 addons:
     code_climate:
         repo_token:
-            secure: "Q6doeyDpuEPJT+uXVS16YDBqrCFpBJ6NiOZ8iG0gDXwUbwQ7LFSHMCPiiT9pTCocgeVyODlrH5NCWDBNsHslp6kzUc4WNo8e/pifvvTO+mgAX2IbJOxCoK+mr/V6n6nJykcnroXARc7a/jqd32z7e0mxu3i+AwPBBWHzBsLEmy0="
+            secure: "F0tPpoTZPMJkyQsElb2UKekfAcvE4P7/kAfW6/9sUF3jgNaRfob0kAyXAxf99n09+M5fI8VlFC0OEpmKGHUXez9EFMAqFeZ85eMePvXOX6EmloCPUY3LcX0tGefFQn402tSZCMdIzXwsjTYe5Ku4bGsH+etXRViX+teZmct7BBQ="
 
 services:
  - memcached
