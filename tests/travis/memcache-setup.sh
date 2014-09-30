@@ -1,9 +1,9 @@
 #!/bin/sh
 
 install_memcache() {
-    echo "extension=memcache.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s/.*:\s*//"`
+    echo "extension=memcache.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 
     return $?
 }
 
-install_memcache > ~/memcache.log || ( echo "=== MEMCACHE BUILD FAILED ==="; cat ~/memcache.log )
+install_memcache > ~/memcache.log || ( echo "=== MEMCACHE INSTALL FAILED ==="; cat ~/memcache.log; exit 1 )
