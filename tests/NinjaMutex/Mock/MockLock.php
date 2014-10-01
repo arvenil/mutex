@@ -57,10 +57,7 @@ class MockLock implements LockInterface
         }
         if ($this->counter > 0) {
             $this->counter--;
-            if ($this->counter > 0) {
-                return true;
-            }
-            $this->counter++;
+            return true;
         }
 
         return false;

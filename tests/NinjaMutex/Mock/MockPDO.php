@@ -68,7 +68,7 @@ class MockPDO extends PDO
         // SELECT IS_FREE_LOCK( 'a' ) , GET_LOCK( 'a', 0 ) , IS_FREE_LOCK( 'a' ) , GET_LOCK( 'a', 0 )
         // IS_FREE_LOCK('a') GET_LOCK('a', 0) IS_FREE_LOCK('a') GET_LOCK('a', 0)
         // 1                 1                0                 1
-        if (current($this->_mock_is_free_lock($key)) || isset($this->current[$key])) {
+        if ($this->_mock_is_free_lock($key)->fetch() || isset($this->current[$key])) {
             // This part is made to reflect behaviour that second GET_LOCK() releases all current locks
             foreach ($this->current as $k => $v) {
                 unset(self::$data[$k]);

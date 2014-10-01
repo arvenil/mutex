@@ -1,10 +1,12 @@
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
 [![GitHub version](https://badge.fury.io/gh/arvenil%2Fninja-mutex.svg)](http://badge.fury.io/gh/arvenil%2Fninja-mutex)
 [![Build Status](https://travis-ci.org/arvenil/ninja-mutex.svg?branch=master)](https://travis-ci.org/arvenil/ninja-mutex)
+[![HHVM Status](http://hhvm.h4cc.de/badge/arvenil/ninja-mutex.svg)](http://hhvm.h4cc.de/package/arvenil/ninja-mutex)
 [![Code Climate](https://codeclimate.com/github/arvenil/ninja-mutex/badges/gpa.svg)](https://codeclimate.com/github/arvenil/ninja-mutex)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/arvenil/ninja-mutex/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/arvenil/ninja-mutex/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/arvenil/ninja-mutex/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/arvenil/ninja-mutex/?branch=master)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/15c5c748-f8d8-4b56-b536-a29a151aac6c/mini.png)](https://insight.sensiolabs.com/projects/15c5c748-f8d8-4b56-b536-a29a151aac6c)
+[![Dependency Status](https://gemnasium.com/arvenil/ninja-mutex.svg)](https://gemnasium.com/arvenil/ninja-mutex)
 
 ## About
 
