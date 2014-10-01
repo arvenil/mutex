@@ -151,6 +151,8 @@ class LockTest extends AbstractTest
             $backend->setAvailable(true);
             // release lock
             $this->assertTrue($lockImplementor->releaseLock($name));
+            $this->assertFalse($lockImplementor->releaseLock($name));
+            $this->assertFalse($lockImplementor->isLocked($name));
 
             return;
         }
