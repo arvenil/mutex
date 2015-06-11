@@ -48,6 +48,9 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
         rmdir('/tmp/mutex/');
     }
 
+    /**
+     * @return array
+     */
     public function lockImplementorProvider()
     {
         $data = array(
@@ -68,6 +71,9 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
         return $data;
     }
 
+    /**
+     * @return array
+     */
     public function lockImplementorWithBackendProvider()
     {
         $data = array(
@@ -75,6 +81,22 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
             $this->provideMemcacheMockLock(),
             $this->provideMemcachedMockLock(),
             $this->providePredisRedisMockLock(),
+        );
+
+        return $data;
+    }
+
+    /**
+     * @return array
+     */
+    public function lockImplementorWithExpirationProvider()
+    {
+        $expiration = 2; // in seconds
+
+        $data = array(
+            // Just mocks
+            array($this->createMemcacheLock(), $this->createMemcacheLock($expiration), $expiration),
+            array($this->createMemcachedLock(), $this->createMemcachedLock($expiration), $expiration),
         );
 
         return $data;

@@ -160,4 +160,31 @@ class LockTest extends AbstractTest
         $this->fail('An expected exception has not been raised.');
     }
 
+    /**
+     * @issue https://github.com/arvenil/ninja-mutex/issues/12
+     * @medium
+     *
+     * @dataProvider lockImplementorWithExpirationProvider
+     * @param LockInterface             $lockImplementor
+     * @param LockInterface             $lockImplementorWithExpiration
+     * @param int                       $expiration
+     */
+    public function testExpiration(LockInterface $lockImplementor, LockInterface $lockImplementorWithExpiration, $expiration)
+    {
+        $name = "lock";
+
+        // Aquire lock on implementor with lock expiration
+        $this->assertTrue($lockImplementorWithExpiration->acquireLock($name, 0));
+        // We hope code was fast enough so $expiration time didn't pass yet and lock still should be held
+        $this->assertFalse($lockImplementor->acquireLock($name, 0));
+
+        // Let's wait for lock to expire
+        sleep($expiration);
+
+        // Let's try again to lock
+        $this->assertTrue($lockImplementor->acquireLock($name, 0));
+
+        // Cleanup
+        $this->assertTrue($lockImplementor->releaseLock($name, 0));
+    }
 }
