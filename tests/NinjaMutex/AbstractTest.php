@@ -127,14 +127,35 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return array
+     * @param int $expiration
+     * @return MemcacheLock
      */
-    protected function provideMemcacheLock()
+    protected function createMemcacheLock($expiration = 0)
     {
         $memcache = new Memcache();
         $memcache->connect('127.0.0.1', 11211);
 
-        return array(new MemcacheLock($memcache));
+        return new MemcacheLock($memcache, $expiration);
+    }
+
+    /**
+     * @param int $expiration
+     * @return MemcachedLock
+     */
+    protected function createMemcachedLock($expiration = 0)
+    {
+        $memcached = new Memcached();
+        $memcached->addServer('127.0.0.1', 11211);
+
+        return new MemcachedLock($memcached, $expiration);
+    }
+
+    /**
+     * @return array
+     */
+    protected function provideMemcacheLock()
+    {
+        return array($this->createMemcacheLock());
     }
 
     /**
@@ -142,10 +163,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
      */
     protected function provideMemcachedLock()
     {
-        $memcached = new Memcached();
-        $memcached->addServer('127.0.0.1', 11211);
-
-        return array(new MemcachedLock($memcached));
+        return array($this->createMemcachedLock());
     }
 
     /**
