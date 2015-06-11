@@ -16,13 +16,85 @@ use Memcached;
  *
  * @author Kamil Dziedzic <arvenil@klecza.pl>
  */
-class MemcachedLock extends MemcacheLockAbstract
+class MemcachedLock extends LockAbstract
 {
     /**
-     * @param Memcached $memcached
+     * Maximum expiration time in seconds (30 days)
+     * http://php.net/manual/en/memcached.add.php
      */
-    public function __construct(Memcached $memcached)
+    const MAX_EXPIRATION = 2592000;
+
+    /**
+     * Memcache connection
+     *
+     * @var Memcached
+     */
+    protected $memcached;
+
+    /**
+     * @var int Expiration time of the lock in seconds
+     */
+    protected $expiration = 0;
+
+    /**
+     * @param Memcached $memcached
+     * @param int      $expiration Expiration time of the lock in seconds. If it's equal to zero (default), the lock will never expire.
+     *                             Max 2592000s (30 days), if greater it will be capped to 2592000 without throwing an error.
+     *                             WARNING: Using value higher than 0 may lead to race conditions. If you set too low expiration time
+     *                             e.g. 30s and critical section will run for 31s another process will gain lock at the same time,
+     *                             leading to unpredicted behaviour. Use with caution.
+     */
+    public function __construct(Memcached $memcached, $expiration = 0)
     {
-        parent::__construct($memcached);
+        parent::__construct();
+
+        $this->memcached = $memcached;
+        if ($expiration > static::MAX_EXPIRATION) {
+            $expiration = static::MAX_EXPIRATION;
+        }
+        $this->timeout = $expiration;
+    }
+
+    /**
+     * @param  string $name name of lock
+     * @param  bool   $blocking
+     * @return bool
+     */
+    protected function getLock($name, $blocking)
+    {
+        if (!$this->memcached->add($name, serialize($this->getLockInformation()), $this->expiration)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Release lock
+     *
+     * @param  string $name name of lock
+     * @return bool
+     */
+    public function releaseLock($name)
+    {
+        if (isset($this->locks[$name]) && $this->memcached->delete($name)) {
+            unset($this->locks[$name]);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if lock is locked
+     *
+     * @param  string $name name of lock
+     * @return bool
+     */
+    public function isLocked($name)
+    {
+        return false !== $this->memcached->get($name);
     }
 }
+
