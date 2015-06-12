@@ -160,7 +160,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
      * @param int $expiration
      * @return MemcacheLock
      */
-    protected function createMemcacheLock($expiration = 0)
+    public function createMemcacheLock($expiration = 0)
     {
         $memcache = new Memcache();
         $memcache->connect('127.0.0.1', 11211);
@@ -172,7 +172,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
      * @param int $expiration
      * @return MemcachedLock
      */
-    protected function createMemcachedLock($expiration = 0)
+    public function createMemcachedLock($expiration = 0)
     {
         $memcached = new Memcached();
         $memcached->addServer('127.0.0.1', 11211);
