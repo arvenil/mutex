@@ -12,7 +12,7 @@ namespace NinjaMutex\Lock\Fabric;
 use Memcache;
 use NinjaMutex\Lock\MemcacheLock;
 
-class MemcacheLockFabric {
+class MemcacheLockFabric implements LockFabricWithExpirationInterface {
     /**
      * @return MemcacheLock
      */
