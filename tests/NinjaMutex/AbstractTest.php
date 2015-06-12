@@ -65,8 +65,8 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
             $this->providePredisRedisMockLock(),
             // Real locks
             $this->provideFlockLock(),
-            $memcacheLockFabric->create(),
-            $memcachedLockFabric->create(),
+            array($memcacheLockFabric->create()),
+            array($memcachedLockFabric->create()),
             $this->provideMysqlLock(),
             $this->providePredisRedisLock(),
         );
