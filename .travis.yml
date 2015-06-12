@@ -21,6 +21,8 @@ before_script:
  - ./tests/travis/memcached-setup.sh
  - ./tests/travis/composer-setup.sh
  - ./tests/travis/mysql-setup.sh
+ - mkdir -p ~/.phpenv/versions/$(phpenv version-name)/etc/
+ - echo 'hhvm.enable_obj_destruct_call = true' >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini"
 
 script: phpunit
 
