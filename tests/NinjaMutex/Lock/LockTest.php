@@ -175,8 +175,9 @@ class LockTest extends AbstractTest
     {
         $expiration = 2; // in seconds
         $name = "lockWithExpiration_" . uniqid();
-        $lockImplementorWithExpiration = $lockFabricWithExpiration->create()->setExpiration($expiration);
         $lockImplementor = $lockFabricWithExpiration->create();
+        $lockImplementorWithExpiration = $lockFabricWithExpiration->create();
+        $lockImplementorWithExpiration->setExpiration($expiration);
 
         // Aquire lock on implementor with lock expiration
         $this->assertTrue($lockImplementorWithExpiration->acquireLock($name, 0));
