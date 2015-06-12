@@ -186,5 +186,8 @@ class LockTest extends AbstractTest
 
         // Cleanup
         $this->assertTrue($lockImplementor->releaseLock($name, 0));
+
+        $lockImplementor = null; // for hhvm to run __destructor
+        $lockImplementorWithExpiration = null; // for hhvm to run __destructor
     }
 }

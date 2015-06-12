@@ -17,10 +17,10 @@ services:
  - redis-server
 
 before_script:
- - ./tests/travis/composer-setup.sh
- - ./tests/travis/mysql-setup.sh
  - if [[ "$TRAVIS_PHP_VERSION" = "php*" ]]; then phpenv config-add .travis.php.ini ; fi
  - if [[ "$TRAVIS_PHP_VERSION" = "hhv*" ]]; then cat .travis.hhvm.ini >> /etc/hhvm/php.ini ; fi
+ - ./tests/travis/composer-setup.sh
+ - ./tests/travis/mysql-setup.sh
 
 script: phpunit
 
