@@ -39,7 +39,7 @@ class MemcachedLock extends LockAbstract implements LockExpirationInterface
     /**
      * @param Memcached $memcached
      */
-    public function __construct(Memcached $memcached)
+    public function __construct($memcached)
     {
         parent::__construct();
 

@@ -9,14 +9,13 @@
  */
 namespace NinjaMutex\Mock;
 
-use Memcached;
 
 /**
  * Mock memcached to mimic mutex functionality
  *
  * @author Kamil Dziedzic <arvenil@klecza.pl>
  */
-class MockMemcached extends Memcached implements PermanentServiceInterface
+class MockMemcached implements PermanentServiceInterface
 {
     /**
      * @var string[]
@@ -40,7 +39,7 @@ class MockMemcached extends Memcached implements PermanentServiceInterface
      * @param  null     $udf_flags
      * @return bool
      */
-    public function add($key, $value, $expiration = null, $udf_flags = null)
+    public function add($key, $value, $expiration = null, &$udf_flags = null)
     {
         if (!$this->available) {
             return false;
@@ -62,7 +61,7 @@ class MockMemcached extends Memcached implements PermanentServiceInterface
      * @param  null              $udf_flags
      * @return bool|mixed|string
      */
-    public function get($key, $cache_cb = null, $cas_token = null, $udf_flags = null)
+    public function get($key, $cache_cb = null, &$cas_token = null, &$udf_flags = null)
     {
         if (!$this->available) {
             return false;
