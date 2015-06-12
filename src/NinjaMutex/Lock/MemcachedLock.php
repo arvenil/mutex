@@ -16,7 +16,7 @@ use Memcached;
  *
  * @author Kamil Dziedzic <arvenil@klecza.pl>
  */
-class MemcachedLock extends LockAbstract
+class MemcachedLock extends LockAbstract implements LockExpirationInterface
 {
     /**
      * Maximum expiration time in seconds (30 days)
@@ -38,17 +38,23 @@ class MemcachedLock extends LockAbstract
 
     /**
      * @param Memcached $memcached
-     * @param int      $expiration Expiration time of the lock in seconds. If it's equal to zero (default), the lock will never expire.
-     *                             Max 2592000s (30 days), if greater it will be capped to 2592000 without throwing an error.
-     *                             WARNING: Using value higher than 0 may lead to race conditions. If you set too low expiration time
-     *                             e.g. 30s and critical section will run for 31s another process will gain lock at the same time,
-     *                             leading to unpredicted behaviour. Use with caution.
      */
-    public function __construct(Memcached $memcached, $expiration = 0)
+    public function __construct(Memcached $memcached)
     {
         parent::__construct();
 
         $this->memcached = $memcached;
+    }
+
+    /**
+     * @param int $expiration Expiration time of the lock in seconds. If it's equal to zero (default), the lock will never expire.
+     *                        Max 2592000s (30 days), if greater it will be capped to 2592000 without throwing an error.
+     *                        WARNING: Using value higher than 0 may lead to race conditions. If you set too low expiration time
+     *                        e.g. 30s and critical section will run for 31s another process will gain lock at the same time,
+     *                        leading to unpredicted behaviour. Use with caution.
+     */
+    public function setExpiration($expiration)
+    {
         if ($expiration > static::MAX_EXPIRATION) {
             $expiration = static::MAX_EXPIRATION;
         }

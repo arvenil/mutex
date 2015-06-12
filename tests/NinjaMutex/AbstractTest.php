@@ -9,12 +9,12 @@
  */
 namespace NinjaMutex;
 
-use Memcache;
-use Memcached;
 use NinjaMutex\Lock\FlockLock;
 use NinjaMutex\Lock\MemcacheLock;
 use NinjaMutex\Lock\MemcachedLock;
 use NinjaMutex\Lock\MySqlLock;
+use NinjaMutex\Lock\Fabric\MemcacheLockFabric;
+use NinjaMutex\Lock\Fabric\MemcachedLockFabric;
 use NinjaMutex\Mock\MockMemcache;
 use NinjaMutex\Mock\MockMemcached;
 use NinjaMutex\Mock\MockPredisClient;
@@ -53,6 +53,9 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
      */
     public function lockImplementorProvider()
     {
+        $memcacheLockFabric = new MemcacheLockFabric();
+        $memcachedLockFabric = new MemcachedLockFabric();
+
         $data = array(
             // Just mocks
             $this->provideFlockMockLock(),
@@ -62,8 +65,8 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
             $this->providePredisRedisMockLock(),
             // Real locks
             $this->provideFlockLock(),
-            $this->provideMemcacheLock(),
-            $this->provideMemcachedLock(),
+            $memcacheLockFabric->create(),
+            $memcachedLockFabric->create(),
             $this->provideMysqlLock(),
             $this->providePredisRedisLock(),
         );
@@ -89,18 +92,10 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public function lockImplementorWithExpirationProvider()
+    public function lockFabricWithExpirationProvider()
     {
-        // $self = $this is for compatibility with php 5.3
-        // $this in lambda functions was introduced in php 5.4
-        // http://php.net/manual/en/functions.anonymous.php
-        $self = $this;
-        $memcacheLockFabric = function($expiration = 0) use ($self) {
-            return $self->createMemcacheLock($expiration);
-        };
-        $memcachedLockFabric = function($expiration = 0) use ($self) {
-            return $self->createMemcachedLock($expiration);
-        };
+        $memcacheLockFabric = new MemcacheLockFabric();
+        $memcachedLockFabric = new MemcachedLockFabric();
 
         $data = array(
             array($memcacheLockFabric),
@@ -154,46 +149,6 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
         $predisMock = new MockPredisClient();
 
         return array(new PredisRedisLock($predisMock), $predisMock);
-    }
-
-    /**
-     * @param int $expiration
-     * @return MemcacheLock
-     */
-    public function createMemcacheLock($expiration = 0)
-    {
-        $memcache = new Memcache();
-        $memcache->connect('127.0.0.1', 11211);
-
-        return new MemcacheLock($memcache, $expiration);
-    }
-
-    /**
-     * @param int $expiration
-     * @return MemcachedLock
-     */
-    public function createMemcachedLock($expiration = 0)
-    {
-        $memcached = new Memcached();
-        $memcached->addServer('127.0.0.1', 11211);
-
-        return new MemcachedLock($memcached, $expiration);
-    }
-
-    /**
-     * @return array
-     */
-    protected function provideMemcacheLock()
-    {
-        return array($this->createMemcacheLock());
-    }
-
-    /**
-     * @return array
-     */
-    protected function provideMemcachedLock()
-    {
-        return array($this->createMemcachedLock());
     }
 
     /**

@@ -10,6 +10,7 @@
 namespace NinjaMutex\Lock;
 
 use NinjaMutex\AbstractTest;
+use NinjaMutex\Lock\Fabric\LockFabricWithExpirationInterface;
 use NinjaMutex\Mock\PermanentServiceInterface;
 use NinjaMutex\UnrecoverableMutexException;
 
@@ -167,15 +168,15 @@ class LockTest extends AbstractTest
      * @medium Timeout for test increased to ~5s http://stackoverflow.com/a/10535787/916440
      * @runInSeparateProcess
      *
-     * @dataProvider lockImplementorWithExpirationProvider
-     * @param $lockImplementorFabric
+     * @dataProvider lockFabricWithExpirationProvider
+     * @param LockFabricWithExpirationInterface $lockFabricWithExpiration
      */
-    public function testExpiration($lockImplementorFabric)
+    public function testExpiration(LockFabricWithExpirationInterface $lockFabricWithExpiration)
     {
         $expiration = 2; // in seconds
         $name = "lockWithExpiration_" . uniqid();
-        $lockImplementorWithExpiration = $lockImplementorFabric($expiration);
-        $lockImplementor = $lockImplementorFabric();
+        $lockImplementorWithExpiration = $lockFabricWithExpiration->create()->setExpiration($expiration);
+        $lockImplementor = $lockFabricWithExpiration->create();
 
         // Aquire lock on implementor with lock expiration
         $this->assertTrue($lockImplementorWithExpiration->acquireLock($name, 0));
