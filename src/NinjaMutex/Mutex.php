@@ -94,7 +94,7 @@ class Mutex
      */
     public function __destruct()
     {
-        if ($this->isAcquired()) {
+        while ($this->isAcquired()) {
             $released = $this->releaseLock();
             if (!$released) {
                 throw new UnrecoverableMutexException(sprintf(
