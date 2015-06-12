@@ -195,6 +195,9 @@ class LockTest extends AbstractTest
             $lockImplementor = null;
             $lockImplementorWithExpiration = null;
         } catch (UnrecoverableMutexException $e) {
+            return;
         }
+
+        $this->fail('An expected exception has not been raised.');
     }
 }
