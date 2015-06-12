@@ -91,11 +91,15 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
      */
     public function lockImplementorWithExpirationProvider()
     {
-        $memcacheLockFabric = function($expiration = 0) {
-            return $this->createMemcacheLock($expiration);
+        // $self = $this is for compatibility with php 5.3
+        // $this in lambda functions was introduced in php 5.4
+        // http://php.net/manual/en/functions.anonymous.php
+        $self = $this;
+        $memcacheLockFabric = function($expiration = 0) use ($self) {
+            return $self->createMemcacheLock($expiration);
         };
-        $memcachedLockFabric = function($expiration = 0) {
-            return $this->createMemcachedLock($expiration);
+        $memcachedLockFabric = function($expiration = 0) use ($self) {
+            return $self->createMemcachedLock($expiration);
         };
 
         $data = array(
