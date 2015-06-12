@@ -127,6 +127,8 @@ class LockTest extends AbstractTest
 
     /**
      * @issue https://github.com/arvenil/ninja-mutex/pull/4
+     * It's not working for hhvm, see below link to understand limitation
+     * https://github.com/facebook/hhvm/blob/af329776c9f740cc1c8c4791f673ba5aa49042ce/hphp/doc/inconsistencies#L40-L45
      *
      * @dataProvider lockImplementorWithBackendProvider
      * @param LockInterface             $lockImplementor
