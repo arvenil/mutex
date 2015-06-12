@@ -191,6 +191,8 @@ class LockTest extends AbstractTest
 
         // Cleanup
         $this->assertTrue($lockImplementor->releaseLock($name, 0));
-        $this->assertTrue($lockImplementorWithExpiration->releaseLock($name, 0));
+        // Expired lock is unusable, we need to clean it's lock state or otherwise
+        // it will invoke in __destruct Exception (php*) or Fatal Error (hhvm)
+        $this->assertTrue($lockImplementorWithExpiration->clearLock($name, 0));
     }
 }

@@ -62,6 +62,23 @@ class MemcachedLock extends LockAbstract implements LockExpirationInterface
     }
 
     /**
+     * Clear lock without releasing it
+     * Do not use this method unless you know what you do
+     *
+     * @param  string $name name of lock
+     * @return bool
+     */
+    public function clearLock($name)
+    {
+        if (!isset($this->locks[$name])) {
+            return false;
+        }
+
+        unset($this->locks[$name]);
+        return true;
+    }
+
+    /**
      * @param  string $name name of lock
      * @param  bool   $blocking
      * @return bool
@@ -83,7 +100,7 @@ class MemcachedLock extends LockAbstract implements LockExpirationInterface
      */
     public function releaseLock($name)
     {
-        if (isset($this->locks[$name]) && ($this->memcached->delete($name) || !$this->isLocked($name))) {
+        if (isset($this->locks[$name]) && $this->memcached->delete($name)) {
             unset($this->locks[$name]);
 
             return true;
