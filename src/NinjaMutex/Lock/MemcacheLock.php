@@ -52,7 +52,7 @@ class MemcacheLock extends LockAbstract
         if ($expiration > static::MAX_EXPIRATION) {
             $expiration = static::MAX_EXPIRATION;
         }
-        $this->timeout = $expiration;
+        $this->expiration = $expiration;
     }
 
     /**

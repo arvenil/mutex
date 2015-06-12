@@ -179,7 +179,7 @@ class LockTest extends AbstractTest
         $this->assertFalse($lockImplementor->acquireLock($name, 0));
 
         // Let's wait for lock to expire
-        sleep($expiration+2);
+        sleep($expiration);
 
         // Let's try again to lock
         $this->assertTrue($lockImplementor->acquireLock($name, 0));
