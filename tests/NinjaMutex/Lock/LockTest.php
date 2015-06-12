@@ -168,7 +168,6 @@ class LockTest extends AbstractTest
      * @medium Timeout for test increased to ~5s http://stackoverflow.com/a/10535787/916440
      * @runInSeparateProcess
      *
-     * @expectedException PHPUnit_Framework_Error
      * @dataProvider lockFabricWithExpirationProvider
      * @param LockFabricWithExpirationInterface $lockFabricWithExpiration
      */
@@ -195,14 +194,15 @@ class LockTest extends AbstractTest
         $this->assertTrue($lockImplementor->releaseLock($name, 0));
 
         // Now we set null to the Mutex with lock expiration to invoke __destructor
-        // which throws UnrecoverableMutexException
-        $lockImplementorWithExpiration = null;
-
-        // hhvm doesn't throw an exception here, it rather raises a fatal error,
-        // so I can't check here if Exception was really raised for all builds but I can check if script ended with Fatal Error.
-        // Looks like I should always raise fatal error in __destructor for all versions rather than trying to raise exception
-        // https://github.com/facebook/hhvm/blob/af329776c9f740cc1c8c4791f673ba5aa49042ce/hphp/doc/inconsistencies#L40-L48
-        // http://docs.hhvm.com/manual/en/language.oop5.decon.php#language.oop5.decon.destructor
-        // https://github.com/sebastianbergmann/phpunit/issues/1640
+        try {
+            $lockImplementorWithExpiration = null;
+        } catch (Exception $e) {
+            // hhvm doesn't throw an exception here, it rather raises a fatal error,
+            // so I can't check here if Exception was really raised for all builds.
+            // Looks like I should always raise fatal error in __destructor for all versions rather than trying to raise exception
+            // https://github.com/facebook/hhvm/blob/af329776c9f740cc1c8c4791f673ba5aa49042ce/hphp/doc/inconsistencies#L40-L48
+            // http://docs.hhvm.com/manual/en/language.oop5.decon.php#language.oop5.decon.destructor
+            // https://github.com/sebastianbergmann/phpunit/issues/1640
+        }
     }
 }
