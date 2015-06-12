@@ -167,13 +167,14 @@ class LockTest extends AbstractTest
      * @medium Timeout for test increased to ~5s http://stackoverflow.com/a/10535787/916440
      *
      * @dataProvider lockImplementorWithExpirationProvider
-     * @param LockInterface             $lockImplementor
-     * @param LockInterface             $lockImplementorWithExpiration
-     * @param int                       $expiration
+     * @param $lockImplementorFabric
      */
-    public function testExpiration(LockInterface $lockImplementor, LockInterface $lockImplementorWithExpiration, $expiration)
+    public function testExpiration($lockImplementorFabric)
     {
+        $expiration = 2; // in seconds
         $name = "lockWithExpiration_" . uniqid();
+        $lockImplementorWithExpiration = $lockImplementorFabric($expiration);
+        $lockImplementor = $lockImplementorFabric();
 
         // Aquire lock on implementor with lock expiration
         $this->assertTrue($lockImplementorWithExpiration->acquireLock($name, 0));
@@ -189,6 +190,7 @@ class LockTest extends AbstractTest
         // Cleanup
         $this->assertTrue($lockImplementor->releaseLock($name, 0));
 
+        // Now the Mutex with lock expiration is in unre
         try {
             $lockImplementor = null;
             $lockImplementorWithExpiration = null;

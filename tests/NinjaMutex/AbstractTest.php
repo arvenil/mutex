@@ -91,12 +91,16 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
      */
     public function lockImplementorWithExpirationProvider()
     {
-        $expiration = 2; // in seconds
+        $memcacheLockFabric = function($expiration = 0) {
+            return $this->createMemcacheLock($expiration);
+        };
+        $memcachedLockFabric = function($expiration = 0) {
+            return $this->createMemcachedLock($expiration);
+        };
 
         $data = array(
-            // Just mocks
-            array($this->createMemcacheLock(), $this->createMemcacheLock($expiration), $expiration),
-            array($this->createMemcachedLock(), $this->createMemcachedLock($expiration), $expiration),
+            array($memcacheLockFabric),
+            array($memcachedLockFabric),
         );
 
         return $data;
