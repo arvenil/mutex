@@ -40,7 +40,7 @@ class MockMemcached extends Memcached implements PermanentServiceInterface
      * @param  null     $udf_flags
      * @return bool
      */
-    public function add($key, $value, $expiration = NULL, &$udf_flags = NULL)
+    public function add($key, $value, $expiration = null, $udf_flags = null)
     {
         if (!$this->available) {
             return false;
@@ -62,7 +62,7 @@ class MockMemcached extends Memcached implements PermanentServiceInterface
      * @param  null              $udf_flags
      * @return bool|mixed|string
      */
-    public function get($key, $cache_cb = NULL, &$cas_token = NULL, &$udf_flags = NULL)
+    public function get($key, $cache_cb = null, $cas_token = null, $udf_flags = null)
     {
         if (!$this->available) {
             return false;
