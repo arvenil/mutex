@@ -162,7 +162,7 @@ class LockTest extends AbstractTest
 
     /**
      * @issue https://github.com/arvenil/ninja-mutex/issues/12
-     * @medium
+     * @medium Timeout for test increased to ~5s http://stackoverflow.com/a/10535787/916440
      *
      * @dataProvider lockImplementorWithExpirationProvider
      * @param LockInterface             $lockImplementor
@@ -171,7 +171,7 @@ class LockTest extends AbstractTest
      */
     public function testExpiration(LockInterface $lockImplementor, LockInterface $lockImplementorWithExpiration, $expiration)
     {
-        $name = "lock";
+        $name = "lockWithExpiration_" . uniqid();
 
         // Aquire lock on implementor with lock expiration
         $this->assertTrue($lockImplementorWithExpiration->acquireLock($name, 0));
