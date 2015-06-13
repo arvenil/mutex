@@ -21,8 +21,8 @@
     "require-dev": {
         "codeclimate/php-test-reporter": "v0.1.2",
         "scrutinizer/ocular": "1.1.1",
-        "mikey179/vfsStream": "v1.4.0",
-        "predis/predis": "v1.0.0",
+        "mikey179/vfsStream": "1.5.*",
+        "predis/predis": "1.0.*",
         "ext-memcache": "*",
         "ext-memcached": "*",
         "ext-pdo_mysql": "*"
