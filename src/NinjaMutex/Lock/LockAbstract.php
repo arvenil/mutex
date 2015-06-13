@@ -80,7 +80,7 @@ abstract class LockAbstract implements LockInterface
         $start = microtime(true);
         $end = $start + $timeout / 1000;
         $locked = false;
-        while (!(empty($this->locks[$name]) && $locked = $this->getLock($name, $blocking)) && $timeout > 0 && microtime(true) < $end) {
+        while (!(empty($this->locks[$name]) && $locked = $this->getLock($name, $blocking)) && ($blocking || ($timeout > 0 && microtime(true) < $end))) {
             usleep(static::USLEEP_TIME);
         }
 
