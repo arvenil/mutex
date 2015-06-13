@@ -17,8 +17,7 @@ services:
  - redis-server
 
 before_script:
- - ./tests/travis/memcache-setup.sh
- - ./tests/travis/memcached-setup.sh
+ - if [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then cat .travis.php.ini >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini ; echo "Loading additional config for version $TRAVIS_PHP_VERSION" ; fi
  - ./tests/travis/composer-setup.sh
  - ./tests/travis/mysql-setup.sh
 

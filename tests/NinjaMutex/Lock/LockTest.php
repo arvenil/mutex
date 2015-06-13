@@ -10,6 +10,7 @@
 namespace NinjaMutex\Lock;
 
 use NinjaMutex\AbstractTest;
+use NinjaMutex\Lock\Fabric\LockFabricWithExpirationInterface;
 use NinjaMutex\Mock\PermanentServiceInterface;
 use NinjaMutex\UnrecoverableMutexException;
 
@@ -127,6 +128,8 @@ class LockTest extends AbstractTest
 
     /**
      * @issue https://github.com/arvenil/ninja-mutex/pull/4
+     * It's not working for hhvm, see below link to understand limitation
+     * https://github.com/facebook/hhvm/blob/af329776c9f740cc1c8c4791f673ba5aa49042ce/hphp/doc/inconsistencies#L40-L45
      *
      * @dataProvider lockImplementorWithBackendProvider
      * @param LockInterface             $lockImplementor
@@ -160,4 +163,36 @@ class LockTest extends AbstractTest
         $this->fail('An expected exception has not been raised.');
     }
 
+    /**
+     * @issue https://github.com/arvenil/ninja-mutex/issues/12
+     * @medium Timeout for test increased to ~5s http://stackoverflow.com/a/10535787/916440
+     *
+     * @dataProvider lockFabricWithExpirationProvider
+     * @param LockFabricWithExpirationInterface $lockFabricWithExpiration
+     */
+    public function testExpiration(LockFabricWithExpirationInterface $lockFabricWithExpiration)
+    {
+        $expiration = 2; // in seconds
+        $name = "lockWithExpiration_" . uniqid();
+        $lockImplementor = $lockFabricWithExpiration->create();
+        $lockImplementorWithExpiration = $lockFabricWithExpiration->create();
+        $lockImplementorWithExpiration->setExpiration($expiration);
+
+        // Aquire lock on implementor with lock expiration
+        $this->assertTrue($lockImplementorWithExpiration->acquireLock($name, 0));
+        // We hope code was fast enough so $expiration time didn't pass yet and lock still should be held
+        $this->assertFalse($lockImplementor->acquireLock($name, 0));
+
+        // Let's wait for lock to expire
+        sleep($expiration);
+
+        // Let's try again to lock
+        $this->assertTrue($lockImplementor->acquireLock($name, 0));
+
+        // Cleanup
+        $this->assertTrue($lockImplementor->releaseLock($name, 0));
+        // Expired lock is unusable, we need to clean it's lock state or otherwise
+        // it will invoke in __destruct Exception (php*) or Fatal Error (hhvm)
+        $this->assertTrue($lockImplementorWithExpiration->clearLock($name, 0));
+    }
 }
