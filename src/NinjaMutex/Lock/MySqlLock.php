@@ -115,6 +115,7 @@ class MySqlLock extends LockAbstract
             return false;
         }
 
+        unset($this->pdo[$name]);
         unset($this->locks[$name]);
 
         return true;
@@ -155,5 +156,14 @@ class MySqlLock extends LockAbstract
         $this->pdo[$name] = new $this->classname(sprintf('mysql:host=%s', $this->host), $this->user, $this->password);
 
         return true;
+    }
+
+    public function __destruct()
+    {
+        parent::__destruct();
+
+        foreach($this->pdo as $name => $pdo) {
+            unset($this->pdo[$name]);
+        }
     }
 }
