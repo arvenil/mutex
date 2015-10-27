@@ -7,6 +7,7 @@
 [![Code Coverage](https://scrutinizer-ci.com/g/arvenil/ninja-mutex/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/arvenil/ninja-mutex/?branch=master)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/15c5c748-f8d8-4b56-b536-a29a151aac6c/mini.png)](https://insight.sensiolabs.com/projects/15c5c748-f8d8-4b56-b536-a29a151aac6c)
 [![Dependency Status](https://gemnasium.com/arvenil/ninja-mutex.svg)](https://gemnasium.com/arvenil/ninja-mutex)
+[![Total Downloads](https://img.shields.io/packagist/dt/arvenil/ninja-mutex.svg)](https://packagist.org/packages/arvenil/ninja-mutex)
 
 ## About
 
