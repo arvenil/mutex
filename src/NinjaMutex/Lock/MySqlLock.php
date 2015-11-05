@@ -81,8 +81,8 @@ class MySqlLock extends LockAbstract
     {
         return !$this->isLocked($name) && $this->pdo[$name]->query(
             sprintf(
-                'SELECT GET_LOCK("%s", %d)',
-                $name,
+                'SELECT GET_LOCK(%s, %d)',
+                $this->pdo[$name]->quote($name),
                 0
             ),
             PDO::FETCH_COLUMN,
@@ -104,8 +104,8 @@ class MySqlLock extends LockAbstract
 
         $released = (bool) $this->pdo[$name]->query(
             sprintf(
-                'SELECT RELEASE_LOCK("%s")',
-                $name
+                'SELECT RELEASE_LOCK(%s)',
+                $this->pdo[$name]->quote($name)
             ),
             PDO::FETCH_COLUMN,
             0
@@ -135,8 +135,8 @@ class MySqlLock extends LockAbstract
 
         return !current($this->pdo)->query(
             sprintf(
-                'SELECT IS_FREE_LOCK("%s")',
-                $name
+                'SELECT IS_FREE_LOCK(%s)',
+                current($this->pdo)->quote($name)
             ),
             PDO::FETCH_COLUMN,
             0
