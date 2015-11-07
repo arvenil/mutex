@@ -9,7 +9,7 @@
 
     <filter>
         <whitelist>
-            <directory suffix=".php">src/NinjaMutex/</directory>
+            <directory>src</directory>
         </whitelist>
     </filter>
 

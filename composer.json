@@ -11,8 +11,8 @@
         }
     ],
     "autoload": {
-        "psr-0": {
-            "NinjaMutex": "src/"
+        "psr-4": {
+            "NinjaMutex\\": "src"
         }
     },
     "require": {
