@@ -7,9 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace NinjaMutex;
+namespace NinjaMutex\Tests;
 
 use NinjaMutex\Lock\LockInterface;
+use NinjaMutex\MutexFabric;
 
 /**
  * Tests for MutexFabric

@@ -15,6 +15,11 @@
             "NinjaMutex\\": "src"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "NinjaMutex\\Tests\\": "tests"
+        }
+    },
     "require": {
         "php": ">=5.3.0"
     },

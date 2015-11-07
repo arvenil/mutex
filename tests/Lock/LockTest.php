@@ -7,11 +7,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace NinjaMutex\Lock;
+namespace NinjaMutex\Tests\Lock;
 
-use NinjaMutex\AbstractTest;
-use NinjaMutex\Lock\Fabric\LockFabricWithExpirationInterface;
-use NinjaMutex\Mock\PermanentServiceInterface;
+use NinjaMutex\Lock\LockInterface;
+use NinjaMutex\Tests\AbstractTest;
+use NinjaMutex\Tests\Lock\Fabric\LockFabricWithExpirationInterface;
+use NinjaMutex\Tests\Mock\PermanentServiceInterface;
 use NinjaMutex\UnrecoverableMutexException;
 
 /**
