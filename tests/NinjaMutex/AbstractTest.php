@@ -9,6 +9,7 @@
  */
 namespace NinjaMutex;
 
+use NinjaMutex\Lock\DirectoryLock;
 use NinjaMutex\Lock\FlockLock;
 use NinjaMutex\Lock\MemcacheLock;
 use NinjaMutex\Lock\MemcachedLock;
@@ -59,12 +60,14 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
         $data = array(
             // Just mocks
             $this->provideFlockMockLock(),
+            $this->provideDirectoryMockLock(),
             $this->provideMemcacheMockLock(),
             $this->provideMemcachedMockLock(),
             $this->provideMysqlMockLock(),
             $this->providePredisRedisMockLock(),
             // Real locks
             $this->provideFlockLock(),
+            $this->provideDirectoryLock(),
             array($memcacheLockFabric->create()),
             array($memcachedLockFabric->create()),
             $this->provideMysqlLock(),
@@ -136,6 +139,14 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
+    protected function provideDirectoryMockLock()
+    {
+        return array(new DirectoryLock(vfs\vfsStream::url('nfs/')));
+    }
+
+    /**
+     * @return array
+     */
     protected function provideMysqlMockLock()
     {
         return array(new MySqlLock('', '', '', 'NinjaMutex\Mock\MockPDO'));
@@ -157,6 +168,14 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
     protected function provideFlockLock()
     {
         return array(new FlockLock('/tmp/mutex/'));
+    }
+
+    /**
+     * @return array
+     */
+    protected function provideDirectoryLock()
+    {
+        return array(new DirectoryLock('/tmp/mutex/'));
     }
 
     /**
