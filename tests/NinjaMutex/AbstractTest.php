@@ -138,7 +138,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
      */
     protected function provideMysqlMockLock()
     {
-        return array(new MySqlLock('', '', '', 'NinjaMutex\Mock\MockPDO'));
+        return array(new MySqlLock('', '', '', 3306, 'NinjaMutex\Mock\MockPDO'));
     }
 
     /**
