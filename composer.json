@@ -25,7 +25,8 @@
         "predis/predis": "1.0.*",
         "ext-memcache": "*",
         "ext-memcached": "*",
-        "ext-pdo_mysql": "*"
+        "ext-pdo_mysql": "*",
+        "ext-redis": "*"
     },
     "suggest" : {
         "predis/predis" : "Create mutex using Predis (client library for Redis)",

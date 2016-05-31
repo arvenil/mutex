@@ -18,8 +18,11 @@ use NinjaMutex\Lock\Fabric\MemcachedLockFabric;
 use NinjaMutex\Mock\MockMemcache;
 use NinjaMutex\Mock\MockMemcached;
 use NinjaMutex\Mock\MockPredisClient;
+use NinjaMutex\Mock\MockPhpRedisClient;
 use NinjaMutex\Lock\PredisRedisLock;
+use NinjaMutex\Lock\PhpRedisLock;
 use Predis;
+use \Redis;
 use org\bovigo\vfs;
 
 abstract class AbstractTest extends \PHPUnit_Framework_TestCase
@@ -63,12 +66,14 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
             $this->provideMemcachedMockLock(),
             $this->provideMysqlMockLock(),
             $this->providePredisRedisMockLock(),
+            $this->providePhpRedisMockLock(),
             // Real locks
             $this->provideFlockLock(),
             array($memcacheLockFabric->create()),
             array($memcachedLockFabric->create()),
             $this->provideMysqlLock(),
             $this->providePredisRedisLock(),
+            $this->providePhpRedisLock(),
         );
 
         return $data;
@@ -84,6 +89,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
             $this->provideMemcacheMockLock(),
             $this->provideMemcachedMockLock(),
             $this->providePredisRedisMockLock(),
+            $this->providePhpRedisMockLock(),
         );
 
         return $data;
@@ -154,6 +160,16 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
+    protected function providePhpRedisMockLock()
+    {
+        $predisMock = new MockPhpRedisClient();
+
+        return array(new PhpRedisLock($predisMock), $predisMock);
+    }
+
+    /**
+     * @return array
+     */
     protected function provideFlockLock()
     {
         return array(new FlockLock('/tmp/mutex/'));
@@ -173,5 +189,15 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
     protected function providePredisRedisLock()
     {
         return array(new PredisRedisLock(new Predis\Client()));
+    }
+
+    /**
+     * @return array
+     */
+    protected function providePhpRedisLock()
+    {
+        $redis = new Redis();
+        $redis->connect('127.0.0.1', 6379);
+        return array(new PhpRedisLock($redis));
     }
 }
