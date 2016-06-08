@@ -115,9 +115,26 @@ class MemcachedLock extends LockAbstract implements LockExpirationInterface
      * @param  string $name name of lock
      * @return bool
      */
-    public function isLocked($name)
-    {
-        return false !== $this->memcached->get($name);
+    public function isLocked($name) {
+        $value = $this->memcached->get($name);
+        if ($value) {
+            $values = unserialize($value);
+            // Additional verification, just in case the lock was acquired by a process that doesn't exist anymore
+            $informations = $this->generateLockInformation();
+            $output = null;
+            // @todo the following command has only be tested on Debian8 & MacosX
+            exec("ps -p {$values[0]}", $output);
+            // If the original server is the same that the one we're on, but the process has gone, let's remove the LOCK from Memcache
+            if($informations[2] == $values[2] && (count($output) == 1)) {
+                $this->memcached->delete($name);
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            // Value doesn't exist, so there is no lock
+            return false;
+        }
     }
 }
 
