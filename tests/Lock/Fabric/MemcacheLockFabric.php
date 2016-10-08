@@ -7,12 +7,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace NinjaMutex\Lock\Fabric;
+namespace NinjaMutex\Tests\Lock\Fabric;
 
 use Memcache;
 use NinjaMutex\Lock\MemcacheLock;
 
-class MemcacheLockFabric implements LockFabricWithExpirationInterface {
+class MemcacheLockFabric implements LockFabricWithExpirationInterface
+{
     /**
      * @return MemcacheLock
      */
