@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<phpunit bootstrap="tests/bootstrap.php" colors="true" strict="true" verbose="true">
+<phpunit
+        bootstrap="vendor/autoload.php"
+        colors="true"
+        verbose="true"
+>
     <testsuites>
         <testsuite name="NinjaMutex Test Suite">
-            <directory>tests/NinjaMutex/</directory>
+            <directory>tests</directory>
         </testsuite>
     </testsuites>
 
     <filter>
         <whitelist>
-            <directory suffix=".php">src/NinjaMutex/</directory>
+            <directory>src</directory>
         </whitelist>
     </filter>
 
