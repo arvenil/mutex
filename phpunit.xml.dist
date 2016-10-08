@@ -4,6 +4,10 @@
         bootstrap="vendor/autoload.php"
         colors="true"
         verbose="true"
+        beStrictAboutTestsThatDoNotTestAnything="true"
+        beStrictAboutOutputDuringTests="true"
+        beStrictAboutTestSize="true"
+        beStrictAboutChangesToGlobalState="true"
 >
     <testsuites>
         <testsuite name="NinjaMutex Test Suite">
