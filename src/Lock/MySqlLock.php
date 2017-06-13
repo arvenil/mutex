@@ -40,6 +40,7 @@ class MySqlLock extends LockAbstract
      * @param string $host
      * @param int $port
      * @param string $classname class name to create as PDO connection
+     * @param string $ssl_ca_cert Path to a file containing the SSL CA certificate(s), if you'd like to connect using SSL
      */
     public function __construct($user, $password, $host, $port = 3306, $classname = 'PDO', $ssl_ca_cert = NULL)
     {
