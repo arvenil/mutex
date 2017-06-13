@@ -30,6 +30,7 @@ class MySqlLock extends LockAbstract
     protected $host;
     protected $port;
     protected $classname;
+    protected $ssl_ca_cert;
 
     /**
      * Provide data for PDO connection
@@ -40,7 +41,7 @@ class MySqlLock extends LockAbstract
      * @param int $port
      * @param string $classname class name to create as PDO connection
      */
-    public function __construct($user, $password, $host, $port = 3306, $classname = 'PDO')
+    public function __construct($user, $password, $host, $port = 3306, $classname = 'PDO', $ssl_ca_cert = NULL)
     {
         parent::__construct();
 
@@ -49,6 +50,7 @@ class MySqlLock extends LockAbstract
         $this->host = $host;
         $this->port = $port;
         $this->classname = $classname;
+        $this->ssl_ca_cert = $ssl_ca_cert;
     }
 
     public function __clone()
@@ -157,7 +159,15 @@ class MySqlLock extends LockAbstract
         }
 
         $dsn = sprintf('mysql:host=%s;port=%d', $this->host, $this->port);
-        $this->pdo[$name] = new $this->classname($dsn, $this->user, $this->password);
+        $opts = array();
+        if (!empty($this->ssl_ca_cert)) {
+            if (file_exists($this->ssl_ca_cert)) {
+                $opts[\PDO::MYSQL_ATTR_SSL_CA] = $this->ssl_ca_cert;
+            } else {
+                error_log("Warning: specified SSL CA Certificate file doesn't exist.");
+            }
+        }
+        $this->pdo[$name] = new $this->classname($dsn, $this->user, $this->password, $opts);
 
         return true;
     }
