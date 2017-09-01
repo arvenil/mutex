@@ -31,6 +31,7 @@ class MySqlLock extends LockAbstract
     protected $port;
     protected $classname;
     protected $ssl_ca_cert;
+    protected $ssl_verify_server_cert = true;
 
     /**
      * Provide data for PDO connection
@@ -41,8 +42,9 @@ class MySqlLock extends LockAbstract
      * @param int $port
      * @param string $classname class name to create as PDO connection
      * @param string $ssl_ca_cert Path to a file containing the SSL CA certificate(s), if you'd like to connect using SSL
+     * @param bool $ssl_verify_server_cert Indicate if you want to verify that the server certificate is valid.
      */
-    public function __construct($user, $password, $host, $port = 3306, $classname = 'PDO', $ssl_ca_cert = NULL)
+    public function __construct($user, $password, $host, $port = 3306, $classname = 'PDO', $ssl_ca_cert = NULL, $ssl_verify_server_cert = true)
     {
         parent::__construct();
 
@@ -52,6 +54,7 @@ class MySqlLock extends LockAbstract
         $this->port = $port;
         $this->classname = $classname;
         $this->ssl_ca_cert = $ssl_ca_cert;
+        $this->ssl_verify_server_cert = $ssl_verify_server_cert;
     }
 
     public function __clone()
@@ -164,6 +167,9 @@ class MySqlLock extends LockAbstract
         if (!empty($this->ssl_ca_cert)) {
             if (file_exists($this->ssl_ca_cert)) {
                 $opts[\PDO::MYSQL_ATTR_SSL_CA] = $this->ssl_ca_cert;
+                if (!$this->ssl_verify_server_cert && defined('\PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT')) {
+                    $opts[\PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT] = false;
+                }
             } else {
                 error_log("Warning: specified SSL CA Certificate file doesn't exist.");
             }
