@@ -2,21 +2,19 @@
 /**
  * This file is part of ninja-mutex.
  *
- * (C) leo108 <root@leo108.com>
+ * (C) Kamil Dziedzic <arvenil@klecza.pl>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace NinjaMutex\Mock;
-
-use \Redis;
+namespace NinjaMutex\Tests\Mock;
 
 /**
- * Mock \Redis to mimic PhpRedis functionality
+ * Mock memcached to mimic mutex functionality
  *
- * @author leo108 <root@leo108.com>
+ * @author Kamil Dziedzic <arvenil@klecza.pl>
  */
-class MockPhpRedisClient extends Redis implements PermanentServiceInterface
+class MockMemcached implements PermanentServiceInterface
 {
     /**
      * @var string[]
@@ -34,11 +32,13 @@ class MockPhpRedisClient extends Redis implements PermanentServiceInterface
     }
 
     /**
-     * @param  string $key
-     * @param  mixed  $value
+     * @param  string   $key
+     * @param  mixed    $value
+     * @param  int|null $expiration
+     * @param  null     $udf_flags
      * @return bool
      */
-    public function setnx($key, $value)
+    public function add($key, $value, $expiration = null, &$udf_flags = null)
     {
         if (!$this->available) {
             return false;
@@ -54,10 +54,13 @@ class MockPhpRedisClient extends Redis implements PermanentServiceInterface
     }
 
     /**
-     * @param  string $key
-     * @return mixed
+     * @param  string            $key
+     * @param  null              $cache_cb
+     * @param  null              $cas_token
+     * @param  null              $udf_flags
+     * @return bool|mixed|string
      */
-    public function get($key)
+    public function get($key, $cache_cb = null, &$cas_token = null, &$udf_flags = null)
     {
         if (!$this->available) {
             return false;
@@ -72,9 +75,10 @@ class MockPhpRedisClient extends Redis implements PermanentServiceInterface
 
     /**
      * @param  string $key
+     * @param  null   $time
      * @return bool
      */
-    public function del($key)
+    public function delete($key, $time = null)
     {
         if (!$this->available) {
             return false;

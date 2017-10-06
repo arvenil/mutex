@@ -94,7 +94,7 @@ Tests require vfsStream to work. To install it, simply run in project dir:
 
 To run tests type in console:
 
-    phpunit
+    vendor/bin/phpunit
 
 ## Something doesn't work
 

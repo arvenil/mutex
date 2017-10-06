@@ -2,20 +2,21 @@
 /**
  * This file is part of ninja-mutex.
  *
- * (C) Kamil Dziedzic <arvenil@klecza.pl>
+ * (C) leo108 <root@leo108.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace NinjaMutex\Mock;
+namespace NinjaMutex\Tests\Mock;
 
+use Redis;
 
 /**
- * Mock memcached to mimic mutex functionality
+ * Mock \Redis to mimic PhpRedis functionality
  *
- * @author Kamil Dziedzic <arvenil@klecza.pl>
+ * @author leo108 <root@leo108.com>
  */
-class MockMemcached implements PermanentServiceInterface
+class MockPhpRedisClient extends Redis implements PermanentServiceInterface
 {
     /**
      * @var string[]
@@ -33,13 +34,11 @@ class MockMemcached implements PermanentServiceInterface
     }
 
     /**
-     * @param  string   $key
-     * @param  mixed    $value
-     * @param  int|null $expiration
-     * @param  null     $udf_flags
+     * @param  string $key
+     * @param  mixed  $value
      * @return bool
      */
-    public function add($key, $value, $expiration = null, &$udf_flags = null)
+    public function setnx($key, $value)
     {
         if (!$this->available) {
             return false;
@@ -55,13 +54,10 @@ class MockMemcached implements PermanentServiceInterface
     }
 
     /**
-     * @param  string            $key
-     * @param  null              $cache_cb
-     * @param  null              $cas_token
-     * @param  null              $udf_flags
-     * @return bool|mixed|string
+     * @param  string $key
+     * @return mixed
      */
-    public function get($key, $cache_cb = null, &$cas_token = null, &$udf_flags = null)
+    public function get($key)
     {
         if (!$this->available) {
             return false;
@@ -76,10 +72,9 @@ class MockMemcached implements PermanentServiceInterface
 
     /**
      * @param  string $key
-     * @param  null   $time
      * @return bool
      */
-    public function delete($key, $time = null)
+    public function del($key)
     {
         if (!$this->available) {
             return false;

@@ -7,24 +7,24 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace NinjaMutex;
+namespace NinjaMutex\Tests;
 
 use NinjaMutex\Lock\DirectoryLock;
 use NinjaMutex\Lock\FlockLock;
-use NinjaMutex\Lock\MemcacheLock;
 use NinjaMutex\Lock\MemcachedLock;
+use NinjaMutex\Lock\MemcacheLock;
 use NinjaMutex\Lock\MySqlLock;
-use NinjaMutex\Lock\Fabric\MemcacheLockFabric;
-use NinjaMutex\Lock\Fabric\MemcachedLockFabric;
-use NinjaMutex\Mock\MockMemcache;
-use NinjaMutex\Mock\MockMemcached;
-use NinjaMutex\Mock\MockPredisClient;
-use NinjaMutex\Mock\MockPhpRedisClient;
 use NinjaMutex\Lock\PredisRedisLock;
 use NinjaMutex\Lock\PhpRedisLock;
-use Predis;
-use \Redis;
+use NinjaMutex\Tests\Lock\Fabric\MemcachedLockFabric;
+use NinjaMutex\Tests\Lock\Fabric\MemcacheLockFabric;
+use NinjaMutex\Tests\Mock\MockMemcache;
+use NinjaMutex\Tests\Mock\MockMemcached;
+use NinjaMutex\Tests\Mock\MockPhpRedisClient;
+use NinjaMutex\Tests\Mock\MockPredisClient;
 use org\bovigo\vfs;
+use Predis;
+use Redis;
 
 abstract class AbstractTest extends \PHPUnit_Framework_TestCase
 {
@@ -155,7 +155,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
      */
     protected function provideMysqlMockLock()
     {
-        return array(new MySqlLock('', '', '', 3306, 'NinjaMutex\Mock\MockPDO'));
+        return array(new MySqlLock('', '', '', 3306, 'NinjaMutex\Tests\Mock\MockPDO'));
     }
 
     /**
