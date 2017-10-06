@@ -20,6 +20,11 @@
             "NinjaMutex\\Tests\\": "tests"
         }
     },
+    "autoload-dev": {
+        "psr-0": {
+            "NinjaMutex": "tests/"
+        }
+    },
     "require": {
         "php": ">=5.3.0"
     },
