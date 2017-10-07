@@ -36,7 +36,7 @@ services:
 
 before_script:
  - curl -sSf -o ~/.phpenv/versions/hhvm/bin/phpunit https://phar.phpunit.de/phpunit-5.7.phar
- - if [[ "$MEMCACHE_EXT" == "1" ]]; then phpenv config-add .travis.php.memcache.ini fi
+ - if [[ "$MEMCACHE_EXT" == "1" ]]; then phpenv config-add .travis.php.memcache.ini ; fi
  - phpenv config-add .travis.php.memcached.ini
  - phpenv config-add .travis.php.redis.ini
  - composer self-update || true
