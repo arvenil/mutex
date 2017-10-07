@@ -41,7 +41,6 @@ before_script:
  - phpenv config-add .travis.php.redis.ini
  - composer self-update || true
  - composer install
- - ./tests/travis/mysql-setup.sh
 
 script: phpunit
 
