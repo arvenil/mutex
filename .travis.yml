@@ -8,16 +8,22 @@ php:
  - 7.1
  - hhvm
 env:
- - MEMCACHE=1
+ - MEMCACHE_EXT=1
 matrix:
     include:
+     - php: 7.0
+       env: MEMCACHE_EXT=0
+     - php: 7.1
+       env: MEMCACHE_EXT=0
      - php: hhvm
-       env: MEMCACHE=0
+       env: MEMCACHE_EXT=0
     allow_failures:
      - php: 7.0
+       env: MEMCACHE_EXT=1
      - php: 7.1
+       env: MEMCACHE_EXT=1
      - php: hhvm
-       env: MEMCACHE=1
+       env: MEMCACHE_EXT=1
 
 addons:
     code_climate:
@@ -30,7 +36,7 @@ services:
 
 before_script:
  - curl -sSf -o ~/.phpenv/versions/hhvm/bin/phpunit https://phar.phpunit.de/phpunit-5.7.phar
- - if [[ "$MEMCACHE" == "1" ]]; then phpenv config-add .travis.php.memcache.ini fi
+ - if [[ "$MEMCACHE_EXT" == "1" ]]; then phpenv config-add .travis.php.memcache.ini fi
  - phpenv config-add .travis.php.memcached.ini
  - phpenv config-add .travis.php.redis.ini
  - composer self-update || true
