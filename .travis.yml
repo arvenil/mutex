@@ -40,6 +40,7 @@ before_script:
  - phpenv config-add .travis.php.memcached.ini
  - phpenv config-add .travis.php.redis.ini
  - composer self-update || true
+ - if [[ "$MEMCACHE_EXT" == "0" ]]; then composer config platform.ext-memcache 0.0.1 ; fi
  - composer install
 
 script: phpunit
