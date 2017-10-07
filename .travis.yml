@@ -9,14 +9,16 @@ php:
  - 7.1
  - hhvm
 matrix:
-    # Memcache extension is unsupported in php 7
-    # https://github.com/websupport-sk/pecl-memcache/issues/11
     include:
+     # Memcache extension is not supported in php 7
+     # https://github.com/websupport-sk/pecl-memcache/issues/11
      - php: 7.0
        env: MEMCACHE_EXT_UNSUPPORTED=1
      - php: 7.1
        env: MEMCACHE_EXT_UNSUPPORTED=1
     allow_failures:
+     # PHP 5.3 is no longer supported on travis
+     # https://docs.travis-ci.com/user/languages/php#PHP-5.2(.x)-and-5.3(.x)-support-is-available-on-Precise-only
      - php: 5.3
        env:
      - php: 7.0
@@ -34,13 +36,13 @@ services:
  - redis-server
 
 before_script:
- # If Memcache is supported then enable it
+ # If Memcache is supported then enable it.
  - if [[ "$MEMCACHE_EXT_UNSUPPORTED" != "1" ]]; then phpenv config-add .travis.php.memcache.ini ; fi
  - phpenv config-add .travis.php.memcached.ini
  - phpenv config-add .travis.php.redis.ini
  - composer self-update || true
  # If Memcache extension is not supported we need to fake it,
- # otherwise composer will complain about missing dev dependencies
+ # otherwise composer will complain about missing dev dependencies.
  - if [[ "$MEMCACHE_EXT_UNSUPPORTED" == "1" ]]; then composer config platform.ext-memcache 0.0.1 ; fi
  - composer install
  - vendor/bin/phpunit --version
