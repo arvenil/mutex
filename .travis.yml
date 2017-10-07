@@ -7,19 +7,17 @@ php:
  - 7.0
  - 7.1
  - hhvm
-env:
- - MEMCACHE_EXT=1
 matrix:
     include:
      - php: 7.0
-       env: MEMCACHE_EXT=0
+       env: SKIP_MEMCACHE=1
      - php: 7.1
-       env: MEMCACHE_EXT=0
+       env: SKIP_MEMCACHE=1
     allow_failures:
      - php: 7.0
-       env: MEMCACHE_EXT=1
+       env:
      - php: 7.1
-       env: MEMCACHE_EXT=1
+       env:
 
 addons:
     code_climate:
@@ -31,11 +29,11 @@ services:
  - redis-server
 
 before_script:
- - if [[ "$MEMCACHE_EXT" == "1" ]]; then phpenv config-add .travis.php.memcache.ini ; fi
+ - if [[ "$SKIP_MEMCACHE" != "1" ]]; then phpenv config-add .travis.php.memcache.ini ; fi
  - phpenv config-add .travis.php.memcached.ini
  - phpenv config-add .travis.php.redis.ini
  - composer self-update || true
- - if [[ "$MEMCACHE_EXT" == "0" ]]; then composer config platform.ext-memcache 0.0.1 ; fi
+ - if [[ "$SKIP_MEMCACHE" == "1" ]]; then composer config platform.ext-memcache 0.0.1 ; fi
  - composer install
  - vendor/bin/phpunit --version
 
