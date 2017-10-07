@@ -15,14 +15,10 @@ matrix:
        env: MEMCACHE_EXT=0
      - php: 7.1
        env: MEMCACHE_EXT=0
-     - php: hhvm
-       env: MEMCACHE_EXT=0
     allow_failures:
      - php: 7.0
        env: MEMCACHE_EXT=1
      - php: 7.1
-       env: MEMCACHE_EXT=1
-     - php: hhvm
        env: MEMCACHE_EXT=1
 
 addons:
@@ -35,13 +31,13 @@ services:
  - redis-server
 
 before_script:
- - curl -sSfL -o ~/.phpenv/versions/hhvm/bin/phpunit https://phar.phpunit.de/phpunit-5.7.phar
  - if [[ "$MEMCACHE_EXT" == "1" ]]; then phpenv config-add .travis.php.memcache.ini ; fi
  - phpenv config-add .travis.php.memcached.ini
  - phpenv config-add .travis.php.redis.ini
  - composer self-update || true
  - if [[ "$MEMCACHE_EXT" == "0" ]]; then composer config platform.ext-memcache 0.0.1 ; fi
  - composer install
+ - phpunit --version
 
 script: vendor/bin/phpunit
 
