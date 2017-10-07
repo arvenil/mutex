@@ -43,7 +43,7 @@ before_script:
  - if [[ "$MEMCACHE_EXT" == "0" ]]; then composer config platform.ext-memcache 0.0.1 ; fi
  - composer install
 
-script: phpunit
+script: vendor/bin/phpunit
 
 after_script:
   - vendor/bin/ocular code-coverage:upload --format=php-clover build/logs/clover.xml
