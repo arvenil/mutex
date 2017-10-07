@@ -58,7 +58,6 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
      */
     public function lockImplementorProvider()
     {
-        $memcacheLockFabric = new MemcacheLockFabric();
         $memcachedLockFabric = new MemcachedLockFabric();
 
         $data = array(
@@ -80,6 +79,8 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
 
         if (class_exists("Memcache")) {
             array_push($data, $this->provideMemcacheMockLock());
+
+            $memcacheLockFabric = new MemcacheLockFabric();
             array_push($data, array($memcacheLockFabric->create()));
         }
 
@@ -93,11 +94,14 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
     {
         $data = array(
             // Just mocks
-            $this->provideMemcacheMockLock(),
             $this->provideMemcachedMockLock(),
             $this->providePredisRedisMockLock(),
             $this->providePhpRedisMockLock(),
         );
+
+        if (class_exists("Memcache")) {
+            array_push($data, $this->provideMemcacheMockLock());
+        }
 
         return $data;
     }
@@ -107,13 +111,16 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
      */
     public function lockFabricWithExpirationProvider()
     {
-        $memcacheLockFabric = new MemcacheLockFabric();
         $memcachedLockFabric = new MemcachedLockFabric();
 
         $data = array(
-            array($memcacheLockFabric),
             array($memcachedLockFabric),
         );
+
+        if (class_exists("Memcache")) {
+            $memcacheLockFabric = new MemcacheLockFabric();
+            array_push($data, array($memcacheLockFabric));
+        }
 
         return $data;
     }
