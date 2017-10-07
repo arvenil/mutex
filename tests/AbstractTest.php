@@ -25,6 +25,7 @@ use NinjaMutex\Tests\Mock\MockPredisClient;
 use org\bovigo\vfs;
 use Predis;
 use Redis;
+use Memcache;
 
 abstract class AbstractTest extends \PHPUnit_Framework_TestCase
 {
@@ -64,7 +65,6 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
             // Just mocks
             $this->provideFlockMockLock(),
             $this->provideDirectoryMockLock(),
-            $this->provideMemcacheMockLock(),
             $this->provideMemcachedMockLock(),
             $this->provideMysqlMockLock(),
             $this->providePredisRedisMockLock(),
@@ -72,12 +72,16 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
             // Real locks
             $this->provideFlockLock(),
             $this->provideDirectoryLock(),
-            array($memcacheLockFabric->create()),
             array($memcachedLockFabric->create()),
             $this->provideMysqlLock(),
             $this->providePredisRedisLock(),
             $this->providePhpRedisLock(),
         );
+
+        if (class_exists("Memcache")) {
+            array_push($data, $this->provideMemcacheMockLock());
+            array_push($data, array($memcacheLockFabric->create()));
+        }
 
         return $data;
     }
