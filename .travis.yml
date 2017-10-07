@@ -37,7 +37,7 @@ before_script:
  - composer self-update || true
  - if [[ "$MEMCACHE_EXT" == "0" ]]; then composer config platform.ext-memcache 0.0.1 ; fi
  - composer install
- - phpunit --version
+ - vendor/bin/phpunit --version
 
 script: vendor/bin/phpunit
 
