@@ -54,6 +54,24 @@ class MockPDO extends PDO
     }
 
     /**
+     * Quotes a string for use in a query.
+     * @link http://php.net/manual/en/pdo.quote.php
+     * @param string $string <p>
+     * The string to be quoted.
+     * </p>
+     * @param int $parameter_type [optional] <p>
+     * Provides a data type hint for drivers that have alternate quoting styles.
+     * </p>
+     * @return string a quoted string that is theoretically safe to pass into an
+     * SQL statement. Returns <b>FALSE</b> if the driver does not support quoting in
+     * this way.
+     */
+    public function quote ($string, $parameter_type = PDO::PARAM_STR)
+    {
+        return $string;
+    }
+
+    /**
      * @param  string           $key
      * @param  int              $timeout
      * @return MockPDOStatement
