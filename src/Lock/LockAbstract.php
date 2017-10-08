@@ -95,7 +95,8 @@ abstract class LockAbstract implements LockInterface
 
     /**
      * @param  string $name
-     * @param  bool   $blocking
+     * @param  bool   $blocking If lock provider supports blocking then you can pass this param through,
+     *                          otherwise, ignore this variable, default blocking method will be used.
      * @return bool
      */
     abstract protected function getLock($name, $blocking);
