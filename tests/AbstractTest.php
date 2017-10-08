@@ -210,7 +210,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
      */
     protected function provideMysqlLock()
     {
-        return array(new MySQLPDOLock('', 'root', ''));
+        return array(new MySQLPDOLock('mysql:', 'root', ''));
     }
 
     /**
