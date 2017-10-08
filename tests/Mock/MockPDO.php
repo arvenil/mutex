@@ -34,12 +34,22 @@ class MockPDO extends PDO
      */
     protected $current = array();
 
-    public function __construct($dsn, $user, $password, $options)
+    /**
+     * Creates a PDO instance representing a connection to a database
+     * @link http://php.net/manual/en/pdo.construct.php
+     * @param $dsn
+     * @param $username [optional]
+     * @param $passwd [optional]
+     * @param $options [optional]
+     */
+    public function __construct($dsn, $username, $passwd, $options)
     {
         $this->_mock_pdo_statement = new MockPDOStatement();
     }
 
     /**
+     * Executes an SQL statement, returning a result set as a PDOStatement object
+     * @link http://php.net/manual/en/pdo.query.php
      * @param string $statement <p>
      * The SQL statement to prepare and execute.
      * </p>
