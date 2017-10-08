@@ -44,13 +44,31 @@ class MockPDO extends PDO
      */
     public function query($statement)
     {
-        if (preg_match('/RELEASE_LOCK\("(.*)"\)/', $statement, $m)) {
+        if (preg_match('/RELEASE_LOCK\((.*)\)/', $statement, $m)) {
             return $this->_mock_release_lock($m[1]);
-        } elseif (preg_match('/GET_LOCK\("(.*)", *(.*)\)/', $statement, $m)) {
+        } elseif (preg_match('/GET_LOCK\((.*), *(.*)\)/', $statement, $m)) {
             return $this->_mock_get_lock($m[1], $m[2]);
-        } elseif (preg_match('/IS_FREE_LOCK\("(.*)"\)/', $statement, $m)) {
+        } elseif (preg_match('/IS_FREE_LOCK\((.*)\)/', $statement, $m)) {
             return $this->_mock_is_free_lock($m[1]);
         }
+    }
+
+    /**
+     * Quotes a string for use in a query.
+     * @link http://php.net/manual/en/pdo.quote.php
+     * @param string $string <p>
+     * The string to be quoted.
+     * </p>
+     * @param int $parameter_type [optional] <p>
+     * Provides a data type hint for drivers that have alternate quoting styles.
+     * </p>
+     * @return string a quoted string that is theoretically safe to pass into an
+     * SQL statement. Returns <b>FALSE</b> if the driver does not support quoting in
+     * this way.
+     */
+    public function quote ($string, $parameter_type = PDO::PARAM_STR)
+    {
+        return $string;
     }
 
     /**
