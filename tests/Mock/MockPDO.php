@@ -10,6 +10,7 @@
 namespace NinjaMutex\Tests\Mock;
 
 use PDO;
+use PDOStatement;
 
 /**
  * Mock PDO to mimic *_lock functionality
@@ -33,16 +34,32 @@ class MockPDO extends PDO
      */
     protected $current = array();
 
-    public function __construct($dsn, $user, $password)
+    public function __construct($dsn, $user, $password, $options)
     {
         $this->_mock_pdo_statement = new MockPDOStatement();
     }
 
     /**
-     * @param  string           $statement
-     * @return MockPDOStatement
+     * @param string $statement <p>
+     * The SQL statement to prepare and execute.
+     * </p>
+     * <p>
+     * Data inside the query should be properly escaped.
+     * </p>
+     * @param int $mode <p>
+     * The fetch mode must be one of the PDO::FETCH_* constants.
+     * </p>
+     * @param mixed $arg3 <p>
+     * The second and following parameters are the same as the parameters for PDOStatement::setFetchMode.
+     * </p>
+     * @param array $ctorargs [optional] <p>
+     * Arguments of custom class constructor when the <i>mode</i>
+     * parameter is set to <b>PDO::FETCH_CLASS</b>.
+     * </p>
+     * @return PDOStatement <b>PDO::query</b> returns a PDOStatement object, or <b>FALSE</b>
+     * on failure.
      */
-    public function query($statement)
+    public function query ($statement, $mode = PDO::ATTR_DEFAULT_FETCH_MODE, $arg3 = null, array $ctorargs = array())
     {
         if (preg_match('/RELEASE_LOCK\((.*)\)/', $statement, $m)) {
             return $this->_mock_release_lock($m[1]);
