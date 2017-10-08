@@ -49,11 +49,14 @@ class MySQLPDOLock extends LockAbstract
     /**
      * Provide data for PDO connection
      *
+     * @link http://php.net/manual/en/pdo.construct.php
      * @param string $dsn
-     * @param string $username
-     * @param string $passwd
-     * @param array $options
-     * @param string $classname class name to create as PDO connection
+     * @param string $username [optional]
+     * @param string $passwd   [optional]
+     * @param array  $options  [optional]
+     *
+     * @param string $classname class name to create as PDO connection,
+     *                          by default this is PDO, but in tests we can inject MockPDO
      */
     public function __construct($dsn, $username = null, $passwd = null, $options = null, $classname = 'PDO')
     {
