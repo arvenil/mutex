@@ -35,15 +35,7 @@ class DirectoryLock extends LockAbstract
      */
     protected function getLock($name, $blocking)
     {
-        while (!@mkdir($this->getDirectoryPath($name))) {
-            if (!$blocking) {
-                return false;
-            }
-
-            usleep(rand(5000, 20000));
-        }
-
-        return true;
+        return @mkdir($this->getDirectoryPath($name));
     }
 
     /**
