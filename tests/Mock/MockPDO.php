@@ -39,8 +39,8 @@ class MockPDO extends PDO
      * @link http://php.net/manual/en/pdo.construct.php
      * @param $dsn
      * @param $username [optional]
-     * @param $passwd [optional]
-     * @param $options [optional]
+     * @param $passwd   [optional]
+     * @param $options  [optional]
      */
     public function __construct($dsn, $username, $passwd, $options)
     {
@@ -69,7 +69,7 @@ class MockPDO extends PDO
      * @return PDOStatement <b>PDO::query</b> returns a PDOStatement object, or <b>FALSE</b>
      * on failure.
      */
-    public function query ($statement, $mode = PDO::ATTR_DEFAULT_FETCH_MODE, $arg3 = null, array $ctorargs = array())
+    public function query($statement, $mode = PDO::ATTR_DEFAULT_FETCH_MODE, $arg3 = null, array $ctorargs = array())
     {
         if (preg_match('/RELEASE_LOCK\((.*)\)/', $statement, $m)) {
             return $this->_mock_release_lock($m[1]);
@@ -93,7 +93,7 @@ class MockPDO extends PDO
      * SQL statement. Returns <b>FALSE</b> if the driver does not support quoting in
      * this way.
      */
-    public function quote ($string, $parameter_type = PDO::PARAM_STR)
+    public function quote($string, $parameter_type = PDO::PARAM_STR)
     {
         return $string;
     }
