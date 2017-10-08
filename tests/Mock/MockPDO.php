@@ -44,11 +44,11 @@ class MockPDO extends PDO
      */
     public function query($statement)
     {
-        if (preg_match('/RELEASE_LOCK\("(.*)"\)/', $statement, $m)) {
+        if (preg_match('/RELEASE_LOCK\((.*)\)/', $statement, $m)) {
             return $this->_mock_release_lock($m[1]);
-        } elseif (preg_match('/GET_LOCK\("(.*)", *(.*)\)/', $statement, $m)) {
+        } elseif (preg_match('/GET_LOCK\((.*), *(.*)\)/', $statement, $m)) {
             return $this->_mock_get_lock($m[1], $m[2]);
-        } elseif (preg_match('/IS_FREE_LOCK\("(.*)"\)/', $statement, $m)) {
+        } elseif (preg_match('/IS_FREE_LOCK\((.*)\)/', $statement, $m)) {
             return $this->_mock_is_free_lock($m[1]);
         }
     }
