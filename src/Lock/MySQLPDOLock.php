@@ -12,42 +12,60 @@ namespace NinjaMutex\Lock;
 use PDO;
 
 /**
- * Lock implementor using MySql
+ * Lock implementor using MySQL PDO driver
  *
  * @author Kamil Dziedzic <arvenil@klecza.pl>
  */
-class MySqlLock extends LockAbstract
+class MySQLPDOLock extends LockAbstract
 {
     /**
-     * MySql connections
+     * MySQL connections
      *
      * @var PDO[]
      */
     protected $pdo = array();
 
-    protected $user;
-    protected $password;
-    protected $host;
-    protected $port;
+    /**
+     * @var string
+     */
+    protected $dsn;
+    /**
+     * @var string
+     */
+    protected $username;
+    /**
+     * @var string
+     */
+    protected $passwd;
+    /**
+     * @var array
+     */
+    protected $options;
+    /**
+     * @var string
+     */
     protected $classname;
 
     /**
      * Provide data for PDO connection
      *
-     * @param string $user
-     * @param string $password
-     * @param string $host
-     * @param int $port
-     * @param string $classname class name to create as PDO connection
+     * @link http://php.net/manual/en/pdo.construct.php
+     * @param string $dsn
+     * @param string $username [optional]
+     * @param string $passwd   [optional]
+     * @param array  $options  [optional]
+     *
+     * @param string $classname class name to create as PDO connection,
+     *                          by default this is PDO, but in tests we can inject MockPDO
      */
-    public function __construct($user, $password, $host, $port = 3306, $classname = 'PDO')
+    public function __construct($dsn, $username = null, $passwd = null, $options = null, $classname = 'PDO')
     {
         parent::__construct();
 
-        $this->user = $user;
-        $this->password = $password;
-        $this->host = $host;
-        $this->port = $port;
+        $this->dsn = $dsn;
+        $this->username = $username;
+        $this->passwd = $passwd;
+        $this->options = $options;
         $this->classname = $classname;
     }
 
@@ -156,8 +174,7 @@ class MySqlLock extends LockAbstract
             return true;
         }
 
-        $dsn = sprintf('mysql:host=%s;port=%d', $this->host, $this->port);
-        $this->pdo[$name] = new $this->classname($dsn, $this->user, $this->password);
+        $this->pdo[$name] = new $this->classname($this->dsn, $this->username, $this->passwd, $this->options);
 
         return true;
     }

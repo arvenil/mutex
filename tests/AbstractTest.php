@@ -13,7 +13,7 @@ use NinjaMutex\Lock\DirectoryLock;
 use NinjaMutex\Lock\FlockLock;
 use NinjaMutex\Lock\MemcachedLock;
 use NinjaMutex\Lock\MemcacheLock;
-use NinjaMutex\Lock\MySqlLock;
+use NinjaMutex\Lock\MySQLPDOLock;
 use NinjaMutex\Lock\PredisRedisLock;
 use NinjaMutex\Lock\PhpRedisLock;
 use NinjaMutex\Tests\Lock\Fabric\MemcachedLockFabric;
@@ -166,7 +166,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
      */
     protected function provideMysqlMockLock()
     {
-        return array(new MySqlLock('', '', '', 3306, 'NinjaMutex\Tests\Mock\MockPDO'));
+        return array(new MySQLPDOLock('', null, null, null, 'NinjaMutex\Tests\Mock\MockPDO'));
     }
 
     /**
@@ -210,7 +210,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
      */
     protected function provideMysqlLock()
     {
-        return array(new MySqlLock('root', '', '127.0.0.1'));
+        return array(new MySQLPDOLock('mysql:', 'root', ''));
     }
 
     /**
