@@ -83,29 +83,6 @@ class Mutex
     }
 
     /**
-     * Try to release any obtained locks when object is destroyed
-     *
-     * This is a safe guard for cases when your php script dies unexpectedly.
-     * It's not guaranteed it will work either.
-     *
-     * You should not depend on __destruct() to release your locks,
-     * instead release them with `$released = $this->releaseLock()`A
-     * and check `$released` if lock was properly released
-     */
-    public function __destruct()
-    {
-        while ($this->isAcquired()) {
-            $released = $this->releaseLock();
-            if (!$released) {
-                throw new UnrecoverableMutexException(sprintf(
-                    'Cannot release lock in Mutex __destruct(): %s',
-                    $this->name
-                ));
-            }
-        }
-    }
-
-    /**
      * Check if Mutex is acquired
      *
      * @return bool
