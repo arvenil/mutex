@@ -55,7 +55,7 @@ class MockPredisClient extends Predis\Client implements PermanentServiceInterfac
 
     /**
      * @param  string $key
-     * @return mixed
+     * @return false|string|null
      */
     public function get($key)
     {
@@ -67,7 +67,7 @@ class MockPredisClient extends Predis\Client implements PermanentServiceInterfac
             return null;
         }
 
-        return (string) self::$data[$key];
+        return self::$data[$key];
     }
 
     /**

@@ -7,19 +7,18 @@
 [![Code Climate](https://codeclimate.com/github/arvenil/ninja-mutex/badges/gpa.svg)](https://codeclimate.com/github/arvenil/ninja-mutex)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/arvenil/ninja-mutex/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/arvenil/ninja-mutex/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/arvenil/ninja-mutex/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/arvenil/ninja-mutex/?branch=master)
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/15c5c748-f8d8-4b56-b536-a29a151aac6c/mini.png)](https://insight.sensiolabs.com/projects/15c5c748-f8d8-4b56-b536-a29a151aac6c)
 [![Dependency Status](https://gemnasium.com/arvenil/ninja-mutex.svg)](https://gemnasium.com/arvenil/ninja-mutex)
 [![Total Downloads](https://img.shields.io/packagist/dt/arvenil/ninja-mutex.svg)](https://packagist.org/packages/arvenil/ninja-mutex)
 
 ## About
 
-ninja-mutex is a simple to use mutex implementation for php. It supports different adapters (flock, memcache, mysql, redis, ...) so you can setup it as you wish. All adapters (if set up properly) can be used in multi server environment - in other words lock is shared between web servers.
+ninja-mutex is a simple to use mutex implementation for php. It supports different adapters (flock, memcache, mysql, redis, ...) so you can set it up as you wish. All adapters (if set up properly) can be used in multi server environment - in other words lock is shared between web servers.
 
 ## Usage
 
 ### Mutex
 
-First you need to choose adapter and setup it properly. For example if you choose flock implementation first you need to setup NFS filesystem and mount it on web servers. In this example we will choose memcache adapter:
+First you need to choose an adapter and setup it properly. For example if you choose flock implementation first you need to set up NFS filesystem and mount it on web servers. In this example we will choose memcache adapter:
 
 ```php
 <?php
@@ -44,7 +43,7 @@ if ($mutex->acquireLock(1000)) {
 
 ### Mutex Fabric
 
-If you want to use multiple mutexes in your project then MutexFabric is the right solution. You setup lock implementor once and you can use as many mutexes as you want!
+If you want to use multiple mutexes in your project then MutexFabric is the right solution. Set up lock implementor once, and you can use as many mutexes as you want!
 
 ```php
 <?php
@@ -84,7 +83,7 @@ Download composer:
 
     wget -nc http://getcomposer.org/composer.phar
 
-and add dependency to your project:
+Add dependency to your project:
 
     php composer.phar require arvenil/ninja-mutex:*
 
@@ -94,7 +93,7 @@ Tests require vfsStream to work. To install it, simply run in project dir:
 
     wget -nc http://getcomposer.org/composer.phar && php composer.phar install --dev
 
-To run tests type in console:
+To run tests type in a console:
 
     vendor/bin/phpunit
 

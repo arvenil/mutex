@@ -12,13 +12,14 @@ namespace NinjaMutex\Tests;
 use NinjaMutex\Mutex;
 use NinjaMutex\Tests\Mock\MockLock;
 use NinjaMutex\UnrecoverableMutexException;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests for Mutex
  *
  * @author Kamil Dziedzic <arvenil@klecza.pl>
  */
-class MutexTest extends \PHPUnit_Framework_TestCase
+class MutexTest extends TestCase
 {
     /**
      * @issue https://github.com/arvenil/ninja-mutex/pull/4

@@ -16,7 +16,6 @@ namespace NinjaMutex\Lock;
  */
 interface LockInterface
 {
-
     /**
      * @param  string   $name
      * @param  null|int $timeout

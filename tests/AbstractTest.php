@@ -9,6 +9,7 @@
  */
 namespace NinjaMutex\Tests;
 
+use DirectoryIterator;
 use NinjaMutex\Lock\DirectoryLock;
 use NinjaMutex\Lock\FlockLock;
 use NinjaMutex\Lock\MemcachedLock;
@@ -22,30 +23,36 @@ use NinjaMutex\Tests\Mock\MockMemcache;
 use NinjaMutex\Tests\Mock\MockMemcached;
 use NinjaMutex\Tests\Mock\MockPhpRedisClient;
 use NinjaMutex\Tests\Mock\MockPredisClient;
-use org\bovigo\vfs;
+use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamException;
+use org\bovigo\vfs\vfsStreamWrapper;
+use org\bovigo\vfs\vfsStreamDirectory;
 use Predis;
 use Redis;
-use Memcache;
+use PHPUnit\Framework\TestCase;
 
-abstract class AbstractTest extends \PHPUnit_Framework_TestCase
+abstract class AbstractTest extends TestCase
 {
-    public function setUp()
+    /**
+     * @throws vfsStreamException
+     */
+    public function setUp(): void
     {
-        vfs\vfsStreamWrapper::register();
-        vfs\vfsStreamWrapper::setRoot(new vfs\vfsStreamDirectory('nfs'));
+        vfsStreamWrapper::register();
+        vfsStreamWrapper::setRoot(new vfsStreamDirectory('nfs'));
         mkdir('/tmp/mutex/');
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
-        foreach (new \DirectoryIterator(vfs\vfsStream::url('nfs')) as $file) {
+        foreach (new DirectoryIterator(vfsStream::url('nfs')) as $file) {
             if (!$file->isDot()) {
                 unlink($file->getPathname());
             }
         }
-        rmdir(vfs\vfsStream::url('nfs'));
+        rmdir(vfsStream::url('nfs'));
 
-        foreach (new \DirectoryIterator('/tmp/mutex/') as $file) {
+        foreach (new DirectoryIterator('/tmp/mutex/') as $file) {
             if (!$file->isDot()) {
                 unlink($file->getPathname());
             }
@@ -56,7 +63,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public function lockImplementorProvider()
+    public function lockImplementorProvider(): array
     {
         $memcachedLockFabric = new MemcachedLockFabric();
 
@@ -88,9 +95,9 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return array
+     * @return array[]
      */
-    public function lockImplementorWithBackendProvider()
+    public function lockImplementorWithBackendProvider(): array
     {
         $data = array(
             // Just mocks
@@ -107,9 +114,9 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return array
+     * @return Lock\Fabric\MemcachedLockFabric[][]
      */
-    public function lockFabricWithExpirationProvider()
+    public function lockFabricWithExpirationProvider(): array
     {
         $memcachedLockFabric = new MemcachedLockFabric();
 
@@ -128,7 +135,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    protected function provideMemcacheMockLock()
+    protected function provideMemcacheMockLock(): array
     {
         $memcacheMock = new MockMemcache();
 
@@ -138,7 +145,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    protected function provideMemcachedMockLock()
+    protected function provideMemcachedMockLock(): array
     {
         $memcachedMock = new MockMemcached();
 
@@ -146,25 +153,25 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return array
+     * @return FlockLock[]
      */
-    protected function provideFlockMockLock()
+    protected function provideFlockMockLock(): array
     {
-        return array(new FlockLock(vfs\vfsStream::url('nfs/')));
+        return array(new FlockLock(vfsStream::url('nfs/')));
     }
 
     /**
-     * @return array
+     * @return DirectoryLock[]
      */
-    protected function provideDirectoryMockLock()
+    protected function provideDirectoryMockLock(): array
     {
-        return array(new DirectoryLock(vfs\vfsStream::url('nfs/')));
+        return array(new DirectoryLock(vfsStream::url('nfs/')));
     }
 
     /**
-     * @return array
+     * @return MySQLPDOLock[]
      */
-    protected function provideMysqlMockLock()
+    protected function provideMysqlMockLock(): array
     {
         return array(new MySQLPDOLock('', null, null, null, 'NinjaMutex\Tests\Mock\MockPDO'));
     }
@@ -172,7 +179,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    protected function providePredisRedisMockLock()
+    protected function providePredisRedisMockLock(): array
     {
         $predisMock = new MockPredisClient();
 
@@ -182,7 +189,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    protected function providePhpRedisMockLock()
+    protected function providePhpRedisMockLock(): array
     {
         $predisMock = new MockPhpRedisClient();
 
@@ -190,44 +197,49 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return array
+     * @return FlockLock[]
      */
-    protected function provideFlockLock()
+    protected function provideFlockLock(): array
     {
         return array(new FlockLock('/tmp/mutex/'));
     }
 
     /**
-     * @return array
+     * @return DirectoryLock[]
      */
-    protected function provideDirectoryLock()
+    protected function provideDirectoryLock(): array
     {
         return array(new DirectoryLock('/tmp/mutex/'));
     }
 
     /**
-     * @return array
+     * @return MySQLPDOLock[]
      */
-    protected function provideMysqlLock()
+    protected function provideMysqlLock(): array
     {
-        return array(new MySQLPDOLock('mysql:', 'root', ''));
+        $host=getenv("MYSQL") ?: '127.0.0.1';
+        return array(new MySQLPDOLock('mysql:host='.$host, 'root', ''));
     }
 
     /**
-     * @return array
+     * @return PredisRedisLock[]
      */
-    protected function providePredisRedisLock()
+    protected function providePredisRedisLock(): array
     {
-        return array(new PredisRedisLock(new Predis\Client()));
+        $host=getenv("REDIS") ?: '127.0.0.1';
+        return array(new PredisRedisLock(new Predis\Client([
+            'host' => $host,
+        ])));
     }
 
     /**
-     * @return array
+     * @return PhpRedisLock[]
      */
-    protected function providePhpRedisLock()
+    protected function providePhpRedisLock(): array
     {
+        $host=getenv("REDIS") ?: '127.0.0.1';
         $redis = new Redis();
-        $redis->connect('127.0.0.1', 6379);
+        $redis->connect($host);
         return array(new PhpRedisLock($redis));
     }
 }

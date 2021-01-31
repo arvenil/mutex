@@ -19,7 +19,8 @@ class MemcacheLockFabric implements LockFabricWithExpirationInterface
      */
     public function create() {
         $memcache = new Memcache();
-        $memcache->connect('127.0.0.1', 11211);
+        $host=getenv("MEMCACHED") ?: '127.0.0.1';
+        $memcache->connect($host, 11211);
 
         return new MemcacheLock($memcache);
     }

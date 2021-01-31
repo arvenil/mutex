@@ -9,7 +9,7 @@
  */
 namespace NinjaMutex\Lock;
 
-use \Redis;
+use Redis;
 
 /**
  * Lock implementor using PHPRedis
@@ -19,7 +19,7 @@ use \Redis;
 class PhpRedisLock extends LockAbstract
 {
     /**
-     * phpredis connection
+     * Redis connection
      *
      * @var
      */

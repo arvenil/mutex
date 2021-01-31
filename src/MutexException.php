@@ -9,11 +9,13 @@
  */
 namespace NinjaMutex;
 
+use Exception;
+
 /**
  * Base mutex exception
  *
  * @author Kamil Dziedzic <arvenil@klecza.pl>
  */
-class MutexException extends \Exception
+class MutexException extends Exception
 {
 }

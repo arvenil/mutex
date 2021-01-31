@@ -34,11 +34,11 @@ class MockPhpRedisClient extends Redis implements PermanentServiceInterface
     }
 
     /**
-     * @param  string $key
+     * @param  $key
      * @param  mixed  $value
      * @return bool
      */
-    public function setnx($key, $value)
+    public function setnx($key, $value): bool
     {
         if (!$this->available) {
             return false;
@@ -54,8 +54,8 @@ class MockPhpRedisClient extends Redis implements PermanentServiceInterface
     }
 
     /**
-     * @param  string $key
-     * @return mixed
+     * @param  $key
+     * @return false|string
      */
     public function get($key)
     {
@@ -67,26 +67,27 @@ class MockPhpRedisClient extends Redis implements PermanentServiceInterface
             return false;
         }
 
-        return (string) self::$data[$key];
+        return self::$data[$key];
     }
 
     /**
-     * @param  string $key
+     * @param $key1
+     * @param mixed ...$otherKeys
      * @return bool
      */
-    public function del($key)
+    public function del($key1, ...$otherKeys): bool
     {
         if (!$this->available) {
             return false;
         }
 
-        unset(self::$data[$key]);
+        unset(self::$data[$key1]);
 
         return true;
     }
 
     /**
-     * @param bool $available
+     * @param $available
      */
     public function setAvailable($available)
     {
