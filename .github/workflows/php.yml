@@ -1,0 +1,50 @@
+name: PHP
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: ['ubuntu-latest']
+        php-versions: ['7.3', '7.4', '8.0', '8.1']
+        phpunit-versions: ['latest']
+ 
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-versions }}
+        extensions: memcache, memcached, pdo_mysql, pcntl, redis, xdebug
+        coverage: xdebug        
+        tools: php-cs-fixer, phpunit:${{ matrix.phpunit-versions }}
+        
+    - name: Get composer cache directory
+      id: composer-cache
+      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      
+    - name: Cache composer dependencies
+      uses: actions/cache@v2
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+        restore-keys: ${{ runner.os }}-composer-
+    
+    - name: Install Composer dependencies
+      run: |
+        composer require --dev symfony/phpunit-bridge
+        composer install --no-progress --prefer-dist --optimize-autoloader
+        php bin/phpunit install
+    
+    - name: Run Tests
+      run: php bin/phpunit --coverage-text
