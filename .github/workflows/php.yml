@@ -44,7 +44,6 @@ jobs:
         run: |
           composer require --dev symfony/phpunit-bridge
           composer install --no-progress --prefer-dist --optimize-autoloader
-          php bin/phpunit install
 
       - name: Run Tests
-        run: php bin/phpunit --coverage-text
+        run: vendor/bin/phpunit --coverage-text
