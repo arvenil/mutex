@@ -11,6 +11,8 @@ on:
 jobs:
   run:
     runs-on: ${{ matrix.operating-system }}
+    env:
+      GITHUB_ENV: .env
     services:
       memcached:
         image: memcached
