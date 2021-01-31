@@ -63,5 +63,8 @@ jobs:
           composer require --dev symfony/phpunit-bridge
           composer install --no-progress --prefer-dist --optimize-autoloader
 
+      - name: Dotenv Action
+        uses: falti/dotenv-action@v0.2.5
+
       - name: Run Tests
         run: vendor/bin/phpunit --coverage-text
