@@ -4,6 +4,7 @@
 [![Code Climate](https://codeclimate.com/github/arvenil/ninja-mutex/badges/gpa.svg)](https://codeclimate.com/github/arvenil/ninja-mutex)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/arvenil/ninja-mutex/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/arvenil/ninja-mutex/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/arvenil/ninja-mutex/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/arvenil/ninja-mutex/?branch=master)
+[![Insight](https://insight.symfony.com/projects/15c5c748-f8d8-4b56-b536-a29a151aac6c/mini.svg)](https://insight.symfony.com/projects/15c5c748-f8d8-4b56-b536-a29a151aac6c)
 [![Total Downloads](https://img.shields.io/packagist/dt/arvenil/ninja-mutex.svg)](https://packagist.org/packages/arvenil/ninja-mutex)
 
 ## About
