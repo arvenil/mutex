@@ -1,11 +1,11 @@
-[![License](https://img.shields.io/github/license/arvenil/ninja-mutex)](http://opensource.org/licenses/MIT)
-[![Build](https://github.com/arvenil/ninja-mutex/workflows/PHP/badge.svg)](https://github.com/arvenil/ninja-mutex/actions?query=workflow%3APHP)
+[![License](https://img.shields.io/github/license/arvenil/ninja-mutex?color=informational)](http://opensource.org/licenses/MIT)
 [![Version](https://img.shields.io/github/v/release/arvenil/ninja-mutex)](https://github.com/arvenil/ninja-mutex/releases/latest)
 [![PHP](https://img.shields.io/packagist/php-v/arvenil/ninja-mutex)](https://packagist.org/packages/arvenil/ninja-mutex)
-[![Code Coverage](https://scrutinizer-ci.com/g/arvenil/ninja-mutex/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/arvenil/ninja-mutex/?branch=master)
-[![Maintainability](https://img.shields.io/codeclimate/maintainability-percentage/arvenil/ninja-mutex)](https://codeclimate.com/github/arvenil/ninja-mutex)
-[![Code Quality](https://img.shields.io/scrutinizer/quality/g/arvenil/ninja-mutex)](https://scrutinizer-ci.com/g/arvenil/ninja-mutex/?branch=master)
-[![Grade](https://img.shields.io/symfony/i/grade/15c5c748-f8d8-4b56-b536-a29a151aac6c?color=brightgreen)](https://insight.symfony.com/projects/15c5c748-f8d8-4b56-b536-a29a151aac6c)
+[![Build](https://github.com/arvenil/ninja-mutex/workflows/PHP/badge.svg)](https://github.com/arvenil/ninja-mutex/actions?query=workflow%3APHP)
+[![Coverage](https://img.shields.io/scrutinizer/coverage/g/arvenil/ninja-mutex?color=success)](https://scrutinizer-ci.com/g/arvenil/ninja-mutex/?branch=master)
+[![Quality](https://img.shields.io/scrutinizer/quality/g/arvenil/ninja-mutex?color=success&label=quality)](https://scrutinizer-ci.com/g/arvenil/ninja-mutex/?branch=master)
+[![Maintainability](https://img.shields.io/codeclimate/maintainability-percentage/arvenil/ninja-mutex?color=success)](https://codeclimate.com/github/arvenil/ninja-mutex)
+[![Grade](https://img.shields.io/symfony/i/grade/15c5c748-f8d8-4b56-b536-a29a151aac6c?color=success)](https://insight.symfony.com/projects/15c5c748-f8d8-4b56-b536-a29a151aac6c)
 [![Total Downloads](https://img.shields.io/packagist/dt/arvenil/ninja-mutex.svg)](https://packagist.org/packages/arvenil/ninja-mutex)
 
 ## About
