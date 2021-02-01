@@ -1,13 +1,9 @@
-[![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
-[![GitHub version](https://badge.fury.io/gh/arvenil%2Fninja-mutex.svg)](http://badge.fury.io/gh/arvenil%2Fninja-mutex)
-[![Build Status](https://travis-ci.org/arvenil/ninja-mutex.svg?branch=master)](https://travis-ci.org/arvenil/ninja-mutex)
-[![Tested](https://php-eye.com/badge/arvenil/ninja-mutex/tested.svg)](https://travis-ci.org/arvenil/ninja-mutex)
-[![Partial](https://php-eye.com/badge/arvenil/ninja-mutex/partial.svg)](https://travis-ci.org/arvenil/ninja-mutex)
-[![Not tested](https://php-eye.com/badge/arvenil/ninja-mutex/not-tested.svg)](https://travis-ci.org/arvenil/ninja-mutex)
+[![MIT license](https://img.shields.io/github/license/arvenil/ninja-mutex)](http://opensource.org/licenses/MIT)
+[![GitHub version](https://img.shields.io/github/v/release/arvenil/ninja-mutex)](https://github.com/arvenil/ninja-mutex/releases/latest)
+[![BuildStatus](https://github.com/arvenil/ninja-mutex/workflows/php/badge.svg)](https://github.com/arvenil/ninja-mutex/actions?query=workflow%3Aphp)
 [![Code Climate](https://codeclimate.com/github/arvenil/ninja-mutex/badges/gpa.svg)](https://codeclimate.com/github/arvenil/ninja-mutex)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/arvenil/ninja-mutex/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/arvenil/ninja-mutex/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/arvenil/ninja-mutex/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/arvenil/ninja-mutex/?branch=master)
-[![Dependency Status](https://gemnasium.com/arvenil/ninja-mutex.svg)](https://gemnasium.com/arvenil/ninja-mutex)
 [![Total Downloads](https://img.shields.io/packagist/dt/arvenil/ninja-mutex.svg)](https://packagist.org/packages/arvenil/ninja-mutex)
 
 ## About
