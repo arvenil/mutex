@@ -41,7 +41,7 @@ class MockMemcache extends Memcache implements PermanentServiceInterface
      * @param int|null $cas
      * @return bool
      */
-    public function add($key, mixed $value = null, int $flags = null, int $exptime = null, int $cas = null): bool
+    public function add($key, $value = null, int $flags = null, int $exptime = null, int $cas = null): bool
     {
         if (!$this->available) {
             return false;
@@ -62,7 +62,7 @@ class MockMemcache extends Memcache implements PermanentServiceInterface
      * @param mixed|null $cas
      * @return false|string
      */
-    public function get($key, mixed &$flags = null, mixed &$cas = null): mixed
+    public function get($key, &$flags = null, &$cas = null)
     {
         if (!$this->available) {
             return false;

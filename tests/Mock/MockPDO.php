@@ -54,11 +54,11 @@ class MockPDO extends PDO
      * @param string $statement
      * @param int|null $mode
      * @param mixed ...$fetchModeArgs
-     * @return PDOStatement|false <b>PDO::query</b> returns a PDOStatement object, or <b>FALSE</b>
+     * @return PDOStatement <b>PDO::query</b> returns a PDOStatement object, or <b>FALSE</b>
      * on failure.
      * @see PDOStatement::setFetchMode For a full description of the second and following parameters.
      */
-    public function query (string $statement, ?int $mode = null, mixed ...$fetchModeArgs)
+    public function query (string $statement, ?int $mode, ...$fetchModeArgs)
     {
         if (preg_match('/RELEASE_LOCK\((.*)\)/', $statement, $m)) {
             return $this->_mock_release_lock($m[1]);
@@ -82,7 +82,7 @@ class MockPDO extends PDO
      * SQL statement. Returns <b>FALSE</b> if the driver does not support quoting in
      * this way.
      */
-    public function quote(string $string, $type = PDO::PARAM_STR)
+    public function quote($string, $type = PDO::PARAM_STR)
     {
         return $string;
     }
