@@ -58,7 +58,7 @@ class MockMemcached implements PermanentServiceInterface
      * @param  null              $cache_cb
      * @param  null              $cas_token
      * @param  null              $udf_flags
-     * @return bool|mixed|string
+     * @return false|string
      */
     public function get($key, $cache_cb = null, &$cas_token = null, &$udf_flags = null)
     {
@@ -70,7 +70,7 @@ class MockMemcached implements PermanentServiceInterface
             return false;
         }
 
-        return (string) self::$data[$key];
+        return self::$data[$key];
     }
 
     /**
