@@ -36,12 +36,12 @@ class MockPDOStatement extends PDOStatement
     }
 
     /**
-     * @param  int|null $fetch_style
-     * @param  int|null $cursor_orientation
-     * @param  int|null $cursor_offset
+     * @param  int|null $mode
+     * @param  int|null $cursorOrientation
+     * @param  int|null $cursorOffset
      * @return string
      */
-    public function fetch($fetch_style = null, $cursor_orientation = PDO::FETCH_ORI_NEXT, $cursor_offset = 0)
+    public function fetch($mode = null, $cursorOrientation = PDO::FETCH_ORI_NEXT, $cursorOffset = 0)
     {
         return $this->_mock_fetch;
     }

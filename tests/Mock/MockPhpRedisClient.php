@@ -32,7 +32,7 @@ class MockPhpRedisClient implements PermanentServiceInterface
     }
 
     /**
-     * @param  $key
+     * @param  string $key
      * @param  mixed  $value
      * @return bool
      */
@@ -52,7 +52,7 @@ class MockPhpRedisClient implements PermanentServiceInterface
     }
 
     /**
-     * @param  $key
+     * @param  string $key
      * @return false|string
      */
     public function get($key)
@@ -69,22 +69,22 @@ class MockPhpRedisClient implements PermanentServiceInterface
     }
 
     /**
-     * @param $key1
+     * @param string $key
      * @return bool
      */
-    public function del($key1)
+    public function del($key)
     {
         if (!$this->available) {
             return false;
         }
 
-        unset(self::$data[$key1]);
+        unset(self::$data[$key]);
 
         return true;
     }
 
     /**
-     * @param $available
+     * @param bool $available
      */
     public function setAvailable($available)
     {

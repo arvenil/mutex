@@ -53,7 +53,7 @@ class MockPDO
      * @link https://php.net/manual/en/pdo.query.php
      * @param string $statement
      * @param int|null $mode
-     * @param mixed ...$fetchModeArgs
+     * @param mixed $fetchModeArgs
      * @return PDOStatement <b>PDO::query</b> returns a PDOStatement object, or <b>FALSE</b>
      * on failure.
      * @see PDOStatement::setFetchMode For a full description of the second and following parameters.

@@ -32,13 +32,11 @@ class MockMemcached implements PermanentServiceInterface
     }
 
     /**
-     * @param  string   $key
-     * @param  mixed    $value
-     * @param  int|null $expiration
-     * @param  null     $udf_flags
+     * @param  string $key
+     * @param  string $value
      * @return bool
      */
-    public function add($key, $value, $expiration = null, &$udf_flags = null)
+    public function add($key, $value)
     {
         if (!$this->available) {
             return false;
@@ -55,12 +53,9 @@ class MockMemcached implements PermanentServiceInterface
 
     /**
      * @param  string            $key
-     * @param  null              $cache_cb
-     * @param  null              $cas_token
-     * @param  null              $udf_flags
      * @return false|string
      */
-    public function get($key, $cache_cb = null, &$cas_token = null, &$udf_flags = null)
+    public function get($key)
     {
         if (!$this->available) {
             return false;
@@ -75,10 +70,9 @@ class MockMemcached implements PermanentServiceInterface
 
     /**
      * @param  string $key
-     * @param  null   $time
      * @return bool
      */
-    public function delete($key, $time = null)
+    public function delete($key)
     {
         if (!$this->available) {
             return false;

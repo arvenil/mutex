@@ -42,7 +42,7 @@ class MockPredisClient implements PermanentServiceInterface
             return false;
         }
 
-        if (null === $this->get($key)) {
+        if (false === $this->get($key)) {
             self::$data[$key] = (string) $value;
 
             return true;
@@ -53,12 +53,12 @@ class MockPredisClient implements PermanentServiceInterface
 
     /**
      * @param  string $key
-     * @return false|string|null
+     * @return string|null
      */
     public function get($key)
     {
         if (!$this->available) {
-            return false;
+            return null;
         }
 
         if (!isset(self::$data[$key])) {
@@ -69,7 +69,7 @@ class MockPredisClient implements PermanentServiceInterface
     }
 
     /**
-     * @param  string $key
+     * @param string $key
      * @return bool
      */
     public function del($key)
