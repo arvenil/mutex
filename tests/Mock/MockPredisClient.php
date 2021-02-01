@@ -9,14 +9,12 @@
  */
 namespace NinjaMutex\Tests\Mock;
 
-use Predis;
-
 /**
  * Mock Predis\Client to mimic Predis functionality
  *
  * @author Kamil Dziedzic <arvenil@klecza.pl>
  */
-class MockPredisClient extends Predis\Client implements PermanentServiceInterface
+class MockPredisClient implements PermanentServiceInterface
 {
     /**
      * @var string[]

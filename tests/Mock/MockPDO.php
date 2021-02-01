@@ -58,7 +58,7 @@ class MockPDO extends PDO
      * on failure.
      * @see PDOStatement::setFetchMode For a full description of the second and following parameters.
      */
-    public function query (string $statement, ?int $mode, ...$fetchModeArgs)
+    public function query (string $statement, int $mode = null, $fetchModeArgs)
     {
         if (preg_match('/RELEASE_LOCK\((.*)\)/', $statement, $m)) {
             return $this->_mock_release_lock($m[1]);

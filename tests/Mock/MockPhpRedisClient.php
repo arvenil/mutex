@@ -9,14 +9,12 @@
  */
 namespace NinjaMutex\Tests\Mock;
 
-use Redis;
-
 /**
  * Mock \Redis to mimic PhpRedis functionality
  *
  * @author leo108 <root@leo108.com>
  */
-class MockPhpRedisClient extends Redis implements PermanentServiceInterface
+class MockPhpRedisClient implements PermanentServiceInterface
 {
     /**
      * @var string[]
@@ -38,7 +36,7 @@ class MockPhpRedisClient extends Redis implements PermanentServiceInterface
      * @param  mixed  $value
      * @return bool
      */
-    public function setnx($key, $value): bool
+    public function setnx($key, $value)
     {
         if (!$this->available) {
             return false;
@@ -75,7 +73,7 @@ class MockPhpRedisClient extends Redis implements PermanentServiceInterface
      * @param mixed ...$otherKeys
      * @return bool
      */
-    public function del($key1, ...$otherKeys): bool
+    public function del($key1, $otherKeys)
     {
         if (!$this->available) {
             return false;

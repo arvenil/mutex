@@ -39,7 +39,7 @@ class MockMemcache implements PermanentServiceInterface
      * @param int|null $cas
      * @return bool
      */
-    public function add($key, $value = null, int $flags = null, int $exptime = null, int $cas = null): bool
+    public function add($key, $value = null, int $flags = null, int $exptime = null, int $cas = null)
     {
         if (!$this->available) {
             return false;
@@ -78,7 +78,7 @@ class MockMemcache implements PermanentServiceInterface
      * @param int $timeout
      * @return array|string
      */
-    public function delete($key, $timeout = 0): bool
+    public function delete($key, $timeout = 0)
     {
         if (!$this->available) {
             return false;

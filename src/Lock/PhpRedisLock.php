@@ -28,7 +28,7 @@ class PhpRedisLock extends LockAbstract
     /**
      * @param $client Redis
      */
-    public function __construct(Redis $client)
+    public function __construct($client)
     {
         parent::__construct();
 
