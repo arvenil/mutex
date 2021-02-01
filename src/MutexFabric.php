@@ -25,6 +25,7 @@ class MutexFabric
     /**
      * @param string $lockImplementorName
      * @param $lockImplementor
+     * @throws MutexException
      */
     public function __construct($lockImplementorName, LockInterface $lockImplementor)
     {
@@ -32,7 +33,6 @@ class MutexFabric
     }
 
     /**
-     *
      * @param  string         $name
      * @param  LockInterface  $implementor
      * @throws MutexException

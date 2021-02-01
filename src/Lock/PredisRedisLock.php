@@ -28,7 +28,7 @@ class PredisRedisLock extends LockAbstract
     /**
      * @param $client Predis\Client
      */
-    public function __construct(Predis\Client $client)
+    public function __construct($client)
     {
         parent::__construct();
 

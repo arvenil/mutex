@@ -91,6 +91,7 @@ class Mutex
      * You should not depend on __destruct() to release your locks,
      * instead release them with `$released = $this->releaseLock()`A
      * and check `$released` if lock was properly released
+     * @throws UnrecoverableMutexException
      */
     public function __destruct()
     {

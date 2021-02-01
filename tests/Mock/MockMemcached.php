@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace NinjaMutex\Tests\Mock;
 
 /**
@@ -32,20 +33,18 @@ class MockMemcached implements PermanentServiceInterface
     }
 
     /**
-     * @param  string   $key
-     * @param  mixed    $value
-     * @param  int|null $expiration
-     * @param  null     $udf_flags
+     * @param string $key
+     * @param string $value
      * @return bool
      */
-    public function add($key, $value, $expiration = null, &$udf_flags = null)
+    public function add($key, $value)
     {
         if (!$this->available) {
             return false;
         }
 
         if (false === $this->get($key)) {
-            self::$data[$key] = (string) $value;
+            self::$data[$key] = (string)$value;
 
             return true;
         }
@@ -54,13 +53,10 @@ class MockMemcached implements PermanentServiceInterface
     }
 
     /**
-     * @param  string            $key
-     * @param  null              $cache_cb
-     * @param  null              $cas_token
-     * @param  null              $udf_flags
-     * @return bool|mixed|string
+     * @param string $key
+     * @return false|string
      */
-    public function get($key, $cache_cb = null, &$cas_token = null, &$udf_flags = null)
+    public function get($key)
     {
         if (!$this->available) {
             return false;
@@ -70,15 +66,14 @@ class MockMemcached implements PermanentServiceInterface
             return false;
         }
 
-        return (string) self::$data[$key];
+        return self::$data[$key];
     }
 
     /**
-     * @param  string $key
-     * @param  null   $time
+     * @param string $key
      * @return bool
      */
-    public function delete($key, $time = null)
+    public function delete($key)
     {
         if (!$this->available) {
             return false;
@@ -94,6 +89,6 @@ class MockMemcached implements PermanentServiceInterface
      */
     public function setAvailable($available)
     {
-        $this->available = (bool) $available;
+        $this->available = (bool)$available;
     }
 }

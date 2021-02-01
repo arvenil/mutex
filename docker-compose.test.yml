@@ -1,0 +1,30 @@
+version: "3.9"
+services:
+  memcached:
+    image: "memcached:alpine"
+    ports:
+      - "11211:11211"
+  mysql:
+    image: "mysql"
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+    ports:
+      - "3306:3306"
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
+  sut:
+    build: .
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    working_dir: /app
+    environment:
+      - XDEBUG_MODE=coverage
+    command: sh -c "./wait-for redis:6379 && ./wait-for mysql:3306 && ./wait-for memcached:11211 && vendor/bin/phpunit"
+    depends_on:
+      - memcached
+      - mysql
+      - redis

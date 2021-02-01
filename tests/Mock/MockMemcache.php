@@ -7,16 +7,15 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace NinjaMutex\Tests\Mock;
 
-use Memcache;
+namespace NinjaMutex\Tests\Mock;
 
 /**
  * Mock memcache to mimic mutex functionality
  *
  * @author Kamil Dziedzic <arvenil@klecza.pl>
  */
-class MockMemcache extends Memcache implements PermanentServiceInterface
+class MockMemcache implements PermanentServiceInterface
 {
     /**
      * @var string[]
@@ -34,8 +33,8 @@ class MockMemcache extends Memcache implements PermanentServiceInterface
     }
 
     /**
-     * @param  string $key
-     * @param  mixed  $value
+     * @param string $key
+     * @param string $value
      * @return bool
      */
     public function add($key, $value)
@@ -45,7 +44,7 @@ class MockMemcache extends Memcache implements PermanentServiceInterface
         }
 
         if (false === $this->get($key)) {
-            self::$data[$key] = (string) $value;
+            self::$data[$key] = (string)$value;
 
             return true;
         }
@@ -54,8 +53,8 @@ class MockMemcache extends Memcache implements PermanentServiceInterface
     }
 
     /**
-     * @param  string            $key
-     * @return array|bool|string
+     * @param string $key
+     * @return false|string
      */
     public function get($key)
     {
@@ -67,12 +66,12 @@ class MockMemcache extends Memcache implements PermanentServiceInterface
             return false;
         }
 
-        return (string) self::$data[$key];
+        return self::$data[$key];
     }
 
     /**
-     * @param  string    $key
-     * @return bool|void
+     * @param string $key
+     * @return bool
      */
     public function delete($key)
     {
@@ -90,6 +89,6 @@ class MockMemcache extends Memcache implements PermanentServiceInterface
      */
     public function setAvailable($available)
     {
-        $this->available = (bool) $available;
+        $this->available = (bool)$available;
     }
 }
