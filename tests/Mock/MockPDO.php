@@ -17,7 +17,7 @@ use PDOStatement;
  *
  * @author Kamil Dziedzic <arvenil@klecza.pl>
  */
-class MockPDO extends PDO
+class MockPDO
 {
     /**
      * @var string[]
