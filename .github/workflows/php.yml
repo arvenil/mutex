@@ -11,27 +11,23 @@ on:
 jobs:
   run:
     runs-on: ${{ matrix.operating-system }}
-    env:
-      REDIS: redis
-      MYSQL: mysql
-      MEMCACHED: memcached
     services:
       memcached:
         image: memcached
         ports:
-          - 11211/udp
+          - 11211:11211
         options: --health-cmd "timeout 5 bash -c 'cat < /dev/null > /dev/udp/127.0.0.1/11211'" --health-interval=10s --health-timeout=5s --health-retries=3
       mysql:
         image: mysql
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: true
         ports:
-          - 3306/tcp
+          - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
       redis:
         image: redis
         ports:
-          - 6379/tcp
+          - 6379:6379
         options: --health-cmd="redis-cli ping" --health-interval=10s --health-timeout=5s --health-retries=3
     strategy:
       matrix:
@@ -69,7 +65,4 @@ jobs:
 
       - name: Run Tests
         run: |
-          echo $MEMCACHE
-          echo $MYSQL
-          echo $REDIS
           vendor/bin/phpunit --coverage-text
