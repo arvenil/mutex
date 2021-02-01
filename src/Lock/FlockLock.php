@@ -62,8 +62,7 @@ class FlockLock extends LockAbstract
      */
     public function releaseLock($name)
     {
-        if (isset($this->files[$name])) {
-            flock($this->files[$name], LOCK_UN); // @todo Can LOCK_UN fail?
+        if (isset($this->files[$name]) && flock($this->files[$name], LOCK_UN)) {
             unset($this->locks[$name]);
             fclose($this->files[$name]);
             unset($this->files[$name]);
