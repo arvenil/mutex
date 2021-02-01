@@ -66,3 +66,10 @@ jobs:
       - name: Run Tests
         run: |
           vendor/bin/phpunit --coverage-text
+
+      - name: Publish code coverage
+        uses: paambaati/codeclimate-action@v2
+        env:
+          CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
+        with:
+          coverageLocations: ${{github.workspace}}/build/logs/clover.xml:clover
