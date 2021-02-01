@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace NinjaMutex\Tests\Lock\Fabric;
 
 use Memcache;
@@ -17,9 +18,10 @@ class MemcacheLockFabric implements LockFabricWithExpirationInterface
     /**
      * @return MemcacheLock
      */
-    public function create() {
+    public function create()
+    {
         $memcache = new Memcache();
-        $host=getenv("MEMCACHED") ?: '127.0.0.1';
+        $host = getenv("MEMCACHED") ?: '127.0.0.1';
         $memcache->connect($host, 11211);
 
         return new MemcacheLock($memcache);

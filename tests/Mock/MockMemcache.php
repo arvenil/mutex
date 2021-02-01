@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace NinjaMutex\Tests\Mock;
 
 /**
@@ -32,8 +33,8 @@ class MockMemcache implements PermanentServiceInterface
     }
 
     /**
-     * @param  string $key
-     * @param  string $value
+     * @param string $key
+     * @param string $value
      * @return bool
      */
     public function add($key, $value)
@@ -43,7 +44,7 @@ class MockMemcache implements PermanentServiceInterface
         }
 
         if (false === $this->get($key)) {
-            self::$data[$key] = (string) $value;
+            self::$data[$key] = (string)$value;
 
             return true;
         }
@@ -52,7 +53,7 @@ class MockMemcache implements PermanentServiceInterface
     }
 
     /**
-     * @param  string $key
+     * @param string $key
      * @return false|string
      */
     public function get($key)
@@ -69,7 +70,7 @@ class MockMemcache implements PermanentServiceInterface
     }
 
     /**
-     * @param array|string $key
+     * @param string $key
      * @return bool
      */
     public function delete($key)
@@ -88,6 +89,6 @@ class MockMemcache implements PermanentServiceInterface
      */
     public function setAvailable($available)
     {
-        $this->available = (bool) $available;
+        $this->available = (bool)$available;
     }
 }

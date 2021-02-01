@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace NinjaMutex\Tests\Mock;
 
 use PDO;
@@ -39,8 +40,8 @@ class MockPDO
      * @link http://php.net/manual/en/pdo.construct.php
      * @param $dsn
      * @param $username [optional]
-     * @param $passwd   [optional]
-     * @param $options  [optional]
+     * @param $passwd [optional]
+     * @param $options [optional]
      */
     public function __construct($dsn, $username, $passwd, $options)
     {
@@ -58,7 +59,7 @@ class MockPDO
      * on failure.
      * @see PDOStatement::setFetchMode For a full description of the second and following parameters.
      */
-    public function query (string $statement, int $mode = null, $fetchModeArgs)
+    public function query(string $statement, int $mode = null, $fetchModeArgs)
     {
         if (preg_match('/RELEASE_LOCK\((.*)\)/', $statement, $m)) {
             return $this->_mock_release_lock($m[1]);
@@ -70,26 +71,24 @@ class MockPDO
     }
 
     /**
-     * Quotes a string for use in a query.
-     * @link http://php.net/manual/en/pdo.quote.php
-     * @param string $string <p>
-     * The string to be quoted.
-     * </p>
-     * @param int $type [optional] <p>
-     * Provides a data type hint for drivers that have alternate quoting styles.
-     * </p>
-     * @return string a quoted string that is theoretically safe to pass into an
-     * SQL statement. Returns <b>FALSE</b> if the driver does not support quoting in
-     * this way.
+     * @param string $key
+     * @return MockPDOStatement
      */
-    public function quote($string, $type = PDO::PARAM_STR)
+    protected function _mock_release_lock($key)
     {
-        return $string;
+        if (isset($this->current[$key])) {
+            unset(self::$data[$key]);
+            unset($this->current[$key]);
+
+            return $this->_mock_pdo_statement->_mock_set_fetch("1");
+        }
+
+        return $this->_mock_pdo_statement->_mock_set_fetch("0");
     }
 
     /**
-     * @param  string           $key
-     * @param  int              $timeout
+     * @param string $key
+     * @param int $timeout
      * @return MockPDOStatement
      */
     protected function _mock_get_lock($key, $timeout)
@@ -122,7 +121,7 @@ class MockPDO
     }
 
     /**
-     * @param  string           $key
+     * @param string $key
      * @return MockPDOStatement
      */
     protected function _mock_is_free_lock($key)
@@ -135,19 +134,21 @@ class MockPDO
     }
 
     /**
-     * @param  string           $key
-     * @return MockPDOStatement
+     * Quotes a string for use in a query.
+     * @link http://php.net/manual/en/pdo.quote.php
+     * @param string $string <p>
+     * The string to be quoted.
+     * </p>
+     * @param int $type [optional] <p>
+     * Provides a data type hint for drivers that have alternate quoting styles.
+     * </p>
+     * @return string a quoted string that is theoretically safe to pass into an
+     * SQL statement. Returns <b>FALSE</b> if the driver does not support quoting in
+     * this way.
      */
-    protected function _mock_release_lock($key)
+    public function quote($string, $type = PDO::PARAM_STR)
     {
-        if (isset($this->current[$key])) {
-            unset(self::$data[$key]);
-            unset($this->current[$key]);
-
-            return $this->_mock_pdo_statement->_mock_set_fetch("1");
-        }
-
-        return $this->_mock_pdo_statement->_mock_set_fetch("0");
+        return $string;
     }
 
     public function __destruct()

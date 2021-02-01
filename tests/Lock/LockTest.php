@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace NinjaMutex\Tests\Lock;
 
 use NinjaMutex\Lock\LockInterface;
@@ -133,7 +134,7 @@ class LockTest extends AbstractTest
      * https://github.com/facebook/hhvm/blob/af329776c9f740cc1c8c4791f673ba5aa49042ce/hphp/doc/inconsistencies#L40-L45
      *
      * @dataProvider lockImplementorWithBackendProvider
-     * @param LockInterface             $lockImplementor
+     * @param LockInterface $lockImplementor
      * @param PermanentServiceInterface $backend
      */
     public function testIfLockDestructorThrowsWhenBackendIsUnavailable(LockInterface $lockImplementor, PermanentServiceInterface $backend)

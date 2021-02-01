@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace NinjaMutex\Tests\Mock;
 
 /**
@@ -32,8 +33,8 @@ class MockPredisClient implements PermanentServiceInterface
     }
 
     /**
-     * @param  string $key
-     * @param  mixed  $value
+     * @param string $key
+     * @param mixed $value
      * @return bool
      */
     public function setnx($key, $value)
@@ -42,8 +43,8 @@ class MockPredisClient implements PermanentServiceInterface
             return false;
         }
 
-        if (false === $this->get($key)) {
-            self::$data[$key] = (string) $value;
+        if (null === $this->get($key)) {
+            self::$data[$key] = (string)$value;
 
             return true;
         }
@@ -52,13 +53,13 @@ class MockPredisClient implements PermanentServiceInterface
     }
 
     /**
-     * @param  string $key
+     * @param string $key
      * @return string|null
      */
     public function get($key)
     {
         if (!$this->available) {
-            return null;
+            return false;
         }
 
         if (!isset(self::$data[$key])) {
@@ -88,6 +89,6 @@ class MockPredisClient implements PermanentServiceInterface
      */
     public function setAvailable($available)
     {
-        $this->available = (bool) $available;
+        $this->available = (bool)$available;
     }
 }
