@@ -68,4 +68,8 @@ jobs:
           composer install --no-progress --prefer-dist --optimize-autoloader
 
       - name: Run Tests
-        run: vendor/bin/phpunit --coverage-text
+        run: |
+          echo $MEMCACHE
+          echo $MYSQL
+          echo $REDIS
+          vendor/bin/phpunit --coverage-text
