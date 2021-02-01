@@ -9,14 +9,12 @@
  */
 namespace NinjaMutex\Tests\Mock;
 
-use Memcache;
-
 /**
  * Mock memcache to mimic mutex functionality
  *
  * @author Kamil Dziedzic <arvenil@klecza.pl>
  */
-class MockMemcache extends Memcache implements PermanentServiceInterface
+class MockMemcache implements PermanentServiceInterface
 {
     /**
      * @var string[]
