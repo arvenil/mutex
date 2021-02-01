@@ -70,10 +70,9 @@ class MockPhpRedisClient implements PermanentServiceInterface
 
     /**
      * @param $key1
-     * @param mixed ...$otherKeys
      * @return bool
      */
-    public function del($key1, $otherKeys)
+    public function del($key1)
     {
         if (!$this->available) {
             return false;
