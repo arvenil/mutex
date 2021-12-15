@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace NinjaMutex\Tests\Mock;
 
 use NinjaMutex\Lock\LockInterface;
@@ -32,8 +33,8 @@ class MockLock implements LockInterface
     protected $available = true;
 
     /**
-     * @param  string   $name
-     * @param  null|int $timeout
+     * @param string $name
+     * @param null|int $timeout
      * @return bool
      */
     public function acquireLock($name, $timeout = null)
@@ -84,6 +85,10 @@ class MockLock implements LockInterface
      */
     public function setAvailable($available)
     {
-        $this->available = (bool) $available;
+        $this->available = (bool)$available;
+    }
+
+    public function __destruct()
+    {
     }
 }

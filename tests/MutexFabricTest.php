@@ -7,9 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace NinjaMutex\Tests;
 
 use NinjaMutex\Lock\LockInterface;
+use NinjaMutex\MutexException;
 use NinjaMutex\MutexFabric;
 
 /**
@@ -22,6 +24,7 @@ class MutexFabricTest extends AbstractTest
     /**
      * @dataProvider lockImplementorProvider
      * @param LockInterface $lockImplementor
+     * @throws MutexException
      */
     public function testIfInjectedImplementorIsSetAsDefault(LockInterface $lockImplementor)
     {
@@ -32,6 +35,7 @@ class MutexFabricTest extends AbstractTest
     /**
      * @dataProvider lockImplementorProvider
      * @param LockInterface $lockImplementor
+     * @throws MutexException
      */
     public function testIfInjectedImplementorDefaultImplementorIsNotOverwritten(LockInterface $lockImplementor)
     {
@@ -43,6 +47,7 @@ class MutexFabricTest extends AbstractTest
     /**
      * @dataProvider lockImplementorProvider
      * @param LockInterface $lockImplementor
+     * @throws MutexException
      */
     public function testRegisterNewImplementorAndSetIsAsDefault(LockInterface $lockImplementor)
     {
@@ -54,11 +59,11 @@ class MutexFabricTest extends AbstractTest
 
     /**
      * @dataProvider lockImplementorProvider
-     * @expectedException \NinjaMutex\MutexException
      * @param LockInterface $lockImplementor
      */
     public function testThrowExceptionOnDuplicateImplementorName(LockInterface $lockImplementor)
     {
+        $this->expectException(MutexException::class);
         $mutexFabric = new MutexFabric(get_class($lockImplementor), $lockImplementor);
         $mutexFabric->registerLockImplementor(get_class($lockImplementor), $lockImplementor);
     }
@@ -66,6 +71,7 @@ class MutexFabricTest extends AbstractTest
     /**
      * @dataProvider lockImplementorProvider
      * @param LockInterface $lockImplementor
+     * @throws MutexException
      */
     public function testMutexCreationWithDefaultImplementor(LockInterface $lockImplementor)
     {
@@ -76,6 +82,7 @@ class MutexFabricTest extends AbstractTest
     /**
      * @dataProvider lockImplementorProvider
      * @param LockInterface $lockImplementor
+     * @throws MutexException
      */
     public function testMutexCreationWithSecondaryImplementor(LockInterface $lockImplementor)
     {

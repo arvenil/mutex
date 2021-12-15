@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace NinjaMutex\Tests\Mock;
 
 use PDO;
@@ -25,7 +26,7 @@ class MockPDOStatement extends PDOStatement
     protected $_mock_fetch = '';
 
     /**
-     * @param  string           $result
+     * @param string $result
      * @return MockPDOStatement
      */
     public function _mock_set_fetch($result)
@@ -36,12 +37,12 @@ class MockPDOStatement extends PDOStatement
     }
 
     /**
-     * @param  int|null $fetch_style
-     * @param  int|null $cursor_orientation
-     * @param  int|null $cursor_offset
+     * @param int|null $mode
+     * @param int|null $cursorOrientation
+     * @param int|null $cursorOffset
      * @return string
      */
-    public function fetch($fetch_style = null, $cursor_orientation = PDO::FETCH_ORI_NEXT, $cursor_offset = 0)
+    public function fetch($mode = null, $cursorOrientation = PDO::FETCH_ORI_NEXT, $cursorOffset = 0)
     {
         return $this->_mock_fetch;
     }

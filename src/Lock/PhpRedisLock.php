@@ -9,7 +9,7 @@
  */
 namespace NinjaMutex\Lock;
 
-use \Redis;
+use Redis;
 
 /**
  * Lock implementor using PHPRedis
@@ -19,7 +19,7 @@ use \Redis;
 class PhpRedisLock extends LockAbstract
 {
     /**
-     * phpredis connection
+     * Redis connection
      *
      * @var
      */
@@ -28,7 +28,7 @@ class PhpRedisLock extends LockAbstract
     /**
      * @param $client Redis
      */
-    public function __construct(Redis $client)
+    public function __construct($client)
     {
         parent::__construct();
 

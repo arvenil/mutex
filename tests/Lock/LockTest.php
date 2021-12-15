@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace NinjaMutex\Tests\Lock;
 
 use NinjaMutex\Lock\LockInterface;
@@ -133,7 +134,7 @@ class LockTest extends AbstractTest
      * https://github.com/facebook/hhvm/blob/af329776c9f740cc1c8c4791f673ba5aa49042ce/hphp/doc/inconsistencies#L40-L45
      *
      * @dataProvider lockImplementorWithBackendProvider
-     * @param LockInterface             $lockImplementor
+     * @param LockInterface $lockImplementor
      * @param PermanentServiceInterface $backend
      */
     public function testIfLockDestructorThrowsWhenBackendIsUnavailable(LockInterface $lockImplementor, PermanentServiceInterface $backend)
@@ -173,13 +174,13 @@ class LockTest extends AbstractTest
      */
     public function testExpiration(LockFabricWithExpirationInterface $lockFabricWithExpiration)
     {
-        $expiration = 2; // in seconds
+        $expiration = 1; // in seconds
         $name = "lockWithExpiration_" . uniqid();
         $lockImplementor = $lockFabricWithExpiration->create();
         $lockImplementorWithExpiration = $lockFabricWithExpiration->create();
         $lockImplementorWithExpiration->setExpiration($expiration);
 
-        // Aquire lock on implementor with lock expiration
+        // Acquire lock on implementor with lock expiration
         $this->assertTrue($lockImplementorWithExpiration->acquireLock($name, 0));
         // We hope code was fast enough so $expiration time didn't pass yet and lock still should be held
         $this->assertFalse($lockImplementor->acquireLock($name, 0));
@@ -191,9 +192,9 @@ class LockTest extends AbstractTest
         $this->assertTrue($lockImplementor->acquireLock($name, 0));
 
         // Cleanup
-        $this->assertTrue($lockImplementor->releaseLock($name, 0));
+        $this->assertTrue($lockImplementor->releaseLock($name));
         // Expired lock is unusable, we need to clean it's lock state or otherwise
         // it will invoke in __destruct Exception (php*) or Fatal Error (hhvm)
-        $this->assertTrue($lockImplementorWithExpiration->clearLock($name, 0));
+        $this->assertTrue($lockImplementorWithExpiration->clearLock($name));
     }
 }

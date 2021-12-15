@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace NinjaMutex\Tests;
 
 use NinjaMutex\Lock\LockAbstract;
@@ -46,7 +47,7 @@ class MutexLocksTest extends AbstractTest
     public function testAllowToAcquireSelfOwnedLock(LockInterface $lockImplementor)
     {
         $mutex = new Mutex('forfiter', $lockImplementor);
-        $mutex->acquireLock(0);
+        $this->assertTrue($mutex->acquireLock(0));
 
         // Another try to acquire lock is successful
         // because lock is already acquired by this mutex
@@ -61,11 +62,12 @@ class MutexLocksTest extends AbstractTest
      */
     public function testMultipleSelfAcquiredLocksRequiresMultipleReleasesToCompletelyReleaseMutex(
         LockInterface $lockImplementor
-    ) {
+    )
+    {
         $mutex = new Mutex('forfiter', $lockImplementor);
-        $mutex->acquireLock(0); // #1
-        $mutex->acquireLock(0); // #2
-        $mutex->acquireLock(0); // #3
+        $this->assertTrue($mutex->acquireLock(0)); // #1
+        $this->assertTrue($mutex->acquireLock(0)); // #2
+        $this->assertTrue($mutex->acquireLock(0)); // #3
         $this->assertTrue($mutex->releaseLock()); // #2
         $this->assertTrue($mutex->isAcquired());
         $this->assertTrue($mutex->isLocked());
@@ -126,13 +128,13 @@ class MutexLocksTest extends AbstractTest
     public function testAcquireLockTimeout(LockInterface $lockImplementor)
     {
         $mutex1 = new Mutex('forfiter', $lockImplementor);
-        $mutex1->acquireLock(0);
+        $this->assertTrue($mutex1->acquireLock(0));
 
         $mutex = new Mutex('forfiter', $lockImplementor);
         $sleep = LockAbstract::USLEEP_TIME;
 
         $time = microtime(true) * 1000;
-        $mutex->acquireLock($sleep);
+        $this->assertFalse($mutex->acquireLock($sleep));
         $this->assertLessThanOrEqual(microtime(true) * 1000, $time + $sleep);
     }
 
@@ -140,13 +142,13 @@ class MutexLocksTest extends AbstractTest
      * @dataProvider lockImplementorProvider
      * @param LockInterface $lockImplementor
      */
-    public function testAcquireLockWithTimeoutImmiedietly(LockInterface $lockImplementor)
+    public function testAcquireLockWithTimeoutImmediately(LockInterface $lockImplementor)
     {
         $mutex = new Mutex('forfiter', $lockImplementor);
         $sleep = LockAbstract::USLEEP_TIME;
 
         $time = microtime(true) * 1000;
-        $mutex->acquireLock($sleep);
+        $this->assertTrue($mutex->acquireLock($sleep));
         $this->assertGreaterThan(microtime(true) * 1000, $time + $sleep);
     }
 

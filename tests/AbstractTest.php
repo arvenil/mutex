@@ -7,45 +7,53 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace NinjaMutex\Tests;
 
+use DirectoryIterator;
 use NinjaMutex\Lock\DirectoryLock;
 use NinjaMutex\Lock\FlockLock;
 use NinjaMutex\Lock\MemcachedLock;
 use NinjaMutex\Lock\MemcacheLock;
 use NinjaMutex\Lock\MySQLPDOLock;
-use NinjaMutex\Lock\PredisRedisLock;
 use NinjaMutex\Lock\PhpRedisLock;
+use NinjaMutex\Lock\PredisRedisLock;
 use NinjaMutex\Tests\Lock\Fabric\MemcachedLockFabric;
 use NinjaMutex\Tests\Lock\Fabric\MemcacheLockFabric;
 use NinjaMutex\Tests\Mock\MockMemcache;
 use NinjaMutex\Tests\Mock\MockMemcached;
 use NinjaMutex\Tests\Mock\MockPhpRedisClient;
 use NinjaMutex\Tests\Mock\MockPredisClient;
-use org\bovigo\vfs;
+use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamDirectory;
+use org\bovigo\vfs\vfsStreamException;
+use org\bovigo\vfs\vfsStreamWrapper;
+use PHPUnit\Framework\TestCase;
 use Predis;
 use Redis;
-use Memcache;
 
-abstract class AbstractTest extends \PHPUnit_Framework_TestCase
+abstract class AbstractTest extends TestCase
 {
-    public function setUp()
+    /**
+     * @throws vfsStreamException
+     */
+    public function setUp(): void
     {
-        vfs\vfsStreamWrapper::register();
-        vfs\vfsStreamWrapper::setRoot(new vfs\vfsStreamDirectory('nfs'));
+        vfsStreamWrapper::register();
+        vfsStreamWrapper::setRoot(new vfsStreamDirectory('nfs'));
         mkdir('/tmp/mutex/');
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
-        foreach (new \DirectoryIterator(vfs\vfsStream::url('nfs')) as $file) {
+        foreach (new DirectoryIterator(vfsStream::url('nfs')) as $file) {
             if (!$file->isDot()) {
                 unlink($file->getPathname());
             }
         }
-        rmdir(vfs\vfsStream::url('nfs'));
+        rmdir(vfsStream::url('nfs'));
 
-        foreach (new \DirectoryIterator('/tmp/mutex/') as $file) {
+        foreach (new DirectoryIterator('/tmp/mutex/') as $file) {
             if (!$file->isDot()) {
                 unlink($file->getPathname());
             }
@@ -88,51 +96,19 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return array
+     * @return FlockLock[]
      */
-    public function lockImplementorWithBackendProvider()
+    protected function provideFlockMockLock()
     {
-        $data = array(
-            // Just mocks
-            $this->provideMemcachedMockLock(),
-            $this->providePredisRedisMockLock(),
-            $this->providePhpRedisMockLock(),
-        );
-
-        if (class_exists("Memcache")) {
-            array_push($data, $this->provideMemcacheMockLock());
-        }
-
-        return $data;
+        return array(new FlockLock(vfsStream::url('nfs/')));
     }
 
     /**
-     * @return array
+     * @return DirectoryLock[]
      */
-    public function lockFabricWithExpirationProvider()
+    protected function provideDirectoryMockLock()
     {
-        $memcachedLockFabric = new MemcachedLockFabric();
-
-        $data = array(
-            array($memcachedLockFabric),
-        );
-
-        if (class_exists("Memcache")) {
-            $memcacheLockFabric = new MemcacheLockFabric();
-            array_push($data, array($memcacheLockFabric));
-        }
-
-        return $data;
-    }
-
-    /**
-     * @return array
-     */
-    protected function provideMemcacheMockLock()
-    {
-        $memcacheMock = new MockMemcache();
-
-        return array(new MemcacheLock($memcacheMock), $memcacheMock);
+        return array(new DirectoryLock(vfsStream::url('nfs/')));
     }
 
     /**
@@ -146,23 +122,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return array
-     */
-    protected function provideFlockMockLock()
-    {
-        return array(new FlockLock(vfs\vfsStream::url('nfs/')));
-    }
-
-    /**
-     * @return array
-     */
-    protected function provideDirectoryMockLock()
-    {
-        return array(new DirectoryLock(vfs\vfsStream::url('nfs/')));
-    }
-
-    /**
-     * @return array
+     * @return MySQLPDOLock[]
      */
     protected function provideMysqlMockLock()
     {
@@ -190,7 +150,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return array
+     * @return FlockLock[]
      */
     protected function provideFlockLock()
     {
@@ -198,7 +158,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return array
+     * @return DirectoryLock[]
      */
     protected function provideDirectoryLock()
     {
@@ -206,28 +166,81 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return array
+     * @return MySQLPDOLock[]
      */
     protected function provideMysqlLock()
     {
-        return array(new MySQLPDOLock('mysql:', 'root', ''));
+        $host = getenv("MYSQL") ?: '127.0.0.1';
+        return array(new MySQLPDOLock('mysql:host=' . $host, 'root', ''));
     }
 
     /**
-     * @return array
+     * @return PredisRedisLock[]
      */
     protected function providePredisRedisLock()
     {
-        return array(new PredisRedisLock(new Predis\Client()));
+        $host = getenv("REDIS") ?: '127.0.0.1';
+        return array(new PredisRedisLock(new Predis\Client(array(
+            'host' => $host,
+        ))));
+    }
+
+    /**
+     * @return PhpRedisLock[]
+     */
+    protected function providePhpRedisLock()
+    {
+        $host = getenv("REDIS") ?: '127.0.0.1';
+        $redis = new Redis();
+        $redis->connect($host);
+        return array(new PhpRedisLock($redis));
     }
 
     /**
      * @return array
      */
-    protected function providePhpRedisLock()
+    protected function provideMemcacheMockLock()
     {
-        $redis = new Redis();
-        $redis->connect('127.0.0.1', 6379);
-        return array(new PhpRedisLock($redis));
+        $memcacheMock = new MockMemcache();
+
+        return array(new MemcacheLock($memcacheMock), $memcacheMock);
+    }
+
+    /**
+     * @return array[]
+     */
+    public function lockImplementorWithBackendProvider()
+    {
+        $data = array(
+            // Just mocks
+            $this->provideMemcachedMockLock(),
+            $this->providePredisRedisMockLock(),
+            $this->providePhpRedisMockLock(),
+        );
+
+        if (class_exists("Memcache")) {
+            array_push($data, $this->provideMemcacheMockLock());
+        }
+
+        return $data;
+    }
+
+    /**
+     * @return Lock\Fabric\MemcachedLockFabric[][]
+     */
+    public function lockFabricWithExpirationProvider()
+    {
+        $memcachedLockFabric = new MemcachedLockFabric();
+
+        $data = array(
+            array($memcachedLockFabric),
+        );
+
+        if (class_exists("Memcache")) {
+            $memcacheLockFabric = new MemcacheLockFabric();
+            array_push($data, array($memcacheLockFabric));
+        }
+
+        return $data;
     }
 }

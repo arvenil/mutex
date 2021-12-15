@@ -39,7 +39,7 @@ class MemcacheLock extends LockAbstract implements LockExpirationInterface
     /**
      * @param Memcache $memcache
      */
-    public function __construct(Memcache $memcache)
+    public function __construct($memcache)
     {
         parent::__construct();
 

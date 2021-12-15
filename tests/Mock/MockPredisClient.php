@@ -7,16 +7,15 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace NinjaMutex\Tests\Mock;
 
-use Predis;
+namespace NinjaMutex\Tests\Mock;
 
 /**
  * Mock Predis\Client to mimic Predis functionality
  *
  * @author Kamil Dziedzic <arvenil@klecza.pl>
  */
-class MockPredisClient extends Predis\Client implements PermanentServiceInterface
+class MockPredisClient implements PermanentServiceInterface
 {
     /**
      * @var string[]
@@ -34,8 +33,8 @@ class MockPredisClient extends Predis\Client implements PermanentServiceInterfac
     }
 
     /**
-     * @param  string $key
-     * @param  mixed  $value
+     * @param string $key
+     * @param mixed $value
      * @return bool
      */
     public function setnx($key, $value)
@@ -45,7 +44,7 @@ class MockPredisClient extends Predis\Client implements PermanentServiceInterfac
         }
 
         if (null === $this->get($key)) {
-            self::$data[$key] = (string) $value;
+            self::$data[$key] = (string)$value;
 
             return true;
         }
@@ -54,8 +53,8 @@ class MockPredisClient extends Predis\Client implements PermanentServiceInterfac
     }
 
     /**
-     * @param  string $key
-     * @return mixed
+     * @param string $key
+     * @return string|null
      */
     public function get($key)
     {
@@ -67,11 +66,11 @@ class MockPredisClient extends Predis\Client implements PermanentServiceInterfac
             return null;
         }
 
-        return (string) self::$data[$key];
+        return self::$data[$key];
     }
 
     /**
-     * @param  string $key
+     * @param string $key
      * @return bool
      */
     public function del($key)
@@ -90,6 +89,6 @@ class MockPredisClient extends Predis\Client implements PermanentServiceInterfac
      */
     public function setAvailable($available)
     {
-        $this->available = (bool) $available;
+        $this->available = (bool)$available;
     }
 }
