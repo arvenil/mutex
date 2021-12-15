@@ -178,13 +178,4 @@ class MySQLPDOLock extends LockAbstract
 
         return true;
     }
-
-    public function __destruct()
-    {
-        parent::__destruct();
-
-        foreach($this->pdo as $name => $pdo) {
-            unset($this->pdo[$name]);
-        }
-    }
 }

@@ -9,8 +9,6 @@
  */
 namespace NinjaMutex\Lock;
 
-use NinjaMutex\UnrecoverableMutexException;
-
 /**
  * Abstract lock implementor
  *
@@ -40,30 +38,6 @@ abstract class LockAbstract implements LockInterface
     public function __clone()
     {
         $this->locks = array();
-    }
-
-    /**
-     * Try to release any obtained locks when object is destroyed
-     *
-     * This is a safe guard for cases when your php script dies unexpectedly.
-     * It's not guaranteed it will work either.
-     *
-     * You should not depend on __destruct() to release your locks,
-     * instead release them with `$released = $this->releaseLock()`A
-     * and check `$released` if lock was properly released
-     * @throws UnrecoverableMutexException
-     */
-    public function __destruct()
-    {
-        foreach ($this->locks as $name => $v) {
-            $released = $this->releaseLock($name);
-            if (!$released) {
-                throw new UnrecoverableMutexException(sprintf(
-                    'Cannot release lock in __destruct(): %s',
-                    $name
-                ));
-            }
-        }
     }
 
     /**

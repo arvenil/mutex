@@ -150,12 +150,4 @@ class MockPDO
     {
         return $string;
     }
-
-    public function __destruct()
-    {
-        foreach ($this->current as $k => $v) {
-            unset(self::$data[$k]);
-            unset($this->current[$k]);
-        }
-    }
 }

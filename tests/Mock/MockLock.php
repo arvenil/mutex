@@ -87,8 +87,4 @@ class MockLock implements LockInterface
     {
         $this->available = (bool)$available;
     }
-
-    public function __destruct()
-    {
-    }
 }
