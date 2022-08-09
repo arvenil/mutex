@@ -22,8 +22,8 @@ class BasicLockInformationProvider implements LockInformationProviderInterface
         $hostname = gethostname();
 
         $params = array();
-        $params[] = $pid;
-        $params[] = $hostname;
+        $params['pid'] = $pid;
+        $params['hostname'] = $hostname;
 
         return $params;
     }
